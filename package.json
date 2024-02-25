@@ -1,11 +1,13 @@
 {
   "name": "http-dsl",
   "version": "0.1.0",
+  "private": true,
   "main": "index.js",
   "scripts": {
     "format": "prettier --write src/",
     "test": "vitest",
-    "build": "npm run format && vitest run && tsc"
+    "build": "npm run format && vitest run && tsc",
+    "start": "tsc && node dist/index.js"
   },
   "author": "John Egan",
   "license": "MIT",
