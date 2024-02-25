@@ -1,0 +1,18 @@
+{
+  "name": "http-dsl",
+  "version": "0.1.0",
+  "main": "index.js",
+  "scripts": {
+    "format": "prettier --write src/",
+    "test": "vitest",
+    "build": "npm run format && vitest run && tsc"
+  },
+  "author": "John Egan",
+  "license": "MIT",
+  "devDependencies": {
+    "@types/node": "^20.11.20",
+    "prettier": "^3.2.5",
+    "typescript": "^5.3.3",
+    "vitest": "^1.3.1"
+  }
+}
