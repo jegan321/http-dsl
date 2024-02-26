@@ -1,23 +1,34 @@
 import { Request } from '../parser/ast'
-import { HttpResponse, sendHttpRequest } from './http-client'
-import { printToTerminal } from './printer'
+import { HttpClient, HttpResponse } from './http-client'
+import { Printer } from './printer'
 
-export async function evaluate(requests: Request[]) {
-  for (const request of requests) {
-    const httpResponse = await sendHttpRequest(request)
-    printResponse(httpResponse)
-  }
-}
+export class Evaluator {
+  private httpClient: HttpClient
+  private printer: Printer
 
-function printResponse(httpResponse: HttpResponse) {
-  printToTerminal(httpResponse.status)
-  const responseBody = httpResponse.body
-  if (isJsonResponse(httpResponse)) {
-    var jsonString = JSON.stringify(responseBody, null, 2)
-    printToTerminal(jsonString)
-  } else {
-    printToTerminal(responseBody)
+  constructor(httpClient: HttpClient, printer: Printer) {
+    this.httpClient = httpClient
+    this.printer = printer
   }
+
+  async evaluate(requests: Request[]) {
+    for (const request of requests) {
+      const httpResponse = await this.httpClient.sendRequest(request)
+      this.printResponse(httpResponse)
+    }
+  }
+
+  printResponse(httpResponse: HttpResponse) {
+    this.printer.print(httpResponse.status)
+    const responseBody = httpResponse.body
+    if (isJsonResponse(httpResponse)) {
+      var jsonString = JSON.stringify(responseBody, null, 2)
+      this.printer.print(jsonString)
+    } else {
+      this.printer.print(responseBody)
+    }
+  }
+
 }
 
 function isJsonResponse(httpResponse: HttpResponse): boolean {

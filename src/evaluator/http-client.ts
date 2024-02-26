@@ -7,22 +7,38 @@ export interface HttpResponse {
   body: any
 }
 
-export async function sendHttpRequest(ast: Request): Promise<HttpResponse> {
-  const response = await axios.request({
-    method: ast.method,
-    url: ast.url,
-    headers: ast.headers,
-    data: ast.body
-  })
+export interface HttpClient {
+  sendRequest: (ast: Request) => Promise<HttpResponse>
+}
 
-  const responseHeaders: Record<string, string> = {}
-  for (const [key, value] of Object.entries(response.headers)) {
-    responseHeaders[key] = value.toLowerCase()
+export class AxiosHttpClient implements HttpClient {
+  async sendRequest(ast: Request): Promise<HttpResponse> {
+    const response = await axios.request({
+      method: ast.method,
+      url: ast.url,
+      headers: ast.headers,
+      data: ast.body
+    })
+
+    const responseHeaders: Record<string, string> = {}
+    for (const [key, value] of Object.entries(response.headers)) {
+      responseHeaders[key] = value.toLowerCase()
+    }
+
+    return {
+      status: response.status,
+      headers: responseHeaders,
+      body: response.data
+    }
   }
+}
 
-  return {
-    status: response.status,
-    headers: responseHeaders,
-    body: response.data
+export class MockHttpClient implements HttpClient {
+  async sendRequest(): Promise<HttpResponse> {
+    return {
+      status: 200,
+      headers: {},
+      body: {}
+    }
   }
 }
