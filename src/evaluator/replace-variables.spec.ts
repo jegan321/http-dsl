@@ -30,6 +30,13 @@ describe('replaceVariables', async () => {
     const replaced = await replaceVariables(environment, input)
     expect(replaced).toBe('http://example.com/api/items/123')
   })
+  test('should replace two variables', async () => {
+    environment.setVariable('item_id', '123')
+    environment.setVariable('is_active', 'true')
+    const input = '{{item_id}} and {{is_active}}'
+    const replaced = await replaceVariables(environment, input)
+    expect(replaced).toBe('123 and true')
+  })
   test('should use UnknownVariableGetter when variable is not in environment', async () => {
     const input = 'http://example.com/api/items/{{item_id}}'
     const replaced = await replaceVariables(environment, input)
