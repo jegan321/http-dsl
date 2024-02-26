@@ -27,19 +27,19 @@ export class Evaluator {
 
   async evaluate(requests: Request[]) {
     for (const request of requests) {
-      this.replaceVariables(this.environment, request)
+      await this.replaceVariables(this.environment, request)
       const httpResponse = await this.httpClient.sendRequest(request)
       this.printResponse(httpResponse)
     }
   }
 
-  replaceVariables(environment: Environment, request: Request): void {
-    request.method = replaceVariables(environment, request.method)
-    request.url = replaceVariables(environment, request.url)
+  async replaceVariables(environment: Environment, request: Request) {
+    request.method = await replaceVariables(environment, request.method)
+    request.url = await replaceVariables(environment, request.url)
     for (const [key, value] of Object.entries(request.headers)) {
-      request.headers[key] = replaceVariables(environment, value)
+      request.headers[key] = await replaceVariables(environment, value)
     }
-    request.body = replaceVariables(environment, request.body)
+    request.body = await replaceVariables(environment, request.body)
   }
 
   printResponse(httpResponse: HttpResponse) {
@@ -52,7 +52,6 @@ export class Evaluator {
       this.io.write(responseBody)
     }
   }
-
 }
 
 function isJsonResponse(httpResponse: HttpResponse): boolean {

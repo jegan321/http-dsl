@@ -12,7 +12,10 @@ export class TerminalInputOutput implements InputOutput {
         input: process.stdin,
         output: process.stdout
       })
-      readline.question(promptText, resolve)
+      readline.question(promptText, userInput => {
+        readline.close()
+        resolve(userInput)
+      })
     })
   }
 

@@ -1,12 +1,12 @@
-import { describe } from 'node:test'
-import { expect, test } from 'vitest'
+import { expect, test, beforeEach, describe } from 'vitest'
 import { Environment } from './environment'
 import { replaceVariables } from './replace-variables'
 
 describe('replaceVariables', async () => {
-  const environment = new Environment(
-    () => Promise.resolve('mock value')
-  )
+  const environment = new Environment(() => Promise.resolve('mock_value'))
+  beforeEach(() => {
+    environment.reset()
+  })
   test('should return value as-is when there are no variables', async () => {
     const input = 'https://api.example.com'
     const replaced = await replaceVariables(environment, input)
@@ -29,5 +29,10 @@ describe('replaceVariables', async () => {
     const input = 'http://example.com/api/items/{{item_id}}'
     const replaced = await replaceVariables(environment, input)
     expect(replaced).toBe('http://example.com/api/items/123')
+  })
+  test('should use UnknownVariableGetter when variable is not in environment', async () => {
+    const input = 'http://example.com/api/items/{{item_id}}'
+    const replaced = await replaceVariables(environment, input)
+    expect(replaced).toBe('http://example.com/api/items/mock_value')
   })
 })

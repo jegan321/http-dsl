@@ -1,0 +1,7 @@
+{
+    "method": "GET",
+    "url": "https://jsonplaceholder.typicode.com/users/{{user_id}}",
+    "headers": {
+        "content-type": "application/json"
+    }
+}

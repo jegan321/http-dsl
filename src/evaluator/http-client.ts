@@ -13,12 +13,18 @@ export interface HttpClient {
 
 export class AxiosHttpClient implements HttpClient {
   async sendRequest(ast: Request): Promise<HttpResponse> {
-    const response = await axios.request({
-      method: ast.method,
-      url: ast.url,
-      headers: ast.headers,
-      data: ast.body
-    })
+    let response: axios.AxiosResponse
+    try {
+      response = await axios.request({
+        method: ast.method,
+        url: ast.url,
+        headers: ast.headers,
+        data: ast.body
+      })
+    } catch (error) {
+      console.log('Error while sending request')
+      throw new Error()
+    }
 
     const responseHeaders: Record<string, string> = {}
     for (const [key, value] of Object.entries(response.headers)) {

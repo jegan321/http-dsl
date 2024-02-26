@@ -14,8 +14,6 @@
         "outDir": "dist",
         "forceConsistentCasingInFileNames": true,
         "noImplicitReturns": true,
-        "noUnusedLocals": true,
-        "noUnusedParameters": true,
         "noFallthroughCasesInSwitch": true
     }
 }
