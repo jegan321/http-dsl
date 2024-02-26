@@ -17,10 +17,10 @@ describe('replaceVariables', () => {
     const replaced = replaceVariables(environment, input)
     expect(replaced).toBe('123')
   })
-  test('should return variable when variable has period', () => {
+  test('should return variable when variable has period and underscore', () => {
     const environment = new Environment()
-    environment.set('item.id', '123')
-    const input = '{{item.id}}'
+    environment.set('item_details.id', '123')
+    const input = '{{item_details.id}}'
     const replaced = replaceVariables(environment, input)
     expect(replaced).toBe('123')
   })
