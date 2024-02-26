@@ -4,7 +4,3 @@ export interface Request {
     headers: Record<string, string>
     body: any
 }
-
-export interface Script {
-    requests: Request[]
-}
