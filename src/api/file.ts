@@ -7,12 +7,13 @@ import { ConsoleLogPrinter } from '../evaluator/printer'
 export class FileHandler {
   async execute(fileLocation: string) {
     const fileContent = fs.readFileSync(fileLocation, 'utf8')
+    
     const requests = parse(fileContent)
 
-    const httpClient = new AxiosHttpClient()
-    const printer = new ConsoleLogPrinter()
-    const evaluator = new Evaluator(httpClient, printer)
-
+    const evaluator = new Evaluator(
+      new AxiosHttpClient(), 
+      new ConsoleLogPrinter()
+    )
     await evaluator.evaluate(requests)
   }
 }
