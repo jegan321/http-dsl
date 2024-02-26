@@ -1,7 +1,8 @@
 {
-    "method": "GET",
+    "method": "POST",
     "url": "https://jsonplaceholder.typicode.com/users",
     "headers": {
         "content-type": "application/json"
-    }
+    },
+    "body": "{\"name\":\"John\"}"
 }
