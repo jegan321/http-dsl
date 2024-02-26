@@ -12,7 +12,7 @@ export class TerminalInputOutput implements InputOutput {
         input: process.stdin,
         output: process.stdout
       })
-      readline.question(promptText, userInput => {
+      readline.question(promptText, (userInput) => {
         readline.close()
         resolve(userInput)
       })
@@ -21,5 +21,17 @@ export class TerminalInputOutput implements InputOutput {
 
   async write(value: any): Promise<void> {
     console.log(value)
+  }
+}
+
+export class MockInputOutput implements InputOutput {
+  public promptResponse: string = ''
+
+  async prompt(promptText: string): Promise<string> {
+    return this.promptResponse
+  }
+
+  async write(value: any): Promise<void> {
+    // Do nothing
   }
 }
