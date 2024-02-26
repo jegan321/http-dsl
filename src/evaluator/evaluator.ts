@@ -39,7 +39,8 @@ export class Evaluator {
     for (const [key, value] of Object.entries(request.headers)) {
       request.headers[key] = await replaceVariables(environment, value)
     }
-    request.body = await replaceVariables(environment, request.body)
+    const replacedBody = await replaceVariables(environment, request.body)
+    request.body = replacedBody ? replacedBody : undefined // Replace empty string with undefined
   }
 
   printResponse(httpResponse: HttpResponse) {

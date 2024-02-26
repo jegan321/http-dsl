@@ -26,12 +26,13 @@ export class TerminalInputOutput implements InputOutput {
 
 export class MockInputOutput implements InputOutput {
   public promptResponse: string = ''
+  public writes: any[] = []
 
   async prompt(promptText: string): Promise<string> {
     return this.promptResponse
   }
 
   async write(value: any): Promise<void> {
-    // Do nothing
+    this.writes.push(value)
   }
 }

@@ -8,7 +8,7 @@ export interface HttpResponse {
 }
 
 export interface HttpClient {
-  sendRequest: (ast: Request) => Promise<HttpResponse>
+  sendRequest: (request: Request) => Promise<HttpResponse>
 }
 
 export class AxiosHttpClient implements HttpClient {
@@ -40,11 +40,16 @@ export class AxiosHttpClient implements HttpClient {
 }
 
 export class MockHttpClient implements HttpClient {
-  async sendRequest(): Promise<HttpResponse> {
+  public status: number = 200
+  public headers: Record<string, string> = {}
+  public body: any = {}
+  public sentRequests: Request[] = []
+  async sendRequest(request: Request): Promise<HttpResponse> {
+    this.sentRequests.push(request)
     return {
-      status: 200,
-      headers: {},
-      body: {}
+      status: this.status,
+      headers: this.headers,
+      body: this.body
     }
   }
 }

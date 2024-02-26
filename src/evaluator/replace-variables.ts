@@ -2,14 +2,13 @@ import { Environment } from './environment'
 
 /**
  * Returns the value with all variables replaced with their values from the environment.
- * Variable syntax is `{{variableName}}`.
+ * Variable syntax is `{{variableName}}`. If value is undefined, returns an empty string.
  *
  * TODO: Rename to expressions?
- * TODO: Change to a state machine-based approach
  */
-export async function replaceVariables(environment: Environment, value: string): Promise<string> {
+export async function replaceVariables(environment: Environment, value?: string): Promise<string> {
   if (value == null) {
-    return value
+    return ''
   }
   let output = ''
   for (let i = 0; i < value.length; i++) {
