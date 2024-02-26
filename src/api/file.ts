@@ -1,4 +1,4 @@
-import  fs  from 'fs'
+import fs from 'fs'
 import { parse } from '../parser/parser'
 import { evaluate } from '../evaluator/evaluator'
 

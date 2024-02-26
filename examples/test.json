@@ -1,4 +1,4 @@
 {
     "method": "GET",
-    "url": "https://google.com"
+    "url": "https://jsonplaceholder.typicode.com/users"
 }

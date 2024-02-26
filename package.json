@@ -6,7 +6,7 @@
   "scripts": {
     "format": "prettier --write src/",
     "test": "vitest",
-    "build": "npm run format && vitest run && tsc",
+    "build": "npm run format && tsc --noEmit && vitest run",
     "start": "tsc && node dist/src/index.js examples/test.json"
   },
   "author": "John Egan",
