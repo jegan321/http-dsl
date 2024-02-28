@@ -9,3 +9,4 @@
 - Some way to do a map() on response like $.addresses[*].city
 - Support array variables that prompt the user to select from the list of options
 - Generate cURL from request
+- HTTP versions

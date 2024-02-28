@@ -1,5 +1,6 @@
 build/
 src/version.ts
+temp/
 
 # Logs
 logs
