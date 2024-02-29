@@ -53,4 +53,19 @@ describe('Lexer - token types', () => {
       const tokens = lexer.getAllTokens().map(token => token.type)
       expect(tokens).toEqual(expectedTokens)
     })
+    test('should get token types for request lline and headers', () => {
+      const input = `
+        GET https://api.example.com
+        Content-Type: application/json
+        x-api-key: 123
+      `
+      const lexer = new Lexer(input)
+      const expectedTokens = [
+        TokenType.STRING, TokenType.STRING, TokenType.NEWLINE,
+        TokenType.STRING, TokenType.STRING, TokenType.NEWLINE,
+        TokenType.STRING, TokenType.STRING,
+      ]
+      const tokens = lexer.getAllTokens().map(token => token.type)
+      expect(tokens).toEqual(expectedTokens)
+    })
 })
