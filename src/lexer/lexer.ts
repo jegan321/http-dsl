@@ -55,6 +55,7 @@ export class Lexer {
       this.skipSpacesAndTabs()
 
       if (this.char === '') {
+        // TODO: Is this needed for the parser? This block never happens when calling getAllTokens()
         token = new Token(TokenType.EOF, this.char)
       } else if (this.char === '\n') {
         token = new Token(TokenType.NEWLINE, this.char)

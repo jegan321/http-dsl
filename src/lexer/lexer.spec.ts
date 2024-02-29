@@ -17,6 +17,15 @@ describe('Lexer - token types', () => {
       const tokens = lexer.getAllTokens().map(token => token.type)
       expect(tokens).toEqual(expectedTokens)
     })
+    test('should get token types for word surrounded by newlines', () => {
+      const input = `
+        foo
+      `
+      const lexer = new Lexer(input)
+      const expectedTokens = [TokenType.STRING]
+      const tokens = lexer.getAllTokens().map(token => token.type)
+      expect(tokens).toEqual(expectedTokens)
+    })
     test('should get token types for SET id = 123', () => {
       const input = `SET id = 123`
       const lexer = new Lexer(input)
@@ -24,12 +33,16 @@ describe('Lexer - token types', () => {
       const tokens = lexer.getAllTokens().map(token => token.type)
       expect(tokens).toEqual(expectedTokens)
     })
-    test('should get token types for word surrounded by newlines', () => {
+    test('should get token types for two setters', () => {
       const input = `
-        foo
+        SET id = 123
+        SET type = foo
       `
       const lexer = new Lexer(input)
-      const expectedTokens = [TokenType.STRING]
+      const expectedTokens = [
+        TokenType.STRING, TokenType.STRING, TokenType.STRING, TokenType.STRING, TokenType.NEWLINE,
+        TokenType.STRING, TokenType.STRING, TokenType.STRING, TokenType.STRING
+      ]
       const tokens = lexer.getAllTokens().map(token => token.type)
       expect(tokens).toEqual(expectedTokens)
     })
