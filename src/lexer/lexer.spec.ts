@@ -2,7 +2,7 @@ import { expect, test, describe } from 'vitest'
 import { Lexer } from './lexer'
 import { TokenType } from './tokens'
 
-describe('Lexer', () => {
+describe('Lexer - token types', () => {
     test('should get token type for GET', () => {
       const input = `GET`
       const lexer = new Lexer(input)
@@ -11,7 +11,7 @@ describe('Lexer', () => {
       expect(tokens).toEqual(expectedTokens)
     })
     test('should get token types for GET https://api.example.com', () => {
-      const input = `GET api.example.com` // TODO: Fix https://
+      const input = `GET https://api.example.com`
       const lexer = new Lexer(input)
       const expectedTokens = [TokenType.STRING, TokenType.STRING]
       const tokens = lexer.getAllTokens().map(token => token.type)
@@ -21,6 +21,15 @@ describe('Lexer', () => {
       const input = `SET id = 123`
       const lexer = new Lexer(input)
       const expectedTokens = [TokenType.STRING, TokenType.STRING, TokenType.STRING, TokenType.STRING]
+      const tokens = lexer.getAllTokens().map(token => token.type)
+      expect(tokens).toEqual(expectedTokens)
+    })
+    test('should get token types for word surrounded by newlines', () => {
+      const input = `
+        foo
+      `
+      const lexer = new Lexer(input)
+      const expectedTokens = [TokenType.STRING]
       const tokens = lexer.getAllTokens().map(token => token.type)
       expect(tokens).toEqual(expectedTokens)
     })

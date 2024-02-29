@@ -8,7 +8,7 @@ export class Lexer {
     private prevToken?: Token
 
     constructor(input: string) {
-        this.input = input.trimStart()
+        this.input = input.trim()
         this.position = 0
         this.nextPosition = 0
         this.char = ''
@@ -54,7 +54,11 @@ export class Lexer {
   
       this.skipSpacesAndTabs()
 
-      if (isBeginningOfString(this.char)) {
+      if (this.char === '') {
+        token = new Token(TokenType.EOF, this.char)
+      } else if (this.char === '\n') {
+        token = new Token(TokenType.NEWLINE, this.char)
+      } else if (isBeginningOfString(this.char)) {
         return new Token(TokenType.STRING, this.readString())
       }
 
