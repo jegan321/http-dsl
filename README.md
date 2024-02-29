@@ -11,3 +11,4 @@
 - Generate cURL from request
 - HTTP versions
 - Remove token limit in lexer
+- Parser error handling
