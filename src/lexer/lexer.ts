@@ -54,11 +54,7 @@ export class Lexer {
   
       this.skipSpacesAndTabs()
 
-      if (this.char === '=') {
-        token = new Token(TokenType.EQUALS, this.char)
-      } else if (this.char === ':') {
-        token = new Token(TokenType.COLON, this.char)
-      } else if (isLetter(this.char) || isDigit(this.char)) {
+      if (isBeginningOfString(this.char)) {
         return new Token(TokenType.STRING, this.readString())
       }
 
@@ -78,12 +74,17 @@ export class Lexer {
       const start = this.position + 1
       while (true) {
         this.readChar()
-        if (['', ' ', '=', ':', '\n'].includes(this.char)) {
+        if (['', ' ', '\n'].includes(this.char)) {
           break
         }
       }
       return this.input.substring(start, this.position)
     }
+}
+
+function isBeginningOfString(char: string): boolean {
+  const specialChars = ['\n']
+  return !specialChars.includes(char)
 }
 
 function isLetter(char: string): boolean {

@@ -20,14 +20,14 @@ describe('Lexer', () => {
     test('should get token types for SET id = 123', () => {
       const input = `SET id = 123`
       const lexer = new Lexer(input)
-      const expectedTokens = [TokenType.STRING, TokenType.STRING, TokenType.EQUALS, TokenType.STRING]
+      const expectedTokens = [TokenType.STRING, TokenType.STRING, TokenType.STRING, TokenType.STRING]
       const tokens = lexer.getAllTokens().map(token => token.type)
       expect(tokens).toEqual(expectedTokens)
     })
     test('should get token types for Content-Type: application/json', () => {
       const input = `Content-Type: application/json`
       const lexer = new Lexer(input)
-      const expectedTokens = [TokenType.STRING, TokenType.COLON, TokenType.STRING]
+      const expectedTokens = [TokenType.STRING, TokenType.STRING]
       const tokens = lexer.getAllTokens().map(token => token.type)
       expect(tokens).toEqual(expectedTokens)
     })

@@ -1,7 +1,5 @@
 export enum TokenType {
     STRING = 'STRING',
-    COLON = 'COLON',
-    EQUALS = 'EQUALS',
     NEWLINE = 'NEWLINE',
     OPEN_BRACE = 'OPEN_BRACE',
     CLOSE_BRACE = 'CLOSE_BRACE',
