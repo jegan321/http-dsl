@@ -55,7 +55,9 @@ export class Lexer {
       this.skipSpacesAndTabs()
 
       if (this.char === '=') {
-        token = new Token(TokenType.ASSIGNMENT, this.char)
+        token = new Token(TokenType.EQUALS, this.char)
+      } else if (this.char === ':') {
+        token = new Token(TokenType.COLON, this.char)
       } else if (isLetter(this.char) || isDigit(this.char)) {
         return new Token(TokenType.STRING, this.readString())
       }
@@ -76,7 +78,7 @@ export class Lexer {
       const start = this.position + 1
       while (true) {
         this.readChar()
-        if (this.char === '' || this.char === " " || this.char === "\n") {
+        if (['', ' ', '=', ':', '\n'].includes(this.char)) {
           break
         }
       }
