@@ -39,28 +39,27 @@ export class Lexer {
       return token
     }
 
+    getAllTokens(): Token[] {
+      const tokens = []
+      let tokenCount = 0
+      while (this.char && tokenCount < 100) {
+        tokens.push(this.nextToken())
+        tokenCount++
+      }
+      return tokens
+    }
+
     _nextToken(): Token {
-      let token = new Token(TokenType.EOF, this.char)
+      let token = new Token(TokenType.ILLEGAL, this.char)
   
       this.skipSpacesAndTabs()
-  
-      switch (this.char) {
-        case '':
-          token = new Token(tokens.EOF, this.char)
-          break
-        default:
-          if (isLetter(this.char)) {
-            token.literal = this.readIdentifier()
-            token.type = lookupIdent(token.literal)
-            return token
-          } else if (isDigit(this.char)) {
-            token.type = tokens.NUMBER
-            token.literal = this.readNumber()
-            return token
-          } else {
-            token = new Token(tokens.ILLEGAL, this.char)
-          }
+
+      if (this.char === '=') {
+        token = new Token(TokenType.ASSIGNMENT, this.char)
+      } else if (isLetter(this.char) || isDigit(this.char)) {
+        return new Token(TokenType.STRING, this.readString())
       }
+
   
       this.readChar()
   
@@ -72,4 +71,29 @@ export class Lexer {
         this.readChar()
       }
     }
+
+    readString() {
+      const start = this.position + 1
+      while (true) {
+        this.readChar()
+        if (this.char === '' || this.char === " " || this.char === "\n") {
+          break
+        }
+      }
+      return this.input.substring(start, this.position)
+    }
+}
+
+function isLetter(char: string): boolean {
+  if (!char) return false
+  if (char === '_') {
+    // Special case for underscore because it can be used in an identifier
+    return true
+  }
+  return char.toLowerCase() != char.toUpperCase()
+}
+
+function isDigit(char: string): boolean {
+  if (!char) return false
+  return !isNaN(parseFloat(char))
 }

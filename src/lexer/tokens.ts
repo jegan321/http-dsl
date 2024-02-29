@@ -1,16 +1,12 @@
 export enum TokenType {
-    GET,
-    POST,
-    PUT,
-    DELETE,
-    PATCH,
-    ILLEGAL,
-    EOF,
-    NEWLINE,
-    COLON,
-    STRING,
-    OPEN_BRACE,
-    CLOSE_BRACE
+    STRING = 'STRING',
+    ASSIGNMENT = 'ASSIGNMENT',
+    EOF = 'EOF',
+    NEWLINE = 'NEWLINE',
+    COLON = 'COLON',
+    OPEN_BRACE = 'OPEN_BRACE',
+    CLOSE_BRACE = 'CLOSE_BRACE',
+    ILLEGAL = 'ILLEGAL',
 }
 
 export class Token {

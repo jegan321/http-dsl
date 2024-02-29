@@ -10,3 +10,4 @@
 - Support array variables that prompt the user to select from the list of options
 - Generate cURL from request
 - HTTP versions
+- Remove token limit in lexer
