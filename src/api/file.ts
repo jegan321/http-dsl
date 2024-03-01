@@ -1,14 +1,13 @@
 import fs from 'fs'
-import { parseJson } from '../parser/parser'
 import { Evaluator } from '../evaluator/evaluator'
 
 export class FileHandler {
   async execute(fileLocation: string) {
     const fileContent = fs.readFileSync(fileLocation, 'utf8')
 
-    const requests = parseJson(fileContent)
+    // const requests = parseJson(fileContent)
 
-    const evaluator = Evaluator.build()
-    await evaluator.evaluate(requests)
+    // const evaluator = Evaluator.build()
+    // await evaluator.evaluate(requests)
   }
 }

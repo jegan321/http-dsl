@@ -46,6 +46,7 @@ export class Lexer {
         tokens.push(this.nextToken())
         tokenCount++
       }
+      // TODO: Should I add an EOF token here so it matches the behavior of the parser?
       return tokens
     }
 
@@ -63,7 +64,6 @@ export class Lexer {
         return new Token(TokenType.STRING, this.readString())
       }
 
-  
       this.readChar()
   
       return token
@@ -76,7 +76,7 @@ export class Lexer {
     }
 
     readString() {
-      const start = this.position + 1
+      const start = this.position
       while (true) {
         this.readChar()
         if (['', ' ', '\n'].includes(this.char)) {

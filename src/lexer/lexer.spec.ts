@@ -11,7 +11,7 @@ describe('Lexer - token types', () => {
       expect(tokens).toEqual(expectedTokens)
     })
     test('should get token types for GET https://api.example.com', () => {
-      const input = `GET https://api.example.com`
+      const input = `GET https://api.example.com` 
       const lexer = new Lexer(input)
       const expectedTokens = [TokenType.STRING, TokenType.STRING]
       const tokens = lexer.getAllTokens().map(token => token.type)
@@ -68,4 +68,28 @@ describe('Lexer - token types', () => {
       const tokens = lexer.getAllTokens().map(token => token.type)
       expect(tokens).toEqual(expectedTokens)
     })
+})
+
+describe('Lexer - token literals', () => {
+  test('should get token literals for GET', () => {
+    const input = `GET`
+    const lexer = new Lexer(input)
+    const expectedLiterals = ['GET'] 
+    const literals = lexer.getAllTokens().map(token => token.literal)
+    expect(literals).toEqual(expectedLiterals)
+  })
+  test('should get token literals for GET https://api.example.com', () => {
+    const input = `GET https://api.example.com`
+    const lexer = new Lexer(input)
+    const expectedLiterals = ['GET', 'https://api.example.com'] 
+    const literals = lexer.getAllTokens().map(token => token.literal)
+    expect(literals).toEqual(expectedLiterals)
+  })
+  test('should get token literals for SET id = 123', () => {
+    const input = `SET id = 123`
+    const lexer = new Lexer(input)
+    const expectedLiterals = ['SET', 'id', '=', '123'] 
+    const literals = lexer.getAllTokens().map(token => token.literal)
+    expect(literals).toEqual(expectedLiterals)
+  })
 })
