@@ -24,7 +24,8 @@ describe('evaluate', async () => {
         type: StatementType.REQUEST,
         tokenLiteral: 'GET',
         method: 'GET',
-        url: 'https://api.example.com'
+        url: 'https://api.example.com',
+        headers: {}
       }
     ])
     await evaluator.evaluate(program)

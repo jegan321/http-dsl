@@ -23,7 +23,7 @@ export interface RequestStatement {
   method: string
   url: string
   headers: Record<string, string>
-  body: string
+  body?: string
 }
 
 export interface SetStatement {
