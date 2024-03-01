@@ -111,26 +111,34 @@ export class Parser {
 
   parseRequestStatement(): RequestStatement {
     const commandLiteral = this.curToken.literal
-    this.nextToken()
-    const url = this.curToken.literal
+    this.nextToken() // Done with command
 
-    // this.expectPeek(TokenType.NEWLINE) // TODO: this was commented out because it failed if the next token is a EOF
-    this.nextToken()
+    const url = this.curToken.literal
+    this.nextToken() // Done with URL
 
     const headers: Record<string, string> = {}
-    while (!this.peekTokenIsEndOfStatement() && !this.peekTokenIs(TokenType.MULTI_LINE_STRING)) {
-      this.expectPeek(TokenType.STRING)
-      const headerName = this.curToken.literal.replace(':', '')
-      this.expectPeek(TokenType.STRING)
-      const headerValue = this.curToken.literal
-      headers[headerName] = headerValue
-      this.nextToken()
-    }
-
     let body: string | undefined = undefined
-    if (this.peekTokenIs(TokenType.MULTI_LINE_STRING)) {
-      this.expectPeek(TokenType.MULTI_LINE_STRING)
-      body = this.curToken.literal
+
+    // Now there will be a newline or end stmt or eof
+    while (this.curTokenIs(TokenType.NEWLINE)) {
+      // That means there is either a header or a body next
+
+      this.nextToken() // Skip the newline
+
+      if (this.curTokenIs(TokenType.STRING)) {
+        // This is a header
+        const headerName = this.curToken.literal.replace(':', '')
+        this.nextToken() // Done with header name
+
+        const headerValue = this.curToken.literal
+        this.nextToken() // Done with header value
+
+        headers[headerName] = headerValue
+      } else if (this.curTokenIs(TokenType.MULTI_LINE_STRING)) {
+        body = this.curToken.literal
+        this.nextToken() // Done with body
+        // break // Break out of the while loop because body is always last?
+      }
     }
 
     return {

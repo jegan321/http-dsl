@@ -14,9 +14,6 @@ export interface HttpClient {
 
 export class FetchHttpClient implements HttpClient {
   async sendRequest(requestStatement: RequestStatement): Promise<HttpResponse> {
-    console.log('headers')
-    console.log(requestStatement.headers)
-    
     const response = await fetch(requestStatement.url, {
       method: requestStatement.method,
       headers: requestStatement.headers,
@@ -37,34 +34,6 @@ export class FetchHttpClient implements HttpClient {
     }
   }
 }
-
-// export class AxiosHttpClient implements HttpClient {
-//   async sendRequest(requestStatement: RequestStatement): Promise<HttpResponse> {
-//     let response: axios.AxiosResponse
-//     try {
-//       response = await axios.request({
-//         method: requestStatement.method,
-//         url: requestStatement.url,
-//         headers: requestStatement.headers,
-//         data: requestStatement.body
-//       })
-//     } catch (error) {
-//       console.log('Error while sending request')
-//       throw new Error() // TODO: better error handling
-//     }
-
-//     const responseHeaders: Record<string, string> = {}
-//     for (const [key, value] of Object.entries(response.headers)) {
-//       responseHeaders[key] = value
-//     }
-
-//     return {
-//       status: response.status,
-//       headers: responseHeaders,
-//       body: response.data
-//     }
-//   }
-// }
 
 export class MockHttpClient implements HttpClient {
   public status: number = 200

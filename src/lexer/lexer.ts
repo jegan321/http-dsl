@@ -68,8 +68,8 @@ export class Lexer {
       token = new Token(TokenType.END_FILE, this.char)
     } else if (this.char === '\n') {
       this.skipSpacesAndTabs()
-      this.readChar()
-      if (this.char === '\n') {
+      if (this.nextChar === '\n') {
+        this.readChar()
         this.readChar()
         return new Token(TokenType.END_STATEMENT, this.char)
       } else {

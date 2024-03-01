@@ -19,3 +19,4 @@
 - Remove Axios dependency
 - Import file contents into a variable
 - default content type to json?
+- Refactor to make lexer get all the tokens and inject them into the parser

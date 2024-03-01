@@ -1,5 +1,7 @@
-SET id = 2
+POST https://jsonplaceholder.typicode.com/users
+content-type: foo
 
-GET https://jsonplaceholder.typicode.com/users/{{id}}
+GET https://jsonplaceholder.typicode.com/users
+content-type: bar
 
 
