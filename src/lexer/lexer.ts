@@ -5,6 +5,7 @@ export class Lexer {
     private position: number
     private nextPosition: number
     private char: string
+    private nextChar: string
     private prevToken?: Token
 
     constructor(input: string) {
@@ -12,6 +13,7 @@ export class Lexer {
         this.position = 0
         this.nextPosition = 0
         this.char = ''
+        this.nextChar = ''
         this.readChar()
     }
 
@@ -22,8 +24,14 @@ export class Lexer {
     readChar(): void {
       if (this.nextPosition >= this.input.length) {
         this.char = ''
+        this.nextChar = ''
       } else {
         this.char = this.input[this.nextPosition]
+        if (this.nextPosition + 1 >= this.input.length) {
+          this.nextChar = ''
+        } else {
+          this.nextChar = this.input[this.nextPosition + 1]
+        }
       }
       this.position = this.nextPosition
       this.nextPosition++
@@ -61,14 +69,21 @@ export class Lexer {
       } else if (this.char === '\n') {
         this.skipSpacesAndTabs()
         this.readChar()
-        if (this.char === '\n') { 
+        if (this.char === '\n') {
           this.readChar()
           return new Token(TokenType.END_STATEMENT, this.char)
         } else {
           token = new Token(TokenType.NEWLINE, this.char)
         }
+      } else if (this.char == '{' && this.nextChar == '{') {
+        token = new Token(TokenType.OPEN_DOUBLE_BRACE, this.char)
+        this.readChar() // Skip the first brace, second one will be skipped below
+      } else if (this.char == '}' && this.nextChar == '}') {
+        token = new Token(TokenType.CLOSE_DOUBLE_BRACE, this.char)
+        this.readChar() // Skip the first brace, second one will be skipped below
       } else if (isBeginningOfString(this.char)) {
-        return new Token(TokenType.STRING, this.readString())
+        const literal = this.readString()
+        return new Token(TokenType.STRING, literal)
       }
 
       this.readChar()
@@ -86,7 +101,7 @@ export class Lexer {
       const start = this.position
       while (true) {
         this.readChar()
-        if (['', ' ', '\n'].includes(this.char)) {
+        if (['', ' ', '\n', '{', '}'].includes(this.char)) {
           break
         }
       }
