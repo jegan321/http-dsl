@@ -67,4 +67,29 @@ describe('evaluate', async () => {
     expect(io.writes.length).toBe(0)
     expect(environment.variables.message).toBe('Hello, world!')
   })
+  test('should send set variable then send request', async () => {
+    httpClient.status = 200
+    httpClient.headers = { 'content-type': 'application/json' }
+    httpClient.body = { message: 'Hello' }
+    const program = new Program([
+      {
+        type: StatementType.SET,
+        tokenLiteral: 'SET',
+        variableName: 'id',
+        variableValue: '999'
+      },
+      {
+        type: StatementType.REQUEST,
+        tokenLiteral: 'GET',
+        method: 'GET',
+        url: 'https://api.example.com/items/{{id}}',
+        headers: {}
+      }
+    ])
+    await evaluator.evaluate(program)
+    expect(httpClient.sentRequests.length).toBe(1)
+    expect(httpClient.sentRequests[0].url).toBe('https://api.example.com/items/999')
+    expect(io.writes[0]).toBe(200)
+    expect(io.writes[1]).toBe(JSON.stringify({ message: 'Hello' }, null, 2))
+  })
 })
