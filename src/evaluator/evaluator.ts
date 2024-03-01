@@ -1,4 +1,4 @@
-import { Request } from '../parser/ast'
+import { Program, StatementType } from '../parser/ast'
 import { Environment, UnknownVariableGetter } from './environment'
 import { AxiosHttpClient, HttpClient, HttpResponse } from './http-client'
 import { InputOutput, TerminalInputOutput } from './input-output'
@@ -25,11 +25,11 @@ export class Evaluator {
     return new Evaluator(environment, httpClient, io)
   }
 
-  async evaluate(requests: Request[]) {
-    for (const request of requests) {
-      await this.replaceVariables(this.environment, request)
-      const httpResponse = await this.httpClient.sendRequest(request)
-      this.printResponse(httpResponse)
+  async evaluate(program: Program) {
+    for (const statement of program.statements) {
+      // await this.replaceVariables(this.environment, request)
+      // const httpResponse = await this.httpClient.sendRequest(request)
+      // this.printResponse(httpResponse)
     }
   }
 
