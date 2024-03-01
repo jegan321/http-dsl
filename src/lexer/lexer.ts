@@ -75,12 +75,6 @@ export class Lexer {
         } else {
           token = new Token(TokenType.NEWLINE, this.char)
         }
-      } else if (this.char == '{' && this.nextChar == '{') {
-        token = new Token(TokenType.OPEN_DOUBLE_BRACE, this.char)
-        this.readChar() // Skip the first brace, second one will be skipped below
-      } else if (this.char == '}' && this.nextChar == '}') {
-        token = new Token(TokenType.CLOSE_DOUBLE_BRACE, this.char)
-        this.readChar() // Skip the first brace, second one will be skipped below
       } else if (isBeginningOfString(this.char)) {
         const literal = this.readString()
         return new Token(TokenType.STRING, literal)
@@ -101,7 +95,7 @@ export class Lexer {
       const start = this.position
       while (true) {
         this.readChar()
-        if (['', ' ', '\n', '{', '}'].includes(this.char)) {
+        if (['', ' ', '\n'].includes(this.char)) {
           break
         }
       }
