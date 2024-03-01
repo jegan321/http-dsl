@@ -5,7 +5,6 @@ export enum StatementType {
 }
 
 export enum Command {
-
   // Request commands
   GET = 'GET',
   POST = 'POST',
@@ -13,12 +12,10 @@ export enum Command {
   DELETE = 'DELETE',
 
   // Other commands
-  SET = 'SET',
+  SET = 'SET'
 }
 
-export const REQUEST_COMMANDS: Command[] = [
-  Command.GET, Command.POST, Command.PUT, Command.DELETE
-]
+export const REQUEST_COMMANDS: Command[] = [Command.GET, Command.POST, Command.PUT, Command.DELETE]
 
 export type Statement = RequestStatement | SetStatement
 

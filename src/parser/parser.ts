@@ -90,7 +90,6 @@ export class Parser {
   getCommand(): Command | null {
     // TODO: More clever way to convert string to enum?
     switch (this.curToken.literal) {
-
       // Request commands
       case 'GET':
         return Command.GET
@@ -101,7 +100,7 @@ export class Parser {
       case 'DELETE':
         return Command.DELETE
 
-      // Other commands  
+      // Other commands
       case 'SET':
         return Command.SET
 
@@ -133,7 +132,7 @@ export class Parser {
       tokenLiteral: commandLiteral,
       method: commandLiteral,
       url,
-      headers,
+      headers
     }
   }
 
@@ -145,7 +144,7 @@ export class Parser {
     this.nextToken()
 
     this.expectPeek(TokenType.STRING) // Skip over the '=' token
-    
+
     let variableValue = ''
     while (!this.curTokenIsEndOfStatement()) {
       if (variableValue) {
@@ -162,5 +161,4 @@ export class Parser {
       variableValue
     }
   }
-
 }
