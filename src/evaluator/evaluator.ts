@@ -1,6 +1,6 @@
 import { Program, RequestStatement, SetStatement, StatementType } from '../parser/ast'
 import { Environment, UnknownVariableGetter } from './environment'
-import { AxiosHttpClient, HttpClient, HttpResponse } from './http-client'
+import { AxiosHttpClient, FetchHttpClient, HttpClient, HttpResponse } from './http-client'
 import { InputOutput, TerminalInputOutput } from './input-output'
 import { replaceVariables } from './replace-variables'
 
@@ -21,7 +21,7 @@ export class Evaluator {
       return io.prompt(`Enter value for unknown variable ${variableName}: `)
     }
     const environment = new Environment(unknownVariableGetter)
-    const httpClient = new AxiosHttpClient()
+    const httpClient = new FetchHttpClient()
     return new Evaluator(environment, httpClient, io)
   }
 
@@ -58,12 +58,15 @@ export class Evaluator {
   printResponse(httpResponse: HttpResponse) {
     this.io.write(httpResponse.status)
     const responseBody = httpResponse.body
-    if (isJsonResponse(httpResponse)) {
-      var jsonString = JSON.stringify(responseBody, null, 2)
-      this.io.write(jsonString)
-    } else {
-      this.io.write(responseBody)
-    }
+    this.io.write(responseBody)
+
+    // TODO: Below was needed for the axios version of HttpClient
+    // if (isJsonResponse(httpResponse)) {
+    //   var jsonString = JSON.stringify(responseBody, null, 2)
+    //   this.io.write(jsonString)
+    // } else {
+    //   this.io.write(responseBody)
+    // }
   }
 }
 

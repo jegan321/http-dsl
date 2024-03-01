@@ -5,7 +5,7 @@ import { RequestStatement } from '../parser/ast'
 export interface HttpResponse {
   status: number
   headers: Record<string, string>
-  body: any
+  body: string
 }
 
 export interface HttpClient {
@@ -66,14 +66,14 @@ export class AxiosHttpClient implements HttpClient {
 export class MockHttpClient implements HttpClient {
   public status: number = 200
   public headers: Record<string, string> = {}
-  public body: any = {}
+  public body: Record<string, any> = {}
   public sentRequests: RequestStatement[] = []
   async sendRequest(request: RequestStatement): Promise<HttpResponse> {
     this.sentRequests.push(request)
     return {
       status: this.status,
       headers: this.headers,
-      body: this.body
+      body: JSON.stringify(this.body, null, 2)
     }
   }
 }

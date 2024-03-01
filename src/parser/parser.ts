@@ -66,7 +66,7 @@ export class Parser {
   }
 
   curTokenIsEndOfStatement(): boolean {
-    return this.curTokenIs(TokenType.NEWLINE) || this.curTokenIs(TokenType.END_FILE)
+    return this.curTokenIs(TokenType.END_STATEMENT) || this.curTokenIs(TokenType.END_FILE)
   }
 
   peekTokenIs(type: TokenType): boolean {
