@@ -1,6 +1,6 @@
 import { Program, RequestStatement, SetStatement, StatementType } from '../parser/ast'
 import { Environment, UnknownVariableGetter } from './environment'
-import { AxiosHttpClient, FetchHttpClient, HttpClient, HttpResponse } from './http-client'
+import { FetchHttpClient, HttpClient, HttpResponse } from './http-client'
 import { InputOutput, TerminalInputOutput } from './input-output'
 import { replaceVariables } from './replace-variables'
 
