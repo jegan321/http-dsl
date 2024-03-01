@@ -1,5 +1,6 @@
 import { expect, test, describe } from 'vitest'
 import { MockHttpClient } from './http-client'
+import { StatementType } from '../parser/ast'
 
 describe('sendRequest', async () => {
   test('should return http response', async () => {
@@ -8,6 +9,8 @@ describe('sendRequest', async () => {
     httpClient.headers = { 'content-type': 'application/json' }
     httpClient.body = { message: 'Hello' }
     const response = await httpClient.sendRequest({
+      type: StatementType.REQUEST,
+      tokenLiteral: 'GET',
       method: 'GET',
       url: 'https://example.com',
       headers: {}

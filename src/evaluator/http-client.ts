@@ -23,12 +23,12 @@ export class AxiosHttpClient implements HttpClient {
       })
     } catch (error) {
       console.log('Error while sending request')
-      throw new Error()
+      throw new Error() // TODO: better error handling
     }
 
     const responseHeaders: Record<string, string> = {}
     for (const [key, value] of Object.entries(response.headers)) {
-      responseHeaders[key] = value.toLowerCase()
+      responseHeaders[key] = value
     }
 
     return {
