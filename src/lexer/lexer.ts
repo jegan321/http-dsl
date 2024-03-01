@@ -75,7 +75,10 @@ export class Lexer {
       } else {
         token = new Token(TokenType.NEWLINE, this.char)
       }
-    } else if (isBeginningOfString(this.char)) {
+    } else if (this.isBeginningOfMultiLineString()) {
+      const literal = this.readMultiLineString()
+      return new Token(TokenType.STRING, literal)
+    } else if (this.isBeginningOfString()) {
       const literal = this.readString()
       return new Token(TokenType.STRING, literal)
     }
@@ -91,6 +94,11 @@ export class Lexer {
     }
   }
 
+  isBeginningOfString(): boolean {
+    const specialChars = ['\n']
+    return !specialChars.includes(this.char)
+  }
+
   readString() {
     const start = this.position
     while (true) {
@@ -101,9 +109,22 @@ export class Lexer {
     }
     return this.input.substring(start, this.position)
   }
-}
 
-function isBeginningOfString(char: string): boolean {
-  const specialChars = ['\n']
-  return !specialChars.includes(char)
+  isBeginningOfMultiLineString(): boolean {
+    const isJsonOrXml = ['{', '<'].includes(this.char)
+    const isBeginningOfExpression = this.char === '{' && this.nextChar === '{'
+    return isJsonOrXml && !isBeginningOfExpression
+  }
+
+  readMultiLineString() {
+    const start = this.position
+    while (true) {
+      this.readChar()
+      const endOfStatementChars = ['\n', '']
+      if (endOfStatementChars.includes(this.char) && endOfStatementChars.includes(this.nextChar)) {
+        break
+      }
+    }
+    return this.input.substring(start, this.position)
+  }
 }

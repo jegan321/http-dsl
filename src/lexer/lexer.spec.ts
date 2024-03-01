@@ -98,6 +98,24 @@ describe('Lexer - token types', () => {
     const tokens = lexer.getAllTokens().map((token) => token.type)
     expect(tokens).toEqual(expectedTokens)
   })
+  test('should get token types for POST, header and request body', () => {
+    const input = `
+      POST https://api.example.com/items
+      x-api-key: {{api_key}}
+      {
+        "catalogNumber": "123",
+        "description": "My item"
+      }
+      `
+    const lexer = new Lexer(input)
+    const expectedTokens = [
+      TokenType.STRING, TokenType.STRING, TokenType.NEWLINE, 
+      TokenType.STRING, TokenType.STRING, TokenType.NEWLINE,
+      TokenType.STRING, // One string token for the whole request body even though it spans four lines
+    ]
+    const tokens = lexer.getAllTokens().map((token) => token.type)
+    expect(tokens).toEqual(expectedTokens)
+  })
 })
 
 describe('Lexer - token literals', () => {
@@ -121,5 +139,18 @@ describe('Lexer - token literals', () => {
     const expectedLiterals = ['SET', 'id', '=', '123']
     const literals = lexer.getAllTokens().map((token) => token.literal)
     expect(literals).toEqual(expectedLiterals)
+  })
+  test('should get token literals for POST, header and request body', () => {
+    const input = `
+      POST https://api.example.com/items
+      {
+        "catalogNumber": "123",
+        "description": "My item"
+      }
+      `
+    const lexer = new Lexer(input)
+    const literals = lexer.getAllTokens().map((token) => token.literal)
+    const requestBodyLiteral = JSON.stringify(JSON.parse(literals[3]))
+    expect(requestBodyLiteral).toEqual(`{"catalogNumber":"123","description":"My item"}`)
   })
 })

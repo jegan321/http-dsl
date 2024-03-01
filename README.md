@@ -1,6 +1,7 @@
 # HTTP DSL
 
 ## Roadmap
+- Request bodies
 - PRINT command
 - Environment vars. Decide on syntax, should I prefix with env? Explicit vs implicit
 - Secret variables (hidden with * while typing)
@@ -16,3 +17,5 @@
 - ASSERT command. Then it can be used for API smoke testing
 - Support header colon being a separate token like "content-type : application/json"
 - Remove Axios dependency
+- Import file contents into a variable
+- default content type to json?
