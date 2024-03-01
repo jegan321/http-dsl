@@ -109,9 +109,13 @@ describe('Lexer - token types', () => {
       `
     const lexer = new Lexer(input)
     const expectedTokens = [
-      TokenType.STRING, TokenType.STRING, TokenType.NEWLINE, 
-      TokenType.STRING, TokenType.STRING, TokenType.NEWLINE,
-      TokenType.MULTI_LINE_STRING, // One string token for the whole request body even though it spans four lines
+      TokenType.STRING,
+      TokenType.STRING,
+      TokenType.NEWLINE,
+      TokenType.STRING,
+      TokenType.STRING,
+      TokenType.NEWLINE,
+      TokenType.MULTI_LINE_STRING // One string token for the whole request body even though it spans four lines
     ]
     const tokens = lexer.getAllTokens().map((token) => token.type)
     expect(tokens).toEqual(expectedTokens)
@@ -165,14 +169,19 @@ describe('Lexer - token literals', () => {
       `
     const lexer = new Lexer(input)
     const expectedLiterals = [
-      'POST', 'https://api.example.com/items', '',
-      'content-type:', 'application/json', '',
-      'x-api-key:', '{{api_key}}', '',
+      'POST',
+      'https://api.example.com/items',
+      '',
+      'content-type:',
+      'application/json',
+      '',
+      'x-api-key:',
+      '{{api_key}}',
+      '',
       `{
         "catalogNumber": "123",
         "description": "My item"
       }`
-
     ]
     const literals = lexer.getAllTokens().map((token) => token.literal.trim())
     expect(literals).toEqual(expectedLiterals)
