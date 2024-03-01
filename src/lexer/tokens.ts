@@ -3,7 +3,8 @@ export enum TokenType {
     NEWLINE = 'NEWLINE',
     OPEN_DOUBLE_BRACE = 'OPEN_BRACE',
     CLOSE_DOUBLE_BRACE = 'CLOSE_BRACE',
-    EOF = 'EOF',
+    END_STATEMENT = 'END_STATEMENT',
+    END_FILE = 'END_FILE',
     ILLEGAL = 'ILLEGAL',
 }
 

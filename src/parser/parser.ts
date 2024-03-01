@@ -14,8 +14,8 @@ export class Parser {
 
     // Start with EOF tokens to keep type-checker happy but really
     // they are set in nextToken() calls below
-    this.curToken = new Token(TokenType.EOF, '')
-    this.peekToken = new Token(TokenType.EOF, '')
+    this.curToken = new Token(TokenType.END_FILE, '')
+    this.peekToken = new Token(TokenType.END_FILE, '')
 
     // Call nextToken twice to set curToken and peekToken
     this.nextToken()
@@ -29,7 +29,7 @@ export class Parser {
 
   parseProgram(): Program {
     const statements: Statement[] = []
-    while (this.curToken.type != TokenType.EOF) {
+    while (this.curToken.type != TokenType.END_FILE) {
       const statement = this.parseStatement()
       if (statement != null) {
         statements.push(statement)
@@ -64,7 +64,7 @@ export class Parser {
   }
 
   curTokenIsEndOfStatement(): boolean {
-    return this.curTokenIs(TokenType.NEWLINE) || this.curTokenIs(TokenType.EOF)
+    return this.curTokenIs(TokenType.NEWLINE) || this.curTokenIs(TokenType.END_FILE)
   }
 
   peekTokenIs(type: TokenType): boolean {
@@ -72,7 +72,7 @@ export class Parser {
   }
 
   peekTokenIsEndOfStatement(): boolean {
-    return this.peekTokenIs(TokenType.NEWLINE) || this.peekTokenIs(TokenType.EOF)
+    return this.peekTokenIs(TokenType.END_STATEMENT) || this.peekTokenIs(TokenType.END_FILE)
   }
 
   expectPeek(type: TokenType): boolean {
@@ -104,11 +104,25 @@ export class Parser {
     const commandLiteral = this.curToken.literal
     this.nextToken()
     const url = this.curToken.literal
+
+    // this.expectPeek(TokenType.NEWLINE) // TODO: this was commented out because it failed if the next token is a EOF
+    this.nextToken()
+
+    const headers: Record<string, string> = {}
+    if (!this.peekTokenIsEndOfStatement()) {
+      this.expectPeek(TokenType.STRING)
+      const headerName = this.curToken.literal.replace(':', '')
+      this.expectPeek(TokenType.STRING)
+      const headerValue = this.curToken.literal
+      headers[headerName] = headerValue
+    }
+
     return {
       type: StatementType.REQUEST,
       tokenLiteral: commandLiteral,
       method: commandLiteral,
-      url: url
+      url,
+      headers,
     }
   }
 

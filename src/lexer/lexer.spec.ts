@@ -36,11 +36,12 @@ describe('Lexer - token types', () => {
     test('should get token types for two setters', () => {
       const input = `
         SET id = 123
+
         SET type = foo
       `
       const lexer = new Lexer(input)
       const expectedTokens = [
-        TokenType.STRING, TokenType.STRING, TokenType.STRING, TokenType.STRING, TokenType.NEWLINE,
+        TokenType.STRING, TokenType.STRING, TokenType.STRING, TokenType.STRING, TokenType.END_STATEMENT,
         TokenType.STRING, TokenType.STRING, TokenType.STRING, TokenType.STRING
       ]
       const tokens = lexer.getAllTokens().map(token => token.type)

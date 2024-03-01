@@ -57,9 +57,16 @@ export class Lexer {
 
       if (this.char === '') {
         // TODO: Is this needed for the parser? This block never happens when calling getAllTokens()
-        token = new Token(TokenType.EOF, this.char)
+        token = new Token(TokenType.END_FILE, this.char)
       } else if (this.char === '\n') {
-        token = new Token(TokenType.NEWLINE, this.char)
+        this.skipSpacesAndTabs()
+        this.readChar()
+        if (this.char === '\n') { 
+          this.readChar()
+          return new Token(TokenType.END_STATEMENT, this.char)
+        } else {
+          token = new Token(TokenType.NEWLINE, this.char)
+        }
       } else if (isBeginningOfString(this.char)) {
         return new Token(TokenType.STRING, this.readString())
       }
@@ -90,18 +97,4 @@ export class Lexer {
 function isBeginningOfString(char: string): boolean {
   const specialChars = ['\n']
   return !specialChars.includes(char)
-}
-
-function isLetter(char: string): boolean {
-  if (!char) return false
-  if (char === '_') {
-    // Special case for underscore because it can be used in an identifier
-    return true
-  }
-  return char.toLowerCase() != char.toUpperCase()
-}
-
-function isDigit(char: string): boolean {
-  if (!char) return false
-  return !isNaN(parseFloat(char))
 }

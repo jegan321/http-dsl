@@ -22,4 +22,19 @@ describe('Parser', () => {
     expect(request.method).toEqual('GET')
     expect(request.url).toEqual('https://api.example.com')
   })
+  test('should parse GET request with header', () => {
+    const input = `
+    GET https://api.example.com
+    content-type: application/json
+    `
+    const program = parseProgram(input)
+    expect(program.statements.length).toEqual(1)
+    const request = program.statements[0] as RequestStatement
+    expect(request.type).toEqual('REQUEST')
+    expect(request.tokenLiteral).toEqual('GET')
+    expect(request.method).toEqual('GET')
+    expect(request.url).toEqual('https://api.example.com')
+    expect(Object.entries(request.headers).length).toEqual(1)
+    expect(request.headers['content-type']).toEqual('application/json')
+  })
 })
