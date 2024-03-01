@@ -140,7 +140,7 @@ describe('Lexer - token literals', () => {
     const literals = lexer.getAllTokens().map((token) => token.literal)
     expect(literals).toEqual(expectedLiterals)
   })
-  test('should get token literals for POST, header and request body', () => {
+  test('should get token literal for request body', () => {
     const input = `
       POST https://api.example.com/items
       {
@@ -152,5 +152,29 @@ describe('Lexer - token literals', () => {
     const literals = lexer.getAllTokens().map((token) => token.literal)
     const requestBodyLiteral = JSON.stringify(JSON.parse(literals[3]))
     expect(requestBodyLiteral).toEqual(`{"catalogNumber":"123","description":"My item"}`)
+  })
+  test('should get token literals for POST, headers and request body', () => {
+    const input = `
+      POST https://api.example.com/items
+      content-type: application/json
+      x-api-key: {{api_key}}
+      {
+        "catalogNumber": "123",
+        "description": "My item"
+      }
+      `
+    const lexer = new Lexer(input)
+    const expectedLiterals = [
+      'POST', 'https://api.example.com/items', ' ',
+      'content-type:', 'application/json', ' ',
+      'x-api-key:', '{{api_key}}', ' ',
+      `{
+        "catalogNumber": "123",
+        "description": "My item"
+      }`
+
+    ]
+    const literals = lexer.getAllTokens().map((token) => token.literal)
+    expect(literals).toEqual(expectedLiterals)
   })
 })
