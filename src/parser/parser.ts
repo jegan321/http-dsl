@@ -109,12 +109,13 @@ export class Parser {
     this.nextToken()
 
     const headers: Record<string, string> = {}
-    if (!this.peekTokenIsEndOfStatement()) {
+    while (!this.peekTokenIsEndOfStatement()) {
       this.expectPeek(TokenType.STRING)
       const headerName = this.curToken.literal.replace(':', '')
       this.expectPeek(TokenType.STRING)
       const headerValue = this.curToken.literal
       headers[headerName] = headerValue
+      this.nextToken()
     }
 
     return {
