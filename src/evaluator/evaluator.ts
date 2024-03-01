@@ -1,4 +1,4 @@
-import { Program, StatementType } from '../parser/ast'
+import { Program, RequestStatement, StatementType } from '../parser/ast'
 import { Environment, UnknownVariableGetter } from './environment'
 import { AxiosHttpClient, HttpClient, HttpResponse } from './http-client'
 import { InputOutput, TerminalInputOutput } from './input-output'
@@ -29,6 +29,7 @@ export class Evaluator {
     for (const statement of program.statements) {
       switch (statement.type) {
         case StatementType.REQUEST:
+          await this.replaceVariables(this.environment, statement)
           const httpResponse = await this.httpClient.sendRequest(statement)
           this.printResponse(httpResponse)
           break
@@ -39,15 +40,15 @@ export class Evaluator {
     }
   }
 
-  // async replaceVariables(environment: Environment, request: Request) {
-  //   request.method = await replaceVariables(environment, request.method)
-  //   request.url = await replaceVariables(environment, request.url)
-  //   for (const [key, value] of Object.entries(request.headers)) {
-  //     request.headers[key] = await replaceVariables(environment, value)
-  //   }
-  //   const replacedBody = await replaceVariables(environment, request.body)
-  //   request.body = replacedBody ? replacedBody : undefined // Replace empty string with undefined
-  // }
+  async replaceVariables(environment: Environment, request: RequestStatement) {
+    request.method = await replaceVariables(environment, request.method)
+    request.url = await replaceVariables(environment, request.url)
+    for (const [key, value] of Object.entries(request.headers)) {
+      request.headers[key] = await replaceVariables(environment, value)
+    }
+    const replacedBody = await replaceVariables(environment, request.body)
+    request.body = replacedBody ? replacedBody : undefined // Replace empty string with undefined
+  }
 
   printResponse(httpResponse: HttpResponse) {
     this.io.write(httpResponse.status)

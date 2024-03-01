@@ -33,4 +33,24 @@ describe('evaluate', async () => {
     expect(io.writes[0]).toBe(200)
     expect(io.writes[1]).toBe(JSON.stringify({ message: 'Hello' }, null, 2))
   })
+  test.only('should send GET request with variable in URL', async () => {
+    httpClient.status = 200
+    httpClient.headers = { 'content-type': 'application/json' }
+    httpClient.body = { message: 'Hello' }
+    environment.setVariable('id', '999')
+    const program = new Program([
+      {
+        type: StatementType.REQUEST,
+        tokenLiteral: 'GET',
+        method: 'GET',
+        url: 'https://api.example.com/items/{{id}}',
+        headers: {}
+      }
+    ])
+    await evaluator.evaluate(program)
+    expect(httpClient.sentRequests.length).toBe(1)
+    expect(httpClient.sentRequests[0].url).toBe('https://api.example.com/items/999')
+    expect(io.writes[0]).toBe(200)
+    expect(io.writes[1]).toBe(JSON.stringify({ message: 'Hello' }, null, 2))
+  })
 })
