@@ -118,7 +118,7 @@ export class Parser {
     this.nextToken()
 
     const headers: Record<string, string> = {}
-    while (!this.peekTokenIsEndOfStatement()) {
+    while (!this.peekTokenIsEndOfStatement() && !this.peekTokenIs(TokenType.MULTI_LINE_STRING)) {
       this.expectPeek(TokenType.STRING)
       const headerName = this.curToken.literal.replace(':', '')
       this.expectPeek(TokenType.STRING)
@@ -127,12 +127,19 @@ export class Parser {
       this.nextToken()
     }
 
+    let body: string | undefined = undefined
+    if (this.peekTokenIs(TokenType.MULTI_LINE_STRING)) {
+      this.expectPeek(TokenType.MULTI_LINE_STRING)
+      body = this.curToken.literal
+    }
+
     return {
       type: StatementType.REQUEST,
       tokenLiteral: commandLiteral,
       method: commandLiteral,
       url,
-      headers
+      headers,
+      body
     }
   }
 

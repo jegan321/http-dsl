@@ -94,4 +94,45 @@ describe('Parser', () => {
     expect(requestStatement.tokenLiteral).toEqual('DELETE')
     expect(requestStatement.url).toEqual('https://api.example.com/{{id}}')
   })
+  test('should parse POST with header and body', () => {
+    const input = `
+    POST https://api.example.com/items
+    content-type: application/json
+    {
+      "description": "My item"
+    }
+    `
+    const program = parseProgram(input)
+    expect(program.statements.length).toEqual(1)
+
+    const requestStatement = program.statements[0] as RequestStatement
+    expect(requestStatement.type).toEqual('REQUEST')
+    expect(requestStatement.tokenLiteral).toEqual('POST')
+    expect(requestStatement.url).toEqual('https://api.example.com/items')
+    expect(requestStatement.body).toEqual(`{
+      "description": "My item"
+    }`)
+  })
+  test('should parse POST with two headers and body', () => {
+    const input = `
+    POST https://api.example.com/items
+    content-type: application/json
+    x-api-key: {{api_key}}
+    {
+      "description": "My item"
+    }
+    `
+    const program = parseProgram(input)
+    expect(program.statements.length).toEqual(1)
+
+    const requestStatement = program.statements[0] as RequestStatement
+    expect(requestStatement.type).toEqual('REQUEST')
+    expect(requestStatement.tokenLiteral).toEqual('POST')
+    expect(requestStatement.url).toEqual('https://api.example.com/items')
+    expect(requestStatement.headers['content-type']).toEqual('application/json')
+    expect(requestStatement.headers['x-api-key']).toEqual('{{api_key}}')
+    expect(requestStatement.body).toEqual(`{
+      "description": "My item"
+    }`)
+  })
 })
