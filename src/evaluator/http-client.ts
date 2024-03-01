@@ -1,5 +1,6 @@
 import axios from 'axios'
 import { RequestStatement } from '../parser/ast'
+// import fetch from 'node-fetch' // TODO: This is complaining about Common JS
 
 export interface HttpResponse {
   status: number
@@ -9,6 +10,29 @@ export interface HttpResponse {
 
 export interface HttpClient {
   sendRequest: (request: RequestStatement) => Promise<HttpResponse>
+}
+
+export class FetchHttpClient implements HttpClient {
+  async sendRequest(requestStatement: RequestStatement): Promise<HttpResponse> {
+    const response = await fetch(requestStatement.url, {
+      method: requestStatement.method,
+      headers: requestStatement.headers,
+      body: requestStatement.body
+    })
+
+    const responseHeaders: Record<string, string> = {}
+    response.headers.forEach((value, key) => {
+      responseHeaders[key] = value
+    })
+
+    const body = await response.text()
+
+    return {
+      status: response.status,
+      headers: responseHeaders,
+      body: body
+    }
+  }
 }
 
 export class AxiosHttpClient implements HttpClient {
