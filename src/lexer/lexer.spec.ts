@@ -73,7 +73,11 @@ describe('Lexer - token types', () => {
       const input = `GET https://api.example.com/items/{{ id }}` 
       const lexer = new Lexer(input)
       const expectedTokens = [
-        TokenType.STRING, TokenType.STRING, TokenType.OPEN_DOUBLE_BRACE, TokenType.STRING, TokenType.CLOSE_DOUBLE_BRACE
+        TokenType.STRING, // GET
+        TokenType.STRING, // https://api.example.com/items/
+        TokenType.OPEN_DOUBLE_BRACE, // {{
+        TokenType.STRING, // id
+        TokenType.CLOSE_DOUBLE_BRACE // }}
       ]
       const tokens = lexer.getAllTokens().map(token => token.type)
       expect(tokens).toEqual(expectedTokens)
