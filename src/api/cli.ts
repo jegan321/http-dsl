@@ -1,6 +1,5 @@
-// import * as readline from 'node:readline'
-// import { stdin as input, stdout as output } from 'node:process'
 import { FileHandler } from './file.js'
+import { REPL } from './repl.js'
 
 export async function main() {
   const args = process.argv.slice(2)
@@ -9,6 +8,7 @@ export async function main() {
     const fileHandler = new FileHandler()
     await fileHandler.execute(fileLocation)
   } else {
-    console.error('File not provided')
+    const repl = REPL.build()
+    await repl.start()
   }
 }

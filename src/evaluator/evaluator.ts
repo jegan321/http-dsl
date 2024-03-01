@@ -17,10 +17,7 @@ export class Evaluator {
 
   static build(): Evaluator {
     const io = new TerminalInputOutput()
-    const unknownVariableGetter: UnknownVariableGetter = (variableName) => {
-      return io.prompt(`Enter value for unknown variable ${variableName}: `)
-    }
-    const environment = new Environment(unknownVariableGetter)
+    const environment = Environment.build(io)
     const httpClient = new FetchHttpClient()
     return new Evaluator(environment, httpClient, io)
   }

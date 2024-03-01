@@ -1,3 +1,5 @@
+import { InputOutput } from './input-output'
+
 export interface UnknownVariableGetter {
   (variableName: string): Promise<string>
 }
@@ -8,6 +10,13 @@ export class Environment {
 
   constructor(unknownVariableGetter: UnknownVariableGetter) {
     this.unknownVariableGetter = unknownVariableGetter
+  }
+
+  static build(io: InputOutput) {
+    const unknownVariableGetter: UnknownVariableGetter = (variableName) => {
+      return io.prompt(`Enter value for unknown variable ${variableName}: `)
+    }
+    return new Environment(unknownVariableGetter)
   }
 
   setVariable(name: string, value: string): void {
