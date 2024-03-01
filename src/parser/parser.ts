@@ -100,11 +100,16 @@ export class Parser {
     }
   }
 
-  parseRequestStatement(): Statement {
+  parseRequestStatement(): RequestStatement {
     const commandLiteral = this.curToken.literal
     this.nextToken()
     const url = this.curToken.literal
-    return new RequestStatement(commandLiteral, url)
+    return {
+      type: StatementType.REQUEST,
+      tokenLiteral: commandLiteral,
+      method: commandLiteral,
+      url: url
+    }
   }
 
 }

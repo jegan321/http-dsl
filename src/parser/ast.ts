@@ -15,24 +15,19 @@ export const REQUEST_COMMANDS: Command[] = [
   Command.GET, Command.POST, Command.PUT, Command.DELETE
 ]
 
-export interface Statement {
-  type: StatementType
-  tokenLiteral: string
-}
+export type Statement = RequestStatement | SetStatement
 
-export class RequestStatement implements Statement {
+export interface RequestStatement {
   type: StatementType.REQUEST
   tokenLiteral: string
   method: string
   url: string
+}
 
-  constructor(tokenLiteral: string, url: string) {
-    this.type = StatementType.REQUEST
-    this.tokenLiteral = tokenLiteral
-    this.method = tokenLiteral
-    this.url = url
-  }
-
+export interface SetStatement {
+  type: StatementType.SET
+  tokenLiteral: string
+  foo: number
 }
 
 export class Program {

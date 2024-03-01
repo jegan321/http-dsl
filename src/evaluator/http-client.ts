@@ -1,5 +1,5 @@
-import { Request } from '../parser/ast'
 import axios from 'axios'
+import { RequestStatement } from '../parser/ast'
 
 export interface HttpResponse {
   status: number
@@ -8,11 +8,11 @@ export interface HttpResponse {
 }
 
 export interface HttpClient {
-  sendRequest: (request: Request) => Promise<HttpResponse>
+  sendRequest: (request: RequestStatement) => Promise<HttpResponse>
 }
 
 export class AxiosHttpClient implements HttpClient {
-  async sendRequest(ast: Request): Promise<HttpResponse> {
+  async sendRequest(ast: RequestStatement): Promise<HttpResponse> {
     let response: axios.AxiosResponse
     try {
       response = await axios.request({
@@ -43,8 +43,8 @@ export class MockHttpClient implements HttpClient {
   public status: number = 200
   public headers: Record<string, string> = {}
   public body: any = {}
-  public sentRequests: Request[] = []
-  async sendRequest(request: Request): Promise<HttpResponse> {
+  public sentRequests: RequestStatement[] = []
+  async sendRequest(request: RequestStatement): Promise<HttpResponse> {
     this.sentRequests.push(request)
     return {
       status: this.status,

@@ -3,6 +3,7 @@ import { MockInputOutput } from './input-output'
 import { Environment } from './environment'
 import { Evaluator } from './evaluator'
 import { MockHttpClient } from './http-client'
+import { Program, StatementType } from '../parser/ast'
 
 describe('evaluate', async () => {
   const httpClient = new MockHttpClient()
@@ -18,13 +19,15 @@ describe('evaluate', async () => {
     httpClient.status = 200
     httpClient.headers = { 'content-type': 'application/json' }
     httpClient.body = { message: 'Hello' }
-    await evaluator.evaluate([
+    const program = new Program([
       {
+        type: StatementType.REQUEST,
+        tokenLiteral: 'GET',
         method: 'GET',
-        url: 'https://example.com',
-        headers: {}
+        url: 'https://api.example.com'
       }
     ])
+    await evaluator.evaluate(program)
     expect(httpClient.sentRequests.length).toBe(1)
     expect(io.writes[0]).toBe(200)
     expect(io.writes[1]).toBe(JSON.stringify({ message: 'Hello' }, null, 2))
