@@ -77,7 +77,7 @@ export class Lexer {
       }
     } else if (this.isBeginningOfMultiLineString()) {
       const literal = this.readMultiLineString()
-      return new Token(TokenType.STRING, literal)
+      return new Token(TokenType.MULTI_LINE_STRING, literal)
     } else if (this.isBeginningOfString()) {
       const literal = this.readString()
       return new Token(TokenType.STRING, literal)

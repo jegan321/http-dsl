@@ -111,7 +111,7 @@ describe('Lexer - token types', () => {
     const expectedTokens = [
       TokenType.STRING, TokenType.STRING, TokenType.NEWLINE, 
       TokenType.STRING, TokenType.STRING, TokenType.NEWLINE,
-      TokenType.STRING, // One string token for the whole request body even though it spans four lines
+      TokenType.MULTI_LINE_STRING, // One string token for the whole request body even though it spans four lines
     ]
     const tokens = lexer.getAllTokens().map((token) => token.type)
     expect(tokens).toEqual(expectedTokens)
