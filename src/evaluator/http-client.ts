@@ -12,14 +12,14 @@ export interface HttpClient {
 }
 
 export class AxiosHttpClient implements HttpClient {
-  async sendRequest(ast: RequestStatement): Promise<HttpResponse> {
+  async sendRequest(requestStatement: RequestStatement): Promise<HttpResponse> {
     let response: axios.AxiosResponse
     try {
       response = await axios.request({
-        method: ast.method,
-        url: ast.url,
-        headers: ast.headers,
-        data: ast.body
+        method: requestStatement.method,
+        url: requestStatement.url,
+        headers: requestStatement.headers,
+        data: requestStatement.body
       })
     } catch (error) {
       console.log('Error while sending request')
