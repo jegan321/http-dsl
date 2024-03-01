@@ -1,6 +1,6 @@
 import { Lexer } from '../lexer/lexer'
 import { Token, TokenType } from '../lexer/tokens'
-import { Command, Program, REQUEST_COMMANDS, RequestStatement, Statement, StatementType } from './ast'
+import { Command, Program, REQUEST_COMMANDS, RequestStatement, SetStatement, Statement, StatementType } from './ast'
 
 export class Parser {
   private lexer: Lexer
@@ -53,6 +53,8 @@ export class Parser {
 
     if (REQUEST_COMMANDS.includes(command)) {
       return this.parseRequestStatement()
+    } else if (command === Command.SET) {
+      return this.parseSetStatement()
     } else {
       this.errors.push(`Unimplemented command: ${this.curToken.literal}`)
       return null
@@ -86,7 +88,10 @@ export class Parser {
   }
 
   getCommand(): Command | null {
+    // TODO: More clever way to convert string to enum?
     switch (this.curToken.literal) {
+
+      // Request commands
       case 'GET':
         return Command.GET
       case 'POST':
@@ -95,6 +100,11 @@ export class Parser {
         return Command.PUT
       case 'DELETE':
         return Command.DELETE
+
+      // Other commands  
+      case 'SET':
+        return Command.SET
+
       default:
         return null
     }
@@ -124,6 +134,25 @@ export class Parser {
       method: commandLiteral,
       url,
       headers,
+    }
+  }
+
+  parseSetStatement(): SetStatement {
+    const tokenLiteral = this.curToken.literal
+    this.nextToken()
+
+    const variableName = this.curToken.literal
+    this.nextToken()
+
+    this.expectPeek(TokenType.STRING) // Skip over the '=' token
+    
+    const variableValue = this.curToken.literal
+
+    return {
+      type: StatementType.SET,
+      tokenLiteral,
+      variableName,
+      variableValue
     }
   }
 

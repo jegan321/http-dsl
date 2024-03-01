@@ -53,4 +53,17 @@ describe('evaluate', async () => {
     expect(io.writes[0]).toBe(200)
     expect(io.writes[1]).toBe(JSON.stringify({ message: 'Hello' }, null, 2))
   })
+  test('should set variable in environment', async () => {
+    // const program = new Program([
+    //   {
+    //     type: StatementType.SET,
+    //     tokenLiteral: 'SET',
+
+    //   }
+    // ])
+    // await evaluator.evaluate(program)
+    // expect(httpClient.sentRequests.length).toBe(1)
+    // expect(io.writes[0]).toBe(200)
+    // expect(io.writes[1]).toBe(JSON.stringify({ message: 'Hello' }, null, 2))
+  })
 })

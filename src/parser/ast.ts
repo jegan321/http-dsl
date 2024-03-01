@@ -5,10 +5,15 @@ export enum StatementType {
 }
 
 export enum Command {
+
+  // Request commands
   GET = 'GET',
   POST = 'POST',
   PUT = 'PUT',
-  DELETE = 'DELETE'
+  DELETE = 'DELETE',
+
+  // Other commands
+  SET = 'SET',
 }
 
 export const REQUEST_COMMANDS: Command[] = [
@@ -29,7 +34,8 @@ export interface RequestStatement {
 export interface SetStatement {
   type: StatementType.SET
   tokenLiteral: string
-  foo: number
+  variableName: string
+  variableValue: string
 }
 
 export class Program {

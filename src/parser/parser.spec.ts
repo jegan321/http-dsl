@@ -1,7 +1,7 @@
 import { expect, test, describe } from 'vitest'
 import { Lexer } from '../lexer/lexer'
 import { Parser } from './parser'
-import { Program, RequestStatement } from './ast'
+import { Program, RequestStatement, SetStatement } from './ast'
 
 function parseProgram(input: string): Program {
   const lexer = new Lexer(input)
@@ -53,5 +53,15 @@ describe('Parser', () => {
     expect(Object.entries(request.headers).length).toEqual(2)
     expect(request.headers['content-type']).toEqual('application/json')
     expect(request.headers['x-api-key']).toEqual('123')
+  })
+  test('should parse SET', () => {
+    const input = `SET id = 123`
+    const program = parseProgram(input)
+    expect(program.statements.length).toEqual(1)
+    const request = program.statements[0] as SetStatement
+    expect(request.type).toEqual('SET')
+    expect(request.tokenLiteral).toEqual('SET')
+    expect(request.variableName).toEqual('id')
+    expect(request.variableValue).toEqual('123')
   })
 })
