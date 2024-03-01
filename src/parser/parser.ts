@@ -1,6 +1,6 @@
 import { Lexer } from '../lexer/lexer'
 import { Token, TokenType } from '../lexer/tokens'
-import { Command, Program, Statement, StatementType } from './ast'
+import { Command, Program, REQUEST_COMMANDS, RequestStatement, Statement, StatementType } from './ast'
 
 export class Parser {
   private lexer: Lexer
@@ -51,9 +51,11 @@ export class Parser {
       return null
     }
 
-    return {
-      type: StatementType.REQUEST,
-      tokenLiteral: this.curToken.literal,
+    if (REQUEST_COMMANDS.includes(command)) {
+      return this.parseRequestStatement()
+    } else {
+      this.errors.push(`Unimplemented command: ${this.curToken.literal}`)
+      return null
     }
   }
 
@@ -96,6 +98,13 @@ export class Parser {
       default:
         return null
     }
+  }
+
+  parseRequestStatement(): Statement {
+    const commandLiteral = this.curToken.literal
+    this.nextToken()
+    const url = this.curToken.literal
+    return new RequestStatement(commandLiteral, url)
   }
 
 }

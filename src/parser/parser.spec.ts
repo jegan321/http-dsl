@@ -1,7 +1,7 @@
 import { expect, test, describe } from 'vitest'
 import { Lexer } from '../lexer/lexer'
 import { Parser } from './parser'
-import { Program } from './ast'
+import { Program, RequestStatement } from './ast'
 
 function parseProgram(input: string): Program {
   const lexer = new Lexer(input)
@@ -12,9 +12,14 @@ function parseProgram(input: string): Program {
 }
 
 describe('Parser', () => {
-  test('should parse program', () => {
-    const input = `POST`
+  test('should parse GET https://api.example.com', () => {
+    const input = `GET https://api.example.com`
     const program = parseProgram(input)
     expect(program.statements.length).toEqual(1)
+    const request = program.statements[0] as RequestStatement
+    expect(request.type).toEqual('REQUEST')
+    expect(request.tokenLiteral).toEqual('GET')
+    expect(request.method).toEqual('GET')
+    expect(request.url).toEqual('https://api.example.com')
   })
 })
