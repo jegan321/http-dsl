@@ -146,7 +146,14 @@ export class Parser {
 
     this.expectPeek(TokenType.STRING) // Skip over the '=' token
     
-    const variableValue = this.curToken.literal
+    let variableValue = ''
+    while (!this.curTokenIsEndOfStatement()) {
+      if (variableValue) {
+        variableValue += ' '
+      }
+      variableValue += this.curToken.literal
+      this.nextToken()
+    }
 
     return {
       type: StatementType.SET,

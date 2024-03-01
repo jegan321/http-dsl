@@ -6,6 +6,7 @@
   "scripts": {
     "format": "prettier --write src/",
     "test": "vitest",
+    "test:run": "vitest run",
     "build": "npm run format && vitest run && tsc",
     "start": "tsc && node dist/index.js examples/integration-test.txt"
   },

@@ -64,4 +64,14 @@ describe('Parser', () => {
     expect(request.variableName).toEqual('id')
     expect(request.variableValue).toEqual('123')
   })
+  test('should parse SET with multiple word value', () => {
+    const input = `SET id = Hello, world!`
+    const program = parseProgram(input)
+    expect(program.statements.length).toEqual(1)
+    const request = program.statements[0] as SetStatement
+    expect(request.type).toEqual('SET')
+    expect(request.tokenLiteral).toEqual('SET')
+    expect(request.variableName).toEqual('id')
+    expect(request.variableValue).toEqual('Hello, world!')
+  })
 })

@@ -16,3 +16,4 @@
 - PRINT command
 - ASSERT command. Then it can be used for API smoke testing
 - Support header colon being a separate token like "content-type : application/json"
+- REPL
