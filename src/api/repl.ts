@@ -1,6 +1,5 @@
 import { Lexer } from '../lexer/lexer.js'
 import { Parser } from '../parser/parser.js'
-import { Interface } from 'node:readline'
 import { VERSION } from '../version.js'
 import { Evaluator } from '../evaluator/evaluator.js'
 import { Environment } from '../evaluator/environment.js'
@@ -53,8 +52,9 @@ export class REPL {
     const parser = new Parser(lexer)
     const program = parser.parseProgram()
     if (parser.errors.length) {
-      let output = 'Syntax error:'
+      let output = 'Syntax error:\n'
       output += parser.errors.join('\n')
+      this.io.write(output)
     }
     await this.evaluator.evaluate(program)
   }
