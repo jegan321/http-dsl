@@ -1,4 +1,3 @@
-import axios from 'axios'
 import { RequestStatement } from '../parser/ast'
 // import fetch from 'node-fetch' // TODO: This is complaining about Common JS
 
