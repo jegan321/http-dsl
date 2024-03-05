@@ -4,7 +4,6 @@
 - Automatically use a variable called host if the url starts with /. See next line:
 - SET host = https://example.com; GET /users
 - Change curly braces to be JS expressions
-- PRINT command
 - IMPORT command
 - Remove token limit in lexer
 - Check for open square bracket when lexing multi-line strings (arrays). Write test...

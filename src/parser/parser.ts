@@ -1,6 +1,15 @@
 import { Lexer } from '../lexer/lexer'
 import { COMMAND_TOKENS, Token, TokenType } from '../lexer/tokens'
-import { Command, PrintStatement, Program, REQUEST_COMMANDS, RequestStatement, SetStatement, Statement, StatementType } from './ast'
+import {
+  Command,
+  PrintStatement,
+  Program,
+  REQUEST_COMMANDS,
+  RequestStatement,
+  SetStatement,
+  Statement,
+  StatementType
+} from './ast'
 
 export class Parser {
   private lexer: Lexer

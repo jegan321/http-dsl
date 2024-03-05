@@ -13,7 +13,7 @@ export enum Command {
 
   // Other commands
   SET = 'SET',
-  PRINT = 'PRINT',
+  PRINT = 'PRINT'
 }
 
 export const REQUEST_COMMANDS: Command[] = [Command.GET, Command.POST, Command.PUT, Command.DELETE]

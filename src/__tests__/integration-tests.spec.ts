@@ -41,6 +41,6 @@ describe('Integration Tests', () => {
     const program = parser.parseProgram()
     await evaluator.evaluate(program)
     expect(io.writes.length).toBe(1)
-    expect(io.writes[0]).toBe("bar")
+    expect(io.writes[0]).toBe('bar')
   })
 })

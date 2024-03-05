@@ -18,7 +18,13 @@ export enum TokenType {
 }
 
 export const COMMAND_TOKENS = [
-  TokenType.GET, TokenType.POST, TokenType.PUT, TokenType.DELETE, TokenType.PATCH, TokenType.SET, TokenType.PRINT
+  TokenType.GET,
+  TokenType.POST,
+  TokenType.PUT,
+  TokenType.DELETE,
+  TokenType.PATCH,
+  TokenType.SET,
+  TokenType.PRINT
 ]
 
 export class Token {
