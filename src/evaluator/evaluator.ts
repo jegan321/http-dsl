@@ -30,6 +30,9 @@ export class Evaluator {
           const httpResponse = await this.httpClient.sendRequest(statement)
           this.printResponse(httpResponse)
           break
+        case StatementType.PRINT:
+          this.io.write(statement.printValue)
+          break
         case StatementType.SET:
           await this.replaceSetStatementVariables(this.environment, statement)
           this.environment.setVariable(statement.variableName, statement.variableValue)

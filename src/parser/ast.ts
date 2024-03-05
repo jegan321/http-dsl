@@ -12,12 +12,13 @@ export enum Command {
   DELETE = 'DELETE',
 
   // Other commands
-  SET = 'SET'
+  SET = 'SET',
+  PRINT = 'PRINT',
 }
 
 export const REQUEST_COMMANDS: Command[] = [Command.GET, Command.POST, Command.PUT, Command.DELETE]
 
-export type Statement = RequestStatement | SetStatement
+export type Statement = RequestStatement | PrintStatement | SetStatement
 
 export interface RequestStatement {
   type: StatementType.REQUEST
@@ -26,6 +27,12 @@ export interface RequestStatement {
   url: string
   headers: Record<string, string>
   body?: string
+}
+
+export interface PrintStatement {
+  type: StatementType.PRINT
+  tokenLiteral: string
+  printValue: string
 }
 
 export interface SetStatement {

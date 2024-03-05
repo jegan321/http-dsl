@@ -1,7 +1,7 @@
 import { expect, test, describe } from 'vitest'
 import { Lexer } from '../lexer/lexer'
 import { Parser } from './parser'
-import { Program, RequestStatement, SetStatement } from './ast'
+import { PrintStatement, Program, RequestStatement, SetStatement } from './ast'
 
 function parseProgram(input: string): Program {
   const lexer = new Lexer(input)
@@ -134,5 +134,14 @@ describe('Parser', () => {
     expect(requestStatement.body).toEqual(`{
       "description": "My item"
     }`)
+  })
+  test('should parse PRINT Hello, world!', () => {
+    const input = `PRINT Hello, world!`
+    const program = parseProgram(input)
+    expect(program.statements.length).toEqual(1)
+    const request = program.statements[0] as PrintStatement
+    expect(request.type).toEqual('PRINT')
+    expect(request.tokenLiteral).toEqual('PRINT')
+    expect(request.printValue).toEqual('Hello, world!')
   })
 })

@@ -92,4 +92,16 @@ describe('evaluate', async () => {
     expect(io.writes[0]).toBe(200)
     expect(io.writes[1]).toBe(JSON.stringify({ message: 'Hello' }, null, 2))
   })
+  test('should print hello world', async () => {
+    const program = new Program([
+      {
+        type: StatementType.PRINT,
+        tokenLiteral: 'PRINT',
+        printValue: 'Hello, world!'
+      }
+    ])
+    await evaluator.evaluate(program)
+    expect(io.writes.length).toBe(1)
+    expect(io.writes[0]).toBe('Hello, world!')
+  })
 })

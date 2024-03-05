@@ -1,6 +1,6 @@
 import { Lexer } from '../lexer/lexer'
 import { COMMAND_TOKENS, Token, TokenType } from '../lexer/tokens'
-import { Command, Program, REQUEST_COMMANDS, RequestStatement, SetStatement, Statement, StatementType } from './ast'
+import { Command, PrintStatement, Program, REQUEST_COMMANDS, RequestStatement, SetStatement, Statement, StatementType } from './ast'
 
 export class Parser {
   private lexer: Lexer
@@ -53,6 +53,8 @@ export class Parser {
 
     if (REQUEST_COMMANDS.includes(command)) {
       return this.parseRequestStatement()
+    } else if (command === Command.PRINT) {
+      return this.parsePrintStatement()
     } else if (command === Command.SET) {
       return this.parseSetStatement()
     } else {
@@ -103,6 +105,8 @@ export class Parser {
       // Other commands
       case TokenType.SET:
         return Command.SET
+      case TokenType.PRINT:
+        return Command.PRINT
 
       default:
         return null
@@ -148,6 +152,27 @@ export class Parser {
       url,
       headers,
       body
+    }
+  }
+
+  parsePrintStatement(): PrintStatement {
+    const tokenLiteral = this.curToken.literal
+    this.nextToken() // Done with PRINT token
+
+    // TODO: This logic is the same as SetStatement and can be extracted
+    let printValue = ''
+    while (!this.curTokenIsEndOfStatement()) {
+      if (printValue) {
+        printValue += ' '
+      }
+      printValue += this.curToken.literal
+      this.nextToken()
+    }
+
+    return {
+      type: StatementType.PRINT,
+      tokenLiteral,
+      printValue
     }
   }
 
