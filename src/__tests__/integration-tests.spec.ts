@@ -11,6 +11,9 @@ describe('Integration Tests', () => {
   const io = new MockInputOutput()
   const environment = new Environment(() => Promise.resolve('unknown_value'))
   const evaluator = new Evaluator(environment, httpClient, io)
+  beforeEach(() => {
+    io.writes = []
+  })
   test('should send GET request', async () => {
     httpClient.status = 200
     httpClient.headers = { 'content-type': 'application/json' }
@@ -26,5 +29,18 @@ describe('Integration Tests', () => {
     expect(httpClient.sentRequests.length).toBe(1)
     expect(io.writes[0]).toBe(200)
     expect(io.writes[1]).toBe(JSON.stringify({ message: 'Hello' }, null, 2))
+  })
+  test('should set variable and print it', async () => {
+    const input = `
+        SET foo = bar
+
+        PRINT {{foo}}
+      `
+    const lexer = new Lexer(input)
+    const parser = new Parser(lexer)
+    const program = parser.parseProgram()
+    await evaluator.evaluate(program)
+    expect(io.writes.length).toBe(1)
+    expect(io.writes[0]).toBe("bar")
   })
 })
