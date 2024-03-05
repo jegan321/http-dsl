@@ -113,7 +113,7 @@ export class Lexer {
   }
 
   isBeginningOfMultiLineString(): boolean {
-    const isJsonOrXml = ['{', '<'].includes(this.char)
+    const isJsonOrXml = ['{', , '[', '<'].includes(this.char)
     const isBeginningOfExpression = this.char === '{' && this.nextChar === '{'
     return isJsonOrXml && !isBeginningOfExpression
   }

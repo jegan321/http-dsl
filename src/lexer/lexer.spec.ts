@@ -120,6 +120,29 @@ describe('Lexer - token types', () => {
     const tokens = lexer.getAllTokens().map((token) => token.type)
     expect(tokens).toEqual(expectedTokens)
   })
+  test('should get token types for POST, header and request body', () => {
+    const input = `
+      POST https://api.example.com/items
+      x-api-key: {{api_key}}
+      [
+        {
+          "foo": "bar"
+        }
+      ]
+      `
+    const lexer = new Lexer(input)
+    const expectedTokens = [
+      TokenType.POST,
+      TokenType.STRING,
+      TokenType.NEWLINE,
+      TokenType.STRING,
+      TokenType.STRING,
+      TokenType.NEWLINE,
+      TokenType.MULTI_LINE_STRING // One string token for the whole request body even though it spans four lines
+    ]
+    const tokens = lexer.getAllTokens().map((token) => token.type)
+    expect(tokens).toEqual(expectedTokens)
+  })
   test('should get token types for PRINT Hello, world!', () => {
     const input = `PRINT Hello, world!`
     const lexer = new Lexer(input)
