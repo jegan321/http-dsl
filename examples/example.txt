@@ -1,12 +1,5 @@
-POST https://jsonplaceholder.typicode.com/users
-content-type: application/json
-{
-    "username": "john",
-    "roles": [
-        {{ 
-            
-         }}
-    ]
-}
+SET host = https://jsonplaceholder.typicode.com
+
+GET /users/1
 
 
