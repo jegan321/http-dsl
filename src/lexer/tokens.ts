@@ -12,8 +12,13 @@ export enum TokenType {
   PUT = 'PUT',
   DELETE = 'DELETE',
   PATCH = 'PATCH',
+  // TODO: Add other HTTP verbs
   SET = 'SET'
 }
+
+export const COMMAND_TOKENS = [
+  TokenType.GET, TokenType.POST, TokenType.PUT, TokenType.DELETE, TokenType.PATCH, TokenType.SET
+]
 
 export class Token {
   type: TokenType

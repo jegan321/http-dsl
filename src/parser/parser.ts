@@ -1,5 +1,5 @@
 import { Lexer } from '../lexer/lexer'
-import { Token, TokenType } from '../lexer/tokens'
+import { COMMAND_TOKENS, Token, TokenType } from '../lexer/tokens'
 import { Command, Program, REQUEST_COMMANDS, RequestStatement, SetStatement, Statement, StatementType } from './ast'
 
 export class Parser {
@@ -40,7 +40,7 @@ export class Parser {
   }
 
   parseStatement(): Statement | null {
-    if (!this.curTokenIs(TokenType.STRING)) {
+    if (!COMMAND_TOKENS.includes(this.curToken.type)) {
       this.errors.push(`Invalid token at beginning of statement: ${this.curToken.literal}`)
       return null
     }
@@ -89,19 +89,19 @@ export class Parser {
 
   getCommand(): Command | null {
     // TODO: More clever way to convert string to enum?
-    switch (this.curToken.literal) {
+    switch (this.curToken.type) {
       // Request commands
-      case 'GET':
+      case TokenType.GET:
         return Command.GET
-      case 'POST':
+      case TokenType.POST:
         return Command.POST
-      case 'PUT':
+      case TokenType.PUT:
         return Command.PUT
-      case 'DELETE':
+      case TokenType.DELETE:
         return Command.DELETE
 
       // Other commands
-      case 'SET':
+      case TokenType.SET:
         return Command.SET
 
       default:
