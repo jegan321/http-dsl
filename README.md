@@ -15,7 +15,6 @@
 - Query params that automatically URL encode
 - Support array variables that prompt the user to select from the list of options
 - Generate cURL from request
-- JS transpiler
 - HTTP protocol versions
 - Parser error handling
 - Silent flag for request
@@ -27,4 +26,5 @@
 - Refactor to make lexer get all the tokens and inject them into the parser
 - Catch any http client errors so the stacktrace is never printed
 - Treat semicolons like newlines?
+- JS transpiler
 
