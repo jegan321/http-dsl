@@ -6,14 +6,14 @@ describe('Lexer - token types', () => {
   test('should get token type for GET', () => {
     const input = `GET`
     const lexer = new Lexer(input)
-    const expectedTokens = [TokenType.STRING]
+    const expectedTokens = [TokenType.GET]
     const tokens = lexer.getAllTokens().map((token) => token.type)
     expect(tokens).toEqual(expectedTokens)
   })
   test('should get token types for GET https://api.example.com', () => {
     const input = `GET https://api.example.com`
     const lexer = new Lexer(input)
-    const expectedTokens = [TokenType.STRING, TokenType.STRING]
+    const expectedTokens = [TokenType.GET, TokenType.STRING]
     const tokens = lexer.getAllTokens().map((token) => token.type)
     expect(tokens).toEqual(expectedTokens)
   })
@@ -29,7 +29,7 @@ describe('Lexer - token types', () => {
   test('should get token types for SET id = 123', () => {
     const input = `SET id = 123`
     const lexer = new Lexer(input)
-    const expectedTokens = [TokenType.STRING, TokenType.STRING, TokenType.STRING, TokenType.STRING]
+    const expectedTokens = [TokenType.SET, TokenType.STRING, TokenType.STRING, TokenType.STRING]
     const tokens = lexer.getAllTokens().map((token) => token.type)
     expect(tokens).toEqual(expectedTokens)
   })
@@ -41,12 +41,12 @@ describe('Lexer - token types', () => {
       `
     const lexer = new Lexer(input)
     const expectedTokens = [
-      TokenType.STRING,
+      TokenType.SET,
       TokenType.STRING,
       TokenType.STRING,
       TokenType.STRING,
       TokenType.END_STATEMENT,
-      TokenType.STRING,
+      TokenType.SET,
       TokenType.STRING,
       TokenType.STRING,
       TokenType.STRING
@@ -69,7 +69,7 @@ describe('Lexer - token types', () => {
       `
     const lexer = new Lexer(input)
     const expectedTokens = [
-      TokenType.STRING,
+      TokenType.GET,
       TokenType.STRING,
       TokenType.NEWLINE,
       TokenType.STRING,
@@ -84,7 +84,7 @@ describe('Lexer - token types', () => {
   test('should get token types for URL with variable', () => {
     const input = `GET https://api.example.com/items/{{id}}`
     const lexer = new Lexer(input)
-    const expectedTokens = [TokenType.STRING, TokenType.STRING]
+    const expectedTokens = [TokenType.GET, TokenType.STRING]
     const tokens = lexer.getAllTokens().map((token) => token.type)
     expect(tokens).toEqual(expectedTokens)
   })
@@ -94,7 +94,7 @@ describe('Lexer - token types', () => {
       x-api-key: {{api_key}}
       `
     const lexer = new Lexer(input)
-    const expectedTokens = [TokenType.STRING, TokenType.STRING, TokenType.NEWLINE, TokenType.STRING, TokenType.STRING]
+    const expectedTokens = [TokenType.GET, TokenType.STRING, TokenType.NEWLINE, TokenType.STRING, TokenType.STRING]
     const tokens = lexer.getAllTokens().map((token) => token.type)
     expect(tokens).toEqual(expectedTokens)
   })
@@ -109,7 +109,7 @@ describe('Lexer - token types', () => {
       `
     const lexer = new Lexer(input)
     const expectedTokens = [
-      TokenType.STRING,
+      TokenType.POST,
       TokenType.STRING,
       TokenType.NEWLINE,
       TokenType.STRING,

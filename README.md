@@ -27,4 +27,6 @@
 - Catch any http client errors so the stacktrace is never printed
 - Treat semicolons like newlines?
 - JS transpiler
+- Turn off prettier on spec files
+
 

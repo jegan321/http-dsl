@@ -1,4 +1,4 @@
-import { Token, TokenType } from './tokens'
+import { Token, TokenType, getKeywordForLiteral } from './tokens'
 
 export class Lexer {
   private input: string
@@ -80,7 +80,9 @@ export class Lexer {
       return new Token(TokenType.MULTI_LINE_STRING, literal)
     } else if (this.isBeginningOfString()) {
       const literal = this.readString()
-      return new Token(TokenType.STRING, literal)
+      const keyword = getKeywordForLiteral(literal)
+      const tokenType = keyword || TokenType.STRING
+      return new Token(tokenType, literal)
     }
 
     this.readChar()
