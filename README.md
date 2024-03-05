@@ -7,7 +7,7 @@
 - PRINT command
 - IMPORT command
 - Remove token limit in lexer
-- Check for open square bracket when lexing multi-line strings (arrays)
+- Check for open square bracket when lexing multi-line strings (arrays). Write test...
 - Replace native fetch with node-fetch (need to fix commonjs bullshit)
 - Environment vars. Decide on syntax, should I prefix with env? Explicit vs implicit
 - Secret variables (hidden with * while typing)

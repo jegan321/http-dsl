@@ -120,6 +120,13 @@ describe('Lexer - token types', () => {
     const tokens = lexer.getAllTokens().map((token) => token.type)
     expect(tokens).toEqual(expectedTokens)
   })
+  test('should get token types for PRINT Hello, world!', () => {
+    const input = `PRINT Hello, world!`
+    const lexer = new Lexer(input)
+    const expectedTokens = [TokenType.PRINT, TokenType.STRING, TokenType.STRING]
+    const tokens = lexer.getAllTokens().map((token) => token.type)
+    expect(tokens).toEqual(expectedTokens)
+  })
 })
 
 describe('Lexer - token literals', () => {
