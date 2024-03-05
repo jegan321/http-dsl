@@ -92,6 +92,31 @@ describe('evaluate', async () => {
     expect(io.writes[0]).toBe(200)
     expect(io.writes[1]).toBe(JSON.stringify({ message: 'Hello' }, null, 2))
   })
+  test('should send request with host automatically prepended', async () => {
+    httpClient.status = 200
+    httpClient.headers = { 'content-type': 'application/json' }
+    httpClient.body = { message: 'Hello' }
+    const program = new Program([
+      {
+        type: StatementType.SET,
+        tokenLiteral: 'SET',
+        variableName: 'host',
+        variableValue: 'https://api.example.com'
+      },
+      {
+        type: StatementType.REQUEST,
+        tokenLiteral: 'GET',
+        method: 'GET',
+        url: '/items/123',
+        headers: {}
+      }
+    ])
+    await evaluator.evaluate(program)
+    expect(httpClient.sentRequests.length).toBe(1)
+    expect(httpClient.sentRequests[0].url).toBe('https://api.example.com/items/123')
+    expect(io.writes[0]).toBe(200)
+    expect(io.writes[1]).toBe(JSON.stringify({ message: 'Hello' }, null, 2))
+  })
   test('should print hello world', async () => {
     const program = new Program([
       {

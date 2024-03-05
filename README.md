@@ -1,17 +1,14 @@
 # HTTP DSL
 
 ## Roadmap
-- Automatically use a variable called host if the url starts with /. See next line:
-- SET host = https://example.com; GET /users
+- Query params that automatically URL encode
 - Change curly braces to be JS expressions
 - IMPORT command
 - Remove token limit in lexer
-- Check for open square bracket when lexing multi-line strings (arrays). Write test...
 - Replace native fetch with node-fetch (need to fix commonjs bullshit)
 - Environment vars. Decide on syntax, should I prefix with env? Explicit vs implicit
 - Secret variables (hidden with * while typing)
 - Make HttpClient return a success flag?
-- Query params that automatically URL encode
 - Support array variables that prompt the user to select from the list of options
 - Generate cURL from request
 - HTTP protocol versions

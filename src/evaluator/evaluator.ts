@@ -27,6 +27,9 @@ export class Evaluator {
       switch (statement.type) {
         case StatementType.REQUEST:
           await this.replaceRequestStatementVariables(this.environment, statement)
+          if (statement.url.startsWith('/') && this.environment.containsVariable('host')) {
+            statement.url = await this.environment.getVariable('host') + statement.url
+          }
           const httpResponse = await this.httpClient.sendRequest(statement)
           this.printResponse(httpResponse)
           break

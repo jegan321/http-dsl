@@ -32,6 +32,10 @@ export class Environment {
     }
   }
 
+  containsVariable(name: string): boolean {
+    return this.variables[name] != null
+  }
+
   reset() {
     this.variables = {}
   }
