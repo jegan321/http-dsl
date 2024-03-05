@@ -1,0 +1,12 @@
+POST https://jsonplaceholder.typicode.com/users
+content-type: application/json
+{
+    "username": "john",
+    "roles": [
+        {{ 
+            
+         }}
+    ]
+}
+
+
