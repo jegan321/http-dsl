@@ -1,6 +1,7 @@
 # HTTP DSL
 
 ## Roadmap
+- Expressions error handling for unknown vars
 - Replace the Command type with just token type
 - Save response data in variables automatically
 - Query params that automatically URL encode

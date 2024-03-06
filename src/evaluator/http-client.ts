@@ -1,10 +1,20 @@
 import { RequestStatement } from '../parser/ast'
 // import fetch from 'node-fetch' // TODO: This is complaining about Common JS
 
-export interface HttpResponse {
+export class HttpResponse {
   status: number
   headers: Record<string, string>
   body: string
+  
+  constructor(status: number, headers: Record<string, string>, body: string) {
+    this.status = status
+    this.headers = headers
+    this.body = body
+  }
+
+  toString() {
+    return `YEAAAAH`
+  }
 }
 
 export interface HttpClient {
@@ -26,11 +36,11 @@ export class FetchHttpClient implements HttpClient {
 
     const body = await response.text()
 
-    return {
-      status: response.status,
-      headers: responseHeaders,
-      body: body
-    }
+    return new HttpResponse(
+      response.status,
+      responseHeaders,
+      body
+    )
   }
 }
 
@@ -41,10 +51,11 @@ export class MockHttpClient implements HttpClient {
   public sentRequests: RequestStatement[] = []
   async sendRequest(request: RequestStatement): Promise<HttpResponse> {
     this.sentRequests.push(request)
-    return {
-      status: this.status,
-      headers: this.headers,
-      body: JSON.stringify(this.body, null, 2)
-    }
+
+    return new HttpResponse(
+      this.status,
+      this.headers,
+      JSON.stringify(this.body, null, 2)
+    )
   }
 }
