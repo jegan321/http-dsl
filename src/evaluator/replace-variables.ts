@@ -1,4 +1,5 @@
 import { Environment } from './environment'
+import { evaluateExpression } from './expressions'
 
 export function replaceExpressions(environment: Environment, value?: string): string {
   if (value == null) {
@@ -13,9 +14,9 @@ export function replaceExpressions(environment: Environment, value?: string): st
       if (end === -1) {
         throw new Error('Unmatched opening {{')
       }
-      const variableName = value.substring(i + 2, end)
-      const variableValue = environment.variables[variableName]
-      output += variableValue
+      const expression = value.substring(i + 2, end)
+      const evaluatedExpressions = evaluateExpression(expression, environment)
+      output += evaluatedExpressions
       i = end + 1
     } else {
       output += current
