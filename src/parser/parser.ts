@@ -1,10 +1,9 @@
 import { Lexer } from '../lexer/lexer'
-import { COMMAND_TOKENS, Token, TokenType } from '../lexer/tokens'
+import { COMMAND_TOKENS, REQUEST_TOKENS, Token, TokenType } from '../lexer/tokens'
 import {
   Command,
   PrintStatement,
   Program,
-  REQUEST_COMMANDS,
   RequestStatement,
   SetStatement,
   Statement,
@@ -54,17 +53,11 @@ export class Parser {
       return null
     }
 
-    const command = this.getCommand()
-    if (command == null) {
-      this.errors.push(`Invalid command: ${this.curToken.literal}`)
-      return null
-    }
-
-    if (REQUEST_COMMANDS.includes(command)) {
+    if (REQUEST_TOKENS.includes(this.curToken.type)) {
       return this.parseRequestStatement()
-    } else if (command === Command.PRINT) {
+    } else if (this.curToken.type === TokenType.PRINT) {
       return this.parsePrintStatement()
-    } else if (command === Command.SET) {
+    } else if (this.curToken.type === TokenType.SET) {
       return this.parseSetStatement()
     } else {
       this.errors.push(`Unimplemented command: ${this.curToken.literal}`)
@@ -95,30 +88,6 @@ export class Parser {
     } else {
       this.errors.push(`Expected next token to be a ${type}, got ${this.peekToken.type} instead`)
       return false
-    }
-  }
-
-  getCommand(): Command | null {
-    // TODO: More clever way to convert string to enum?
-    switch (this.curToken.type) {
-      // Request commands
-      case TokenType.GET:
-        return Command.GET
-      case TokenType.POST:
-        return Command.POST
-      case TokenType.PUT:
-        return Command.PUT
-      case TokenType.DELETE:
-        return Command.DELETE
-
-      // Other commands
-      case TokenType.SET:
-        return Command.SET
-      case TokenType.PRINT:
-        return Command.PRINT
-
-      default:
-        return null
     }
   }
 

@@ -16,8 +16,6 @@ export enum Command {
   PRINT = 'PRINT'
 }
 
-export const REQUEST_COMMANDS: Command[] = [Command.GET, Command.POST, Command.PUT, Command.DELETE]
-
 export type Statement = RequestStatement | PrintStatement | SetStatement
 
 export interface RequestStatement {

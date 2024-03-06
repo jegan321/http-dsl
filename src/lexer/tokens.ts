@@ -27,6 +27,8 @@ export const COMMAND_TOKENS = [
   TokenType.PRINT
 ]
 
+export const REQUEST_TOKENS = [TokenType.GET, TokenType.POST, TokenType.PUT, TokenType.DELETE]
+
 export class Token {
   type: TokenType
   literal: string

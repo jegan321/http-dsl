@@ -1,6 +1,9 @@
+#!/usr/bin/env http-dsl
+
 # https://jsonplaceholder.typicode.com/users/1
+
 GET https://jsonplaceholder.typicode.com/users/1
 
-PRINT RESPONSE
+PRINT {{ response }}
 
 
