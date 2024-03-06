@@ -1,6 +1,5 @@
 import { expect, test, describe } from 'vitest'
 import { Environment } from './environment'
-import exp from 'constants'
 
 describe('reset', async () => {
   test('should should remove all variables', () => {

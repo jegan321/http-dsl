@@ -4,5 +4,5 @@ export async function evaluateExpression(expression: string, environment: Enviro
     let code = `with (vars) {return ${expression}}`
     const func = new Function('vars', code)
     const vars = environment.variables
-    return func.call(vars)
+    return func(vars)
 }
