@@ -175,6 +175,31 @@ describe('Parser', () => {
   })
 })
 
+describe('Passer errors', () => {
+  test('should return error when input does not begin with valid command token', () => {
+    const lexer = new Lexer('SEND /users')
+    const parser = new Parser(lexer)
+    parser.parseProgram()
+    expect(parser.errors.length).toBeGreaterThan(0)
+    expect(parser.errors[0]).toBe('Invalid token at beginning of statement: SEND')
+  })
+  test('should return error when application/x-www-form-urlencoded request does not have JSON body', () => {
+    const input = `
+      POST /login
+      content-type: application/x-www-form-urlencoded
+      <body>
+        <user>user1</user>
+        <password>password1</password>
+      </body>
+    `
+    const lexer = new Lexer(input)
+    const parser = new Parser(lexer)
+    parser.parseProgram()
+    expect(parser.errors.length).toBeGreaterThan(0)
+    expect(parser.errors[0]).toContain('Invalid JSON in body of application/x-www-form-urlencoded request')
+  })
+})
+
 describe('concatenateUrlWithQueryParams', () => {
   test('should return url when there are no query params', () => {
     const url = 'https://api.example.com/users/search'

@@ -2,8 +2,8 @@
 
 ## Roadmap
 - Integration test for mapping array from one API response into body of next one, such as GET /roles then POST /users
-- IMPORT command
 - Remove token limit in lexer
+- default content type to json. Add function to header util to check if content type exists
 - Replace native fetch with node-fetch (need to fix commonjs bullshit)
 - Environment vars. Decide on syntax, should I prefix with env? Explicit vs implicit
 - Secret variables (hidden with * while typing)
@@ -18,7 +18,6 @@
 - Remove Axios dependency
 - Built-in helper function for loading file contents: file('./data.json')
 - Built-in helper function for base64: base64('john.egan:password1'). Maybe do one for basic auth?
-- default content type to json?
 - Refactor to make lexer get all the tokens and inject them into the parser
 - Catch any http client errors so the stacktrace is never printed
 - Treat semicolons like newlines?
@@ -26,3 +25,4 @@
 - Turn off prettier on spec files
 - REPL up arrow
 - Add line number to error messages
+- IMPORT command

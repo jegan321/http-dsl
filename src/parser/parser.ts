@@ -154,7 +154,12 @@ export class Parser {
       username=user1&password=password1
     */
     if (isContentType('application/x-www-form-urlencoded', headers) && body != null) {
-      const bodyObject = JSON.parse(body) // TODO: Handle parse error
+      let bodyObject = {}
+      try {
+        bodyObject = JSON.parse(body)
+      } catch (error) {
+        this.errors.push(`Invalid JSON in body of application/x-www-form-urlencoded request: ${body}`)
+      }
       const urlSearchParams = new URLSearchParams()
       for (const [key, value] of Object.entries(bodyObject)) {
         if (typeof value === 'string') {
