@@ -2,7 +2,7 @@ import { Program, RequestStatement, SetStatement, StatementType } from '../parse
 import { Environment } from './environment'
 import { FetchHttpClient, HttpClient, HttpResponse } from './http-client'
 import { InputOutput, TerminalInputOutput } from './input-output'
-import { replaceExpressions } from './replace-variables'
+import { replaceExpressions } from './replace-expressions'
 
 export class Evaluator {
   private environment: Environment

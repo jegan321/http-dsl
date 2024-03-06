@@ -1,6 +1,6 @@
 import { expect, test, beforeEach, describe } from 'vitest'
 import { Environment } from './environment'
-import { replaceExpressions } from './replace-variables'
+import { replaceExpressions } from './replace-expressions'
 
 describe('replaceVariables', () => {
   const environment = new Environment()
