@@ -1,9 +1,9 @@
 # HTTP DSL
 
 ## Roadmap
+- Comments
 - Expressions error handling for unknown vars
 - Replace the Command type with just token type
-- Save response data in variables automatically
 - Query params that automatically URL encode
 - IMPORT command
 - Remove token limit in lexer
