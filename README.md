@@ -1,8 +1,7 @@
 # HTTP DSL
 
 ## Roadmap
-- Comments
-- Query params that automatically URL encode
+- Integration test for mapping array from one API response into body of next one, such as GET /roles then POST /users
 - IMPORT command
 - Remove token limit in lexer
 - Replace native fetch with node-fetch (need to fix commonjs bullshit)
@@ -17,13 +16,13 @@
 - ASSERT command. Then it can be used for API smoke testing
 - Support header colon being a separate token like "content-type : application/json"
 - Remove Axios dependency
-- Import file contents into a variable
+- Built-in helper function for loading file contents: file('./data.json')
+- Built-in helper function for base64: base64('john.egan:password1'). Maybe do one for basic auth?
 - default content type to json?
 - Refactor to make lexer get all the tokens and inject them into the parser
 - Catch any http client errors so the stacktrace is never printed
 - Treat semicolons like newlines?
 - JS transpiler
 - Turn off prettier on spec files
-- Built-in helper function for basic auth
 - REPL up arrow
 - Add line number to error messages

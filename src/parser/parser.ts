@@ -1,5 +1,6 @@
 import { Lexer } from '../lexer/lexer'
 import { COMMAND_TOKENS, REQUEST_TOKENS, Token, TokenType } from '../lexer/tokens'
+import { isContentType } from '../utils/header-utils'
 import {
   Command,
   PrintStatement,
@@ -122,7 +123,7 @@ export class Parser {
           const queryParamValue = elements.length > 1 ? elements[1] : ''
           queryParams[queryParamName] = queryParamValue
 
-          // this.nextToken() // Done with query param
+          // this.nextToken() // Don't call nextToken() because parseRestOfLineAsSingleString() already skips to the newline token
         } else {
           // This is a header
           const headerName = this.curToken.literal.replace(':', '')
@@ -139,6 +140,28 @@ export class Parser {
         this.nextToken() // Done with body
         // break // Break out of the while loop because body is always last?
       }
+    }
+
+    /*
+      For form-urlencoded requests, the user writes the body using JSON syntax and the 
+      parser automatically converts it into an encoded string.
+      For example:
+      {
+        "username": "user1",
+        "password": "password1"
+      }
+      Is converted to:
+      username=user1&password=password1
+    */
+    if (isContentType('application/x-www-form-urlencoded', headers) && body != null) {
+      const bodyObject = JSON.parse(body) // TODO: Handle parse error
+      const urlSearchParams = new URLSearchParams()
+      for (const [key, value] of Object.entries(bodyObject)) {
+        if (typeof value === 'string') {
+          urlSearchParams.set(key, value)
+        }
+      }
+      body = urlSearchParams.toString()
     }
 
     return {

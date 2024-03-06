@@ -84,8 +84,3 @@ export class Evaluator {
     // }
   }
 }
-
-function isJsonResponse(httpResponse: HttpResponse): boolean {
-  const contentType = httpResponse.headers['content-type']
-  return contentType != null && contentType.includes('application/json')
-}

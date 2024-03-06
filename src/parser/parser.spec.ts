@@ -208,4 +208,23 @@ describe('concatenateUrlWithQueryParams', () => {
     const result = concatenateUrlWithQueryParams(url, queryParams)
     expect(result).toBe('https://api.example.com/users/search?q=My+search+terms&size=10')
   })
+  test('should parse form URL encoded POST request', () => {
+    const input = `
+    POST https://api.example.com/login
+    content-type: application/x-www-form-urlencoded
+    {
+      "username": "user1",
+      "password": "password1"
+    }
+    `
+    const program = parseProgram(input)
+    expect(program.statements.length).toEqual(1)
+
+    const requestStatement = program.statements[0] as RequestStatement
+    expect(requestStatement.type).toEqual('REQUEST')
+    expect(requestStatement.tokenLiteral).toEqual('POST')
+    expect(requestStatement.url).toEqual('https://api.example.com/login')
+    expect(requestStatement.headers['content-type']).toEqual('application/x-www-form-urlencoded')
+    expect(requestStatement.body).toEqual(`username=user1&password=password1`)
+  })
 })

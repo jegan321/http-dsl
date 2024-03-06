@@ -1,15 +1,18 @@
 #!/usr/bin/env http-dsl
 
-# https://jsonplaceholder.typicode.com/users/1
+SET host = https://jsonplaceholder.typicode.com
 
-GET https://jsonplaceholder.typicode.com/users/search
+GET /users/search
 &q=John Egan
 &size=10
 &sortProperty=dateCreated
 
+POST /login
+Content-Type: application/x-www-form-urlencoded
+{
+    "username": "john.egan",
+    "password": "password1"
+}
 
-
-
-PRINT {{ response }}
 
 

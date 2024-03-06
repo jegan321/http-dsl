@@ -30,28 +30,4 @@ describe('HttpResponse', async () => {
     )
     expect(httpResponse.stringify()).toBe(`Status: 200\nBody: {\n  "message": "Hello"\n}`)
   })
-  test('isJson() should return true when content-type is application/json', () => {
-    const httpResponse = new HttpResponse(
-      200,
-      { 'content-type': 'application/json' },
-      JSON.stringify({ message: 'Hello' })
-    )
-    expect(httpResponse.isJson()).toBe(true)
-  })
-  test('isJson() should return true when Content-Type is application/json', () => {
-    const httpResponse = new HttpResponse(
-      200,
-      { 'Content-Type': 'application/json' },
-      JSON.stringify({ message: 'Hello' })
-    )
-    expect(httpResponse.isJson()).toBe(true)
-  })
-  test('isJson() should return true when Content-Type is application/json;other', () => {
-    const httpResponse = new HttpResponse(
-      200,
-      { 'Content-Type': 'application/json;other' },
-      JSON.stringify({ message: 'Hello' })
-    )
-    expect(httpResponse.isJson()).toBe(true)
-  })
 })

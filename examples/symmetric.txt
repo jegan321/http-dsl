@@ -1,0 +1,63 @@
+SET auth_url = https://symmetric-prod.auth.us-east-1.amazoncognito.com/oauth2/token
+
+SET host = https://api.symmetrichealthsolutions.com
+
+POST {{auth_url}}
+Content-Type: application/x-www-form-urlencoded
+Authorization: Basic MnJ2OHUydHFxY2owYmpqbDE0bjExM2p0aWc6YzY2YzJsYmF1Y3UzN2Vka3J0bnV1ZW9yNmswaXBlNzdnNmFnZ2NxZXBsZnY5dHQ5ZnIy
+
+grant_type=client_credentials
+
+
+### Match v2
+POST /v2/matching2/match/items
+Content-Type: application/json
+x-symmetric-id: eyJraWQiOiJuSWNFZmpJejYzSFk2TGVtVEpiRk5WRnVKb1RIK1hveFZZZmIycGlaNFpJPSIsImFsZyI6IlJTMjU2In0.eyJzdWIiOiIycnY4dTJ0cXFjajBiampsMTRuMTEzanRpZyIsInRva2VuX3VzZSI6ImFjY2VzcyIsInNjb3BlIjoiYXBpLWFjY2Vzc1wvY29tbW9uIGFwaS1hY2Nlc3NcL2RldmljZSIsImF1dGhfdGltZSI6MTcwOTE0OTIwNiwiaXNzIjoiaHR0cHM6XC9cL2NvZ25pdG8taWRwLnVzLWVhc3QtMS5hbWF6b25hd3MuY29tXC91cy1lYXN0LTFfbUpuS2FuM2lNIiwiZXhwIjoxNzA5MTUyODA2LCJpYXQiOjE3MDkxNDkyMDYsInZlcnNpb24iOjIsImp0aSI6IjA3MGQzOThjLTUwOWYtNDgzMS1hODk1LTk3NDE5ZGRiMmEyZiIsImNsaWVudF9pZCI6IjJydjh1MnRxcWNqMGJqamwxNG4xMTNqdGlnIn0.ZfEz6-Ed1vigBVtdt2PRpTdN-weKBfmKMsXjE3-z-AhnO9rhgLHdMTJsdT2Q6hYSQq7jetDCAt6nf443F8MkfpJlSyvzamTNy_LweMddUbqGYFOd-TNLcOf8EzS1xZJdCfqUtwYCFHQsVymy1CbT3HT3yLd2fes0WitMmrKBBosQjZGAImo_KfaU6Ojr9-agc3nxSuMlu0oc38fzN3VBL0TeRluqnCKQ6E6516wc5VxW3bZg3vkWWJhvlI0kgNAMkZs4hW6IcbBVn7bOEab4-Iwf2wZV_lYqoqHLrkjaBEtT84NTeorfM2yS4Xv7cAiDWYTiAl25f-RLdr1dPZrfBw
+x-api-key: NY2MuwaLGD8Fspr2Lh9K43rl0DEzYwHv4tXP4DMo
+
+{
+  "items": [
+    {
+      "identifiers": [
+        {
+          "identifier": "59121",
+          "company": "Gentell"
+        }
+      ],
+      "descriptions": [
+        "STRIP GAUZE PAK-ITS NON-ANTIMICROBIAL STRL LATEX CTN PK 1/4 X5YD NON-ADHESIVE"
+       ],
+      "id": "1"
+    }
+  ]
+}
+
+
+### Devices
+GET https://api.symmetrichealthsolutions.com/v2/device/S0000026668805
+?column=Symmetric Item ID
+&column=Parent Company Name
+&column=Manufacturer Name Cleansed
+&column=Catalog Number
+&column=Device Packaging UOM
+&column=Catalog Number Cleansed
+&column=Catalog Number Alternate
+&column=Catalog Number Alternate Cleansed
+&column=Description 80
+&column=Description 90
+&column=Image URLs
+&column=Noun
+&colummn=Manufacturer Name
+&column=Vendor Info
+&column=GTINs
+&column=GUDID Primary UDI-DI
+&column=GMDN Term Code
+&column=GMDN Preferred Term
+&column=UNSPSC
+&column=XXXX
+&column=XXXX
+&column=XXXX
+Content-Type: application/json
+x-symmetric-id: eyJraWQiOiJuSWNFZmpJejYzSFk2TGVtVEpiRk5WRnVKb1RIK1hveFZZZmIycGlaNFpJPSIsImFsZyI6IlJTMjU2In0.eyJzdWIiOiIycnY4dTJ0cXFjajBiampsMTRuMTEzanRpZyIsInRva2VuX3VzZSI6ImFjY2VzcyIsInNjb3BlIjoiYXBpLWFjY2Vzc1wvY29tbW9uIGFwaS1hY2Nlc3NcL2RldmljZSIsImF1dGhfdGltZSI6MTcwOTE0OTIwNiwiaXNzIjoiaHR0cHM6XC9cL2NvZ25pdG8taWRwLnVzLWVhc3QtMS5hbWF6b25hd3MuY29tXC91cy1lYXN0LTFfbUpuS2FuM2lNIiwiZXhwIjoxNzA5MTUyODA2LCJpYXQiOjE3MDkxNDkyMDYsInZlcnNpb24iOjIsImp0aSI6IjA3MGQzOThjLTUwOWYtNDgzMS1hODk1LTk3NDE5ZGRiMmEyZiIsImNsaWVudF9pZCI6IjJydjh1MnRxcWNqMGJqamwxNG4xMTNqdGlnIn0.ZfEz6-Ed1vigBVtdt2PRpTdN-weKBfmKMsXjE3-z-AhnO9rhgLHdMTJsdT2Q6hYSQq7jetDCAt6nf443F8MkfpJlSyvzamTNy_LweMddUbqGYFOd-TNLcOf8EzS1xZJdCfqUtwYCFHQsVymy1CbT3HT3yLd2fes0WitMmrKBBosQjZGAImo_KfaU6Ojr9-agc3nxSuMlu0oc38fzN3VBL0TeRluqnCKQ6E6516wc5VxW3bZg3vkWWJhvlI0kgNAMkZs4hW6IcbBVn7bOEab4-Iwf2wZV_lYqoqHLrkjaBEtT84NTeorfM2yS4Xv7cAiDWYTiAl25f-RLdr1dPZrfBw
+x-api-key: NY2MuwaLGD8Fspr2Lh9K43rl0DEzYwHv4tXP4DMo
+
