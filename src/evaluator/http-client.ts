@@ -7,7 +7,7 @@ export class HttpResponse {
   status: number
   headers: Record<string, string>
   body: string
-  
+
   constructor(status: number, headers: Record<string, string>, body: string) {
     this.status = status
     this.headers = headers
@@ -42,11 +42,7 @@ export class FetchHttpClient implements HttpClient {
 
     const body = await response.text()
 
-    return new HttpResponse(
-      response.status,
-      responseHeaders,
-      body
-    )
+    return new HttpResponse(response.status, responseHeaders, body)
   }
 }
 
@@ -58,10 +54,6 @@ export class MockHttpClient implements HttpClient {
   async sendRequest(request: RequestStatement): Promise<HttpResponse> {
     this.sentRequests.push(request)
 
-    return new HttpResponse(
-      this.status,
-      this.headers,
-      JSON.stringify(this.body, null, 2)
-    )
+    return new HttpResponse(this.status, this.headers, JSON.stringify(this.body, null, 2))
   }
 }

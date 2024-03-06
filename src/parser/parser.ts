@@ -1,15 +1,7 @@
 import { Lexer } from '../lexer/lexer'
 import { COMMAND_TOKENS, REQUEST_TOKENS, Token, TokenType } from '../lexer/tokens'
 import { isContentType } from '../utils/header-utils'
-import {
-  Command,
-  PrintStatement,
-  Program,
-  RequestStatement,
-  SetStatement,
-  Statement,
-  StatementType
-} from './ast'
+import { Command, PrintStatement, Program, RequestStatement, SetStatement, Statement, StatementType } from './ast'
 
 export class Parser {
   private lexer: Lexer
@@ -128,13 +120,12 @@ export class Parser {
           // This is a header
           const headerName = this.curToken.literal.replace(':', '')
           this.nextToken() // Done with header name
-  
+
           const headerValue = this.curToken.literal
           this.nextToken() // Done with header value
-  
+
           headers[headerName] = headerValue
         }
-
       } else if (this.curTokenIs(TokenType.MULTI_LINE_STRING)) {
         body = this.curToken.literal
         this.nextToken() // Done with body
@@ -233,5 +224,4 @@ export function concatenateUrlWithQueryParams(url: string, queryParams: Record<s
     urlSearchParams.set(key, value)
   }
   return url + '?' + urlSearchParams.toString()
-
 }

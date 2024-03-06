@@ -53,7 +53,6 @@ export class Evaluator {
           break
       }
     }
-
   }
 
   replaceRequestStatementExpressions(environment: Environment, request: RequestStatement) {

@@ -210,7 +210,7 @@ describe('Lexer - token literals', () => {
     const lexer = new Lexer(input)
     const literals = lexer.getAllTokens().map((token) => token.literal)
     const requestBodyLiteral = formatJson(literals[3])
-    expect(JSON.parse(requestBodyLiteral)).toEqual({"catalogNumber":"123","description":"My item"})
+    expect(JSON.parse(requestBodyLiteral)).toEqual({ catalogNumber: '123', description: 'My item' })
   })
   test('should get token literals for POST, headers and request body', () => {
     const input = `

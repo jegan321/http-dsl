@@ -37,25 +37,23 @@ describe('expressions', async () => {
   })
   test('should stringify object', async () => {
     environment.variables.person = {
-        name: 'John'
+      name: 'John'
     }
     const input = 'person'
     const result = evaluateExpression(input, environment)
     expect(result).toBe('{"name":"John"}')
   })
   test('should stringify array of strings', async () => {
-    environment.variables.names = [
-        'John', 'Jane'
-    ]
+    environment.variables.names = ['John', 'Jane']
     const input = 'names'
     const result = evaluateExpression(input, environment)
     expect(result).toBe('["John","Jane"]')
   })
   test('should stringify object inside array', async () => {
     environment.variables.people = [
-        {
-            name: 'John'
-        }
+      {
+        name: 'John'
+      }
     ]
     const input = 'people'
     const result = evaluateExpression(input, environment)
@@ -63,9 +61,9 @@ describe('expressions', async () => {
   })
   test('should stringify array map result', async () => {
     environment.variables.people = [
-        {
-            name: 'John'
-        }
+      {
+        name: 'John'
+      }
     ]
     const input = 'people.map(p => p.name.toUpperCase())'
     const result = evaluateExpression(input, environment)
@@ -73,9 +71,9 @@ describe('expressions', async () => {
   })
   test('should use toString() result when object has toString() method', async () => {
     environment.variables.myObject = {
-        stringify() {
-            return 'Object string representation'
-        }
+      stringify() {
+        return 'Object string representation'
+      }
     }
     const input = 'myObject'
     const result = evaluateExpression(input, environment)
