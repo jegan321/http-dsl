@@ -1,8 +1,21 @@
 import { Environment } from './environment';
 
-export function evaluateExpression(expression: string, environment: Environment): any {
+/**
+ * Returns the string value of a JavaScript expression
+ */
+export function evaluateExpression(expression: string, environment: Environment): string {
     let code = `with (vars) {return ${expression}}`
     const func = new Function('vars', code)
     const vars = environment.variables
-    return func(vars)
+    const result = func(vars)
+    if (result == null || typeof result === 'function') {
+        // return null for null, undefined and functions
+        return 'null'
+    }
+    if (typeof result === 'object') {
+        // Convert objects and arrays into JSON
+        return JSON.stringify(result)
+    }
+    // Convert booleans and numbers to strings
+    return result + ''
 }

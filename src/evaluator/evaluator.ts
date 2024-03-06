@@ -31,7 +31,7 @@ export class Evaluator {
             statement.url = this.environment.variables.host + statement.url
           }
           const httpResponse = await this.httpClient.sendRequest(statement)
-          this.printResponse(httpResponse)
+          this.environment.variables.response = httpResponse
           break
         case StatementType.PRINT:
           const printValue = replaceExpressions(this.environment, statement.printValue)

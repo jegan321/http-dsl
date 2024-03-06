@@ -1,11 +1,11 @@
 # HTTP DSL
 
 ## Roadmap
+- Replace the Command type with just token type
+- Save response data in variables automatically
 - Query params that automatically URL encode
-- Change curly braces to be JS expressions
 - IMPORT command
 - Remove token limit in lexer
-- Save response data in variables automatically
 - Replace native fetch with node-fetch (need to fix commonjs bullshit)
 - Environment vars. Decide on syntax, should I prefix with env? Explicit vs implicit
 - Secret variables (hidden with * while typing)

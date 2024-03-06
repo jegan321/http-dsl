@@ -30,8 +30,6 @@ describe('evaluate', async () => {
     ])
     await evaluator.evaluate(program)
     expect(httpClient.sentRequests.length).toBe(1)
-    expect(io.writes[0]).toBe(200)
-    expect(io.writes[1]).toBe(JSON.stringify({ message: 'Hello' }, null, 2))
   })
   test('should send GET request with variable in URL', async () => {
     httpClient.status = 200
@@ -50,8 +48,6 @@ describe('evaluate', async () => {
     await evaluator.evaluate(program)
     expect(httpClient.sentRequests.length).toBe(1)
     expect(httpClient.sentRequests[0].url).toBe('https://api.example.com/items/999')
-    expect(io.writes[0]).toBe(200)
-    expect(io.writes[1]).toBe(JSON.stringify({ message: 'Hello' }, null, 2))
   })
   test('should set variable in environment', async () => {
     const program = new Program([
@@ -89,8 +85,6 @@ describe('evaluate', async () => {
     await evaluator.evaluate(program)
     expect(httpClient.sentRequests.length).toBe(1)
     expect(httpClient.sentRequests[0].url).toBe('https://api.example.com/items/999')
-    expect(io.writes[0]).toBe(200)
-    expect(io.writes[1]).toBe(JSON.stringify({ message: 'Hello' }, null, 2))
   })
   test('should send request with host automatically prepended', async () => {
     httpClient.status = 200
@@ -114,8 +108,6 @@ describe('evaluate', async () => {
     await evaluator.evaluate(program)
     expect(httpClient.sentRequests.length).toBe(1)
     expect(httpClient.sentRequests[0].url).toBe('https://api.example.com/items/123')
-    expect(io.writes[0]).toBe(200)
-    expect(io.writes[1]).toBe(JSON.stringify({ message: 'Hello' }, null, 2))
   })
   test('should print hello world', async () => {
     const program = new Program([

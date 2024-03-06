@@ -1,5 +1,5 @@
 export class Environment {
-  variables: Record<string, string> = {}
+  variables: Record<string, any> = {}
 
   hasVariable(variableName: string): boolean {
     return variableName in this.variables

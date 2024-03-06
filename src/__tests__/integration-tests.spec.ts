@@ -27,8 +27,6 @@ describe('Integration Tests', () => {
     const program = parser.parseProgram()
     await evaluator.evaluate(program)
     expect(httpClient.sentRequests.length).toBe(1)
-    expect(io.writes[0]).toBe(200)
-    expect(io.writes[1]).toBe(JSON.stringify({ message: 'Hello' }, null, 2))
   })
   test('should set variable and print it', async () => {
     const input = `

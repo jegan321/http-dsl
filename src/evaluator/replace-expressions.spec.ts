@@ -31,4 +31,12 @@ describe('replaceVariables', () => {
     const replaced = replaceExpressions(environment, input)
     expect(replaced).toBe('123 and true')
   })
+  test('should replace object with JSON', () => {
+    environment.variables.person = {
+      name: 'John'
+    }
+    const input = '{{person}}'
+    const replaced = replaceExpressions(environment, input)
+    expect(replaced).toBe('{"name":"John"}')
+  })
 })
