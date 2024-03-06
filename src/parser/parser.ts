@@ -73,6 +73,10 @@ export class Parser {
     return this.curTokenIs(TokenType.END_STATEMENT) || this.curTokenIs(TokenType.END_FILE)
   }
 
+  curTokenIsEndOfLine(): boolean {
+    return this.curTokenIsEndOfStatement() || this.curTokenIs(TokenType.NEWLINE)
+  }
+
   peekTokenIs(type: TokenType): boolean {
     return this.peekToken.type === type
   }
@@ -99,23 +103,37 @@ export class Parser {
     this.nextToken() // Done with URL
 
     const headers: Record<string, string> = {}
+    const queryParams: Record<string, string> = {}
     let body: string | undefined = undefined
 
     // Now there will be a newline or end stmt or eof
     while (this.curTokenIs(TokenType.NEWLINE)) {
-      // That means there is either a header or a body next
+      // That means there is either a header, query param or a body next
 
       this.nextToken() // Skip the newline
 
       if (this.curTokenIs(TokenType.STRING)) {
-        // This is a header
-        const headerName = this.curToken.literal.replace(':', '')
-        this.nextToken() // Done with header name
+        if (this.curToken.literal.startsWith('&')) {
+          // This is a query param
+          const queryParamLine = this.parseRestOfLineAsSingleString()
+          const queryNameAndValue = queryParamLine.substring(1) // Skip the &
+          const elements = queryNameAndValue.split('=')
+          const queryParamName = elements[0]
+          const queryParamValue = elements.length > 1 ? elements[1] : ''
+          queryParams[queryParamName] = queryParamValue
 
-        const headerValue = this.curToken.literal
-        this.nextToken() // Done with header value
+          // this.nextToken() // Done with query param
+        } else {
+          // This is a header
+          const headerName = this.curToken.literal.replace(':', '')
+          this.nextToken() // Done with header name
+  
+          const headerValue = this.curToken.literal
+          this.nextToken() // Done with header value
+  
+          headers[headerName] = headerValue
+        }
 
-        headers[headerName] = headerValue
       } else if (this.curTokenIs(TokenType.MULTI_LINE_STRING)) {
         body = this.curToken.literal
         this.nextToken() // Done with body
@@ -127,25 +145,29 @@ export class Parser {
       type: StatementType.REQUEST,
       tokenLiteral: commandLiteral,
       method: commandLiteral,
-      url,
+      url: concatenateUrlWithQueryParams(url, queryParams),
       headers,
       body
     }
+  }
+
+  parseRestOfLineAsSingleString(): string {
+    let value = ''
+    while (!this.curTokenIsEndOfLine()) {
+      if (value) {
+        value += ' '
+      }
+      value += this.curToken.literal
+      this.nextToken()
+    }
+    return value
   }
 
   parsePrintStatement(): PrintStatement {
     const tokenLiteral = this.curToken.literal
     this.nextToken() // Done with PRINT token
 
-    // TODO: This logic is the same as SetStatement and can be extracted
-    let printValue = ''
-    while (!this.curTokenIsEndOfStatement()) {
-      if (printValue) {
-        printValue += ' '
-      }
-      printValue += this.curToken.literal
-      this.nextToken()
-    }
+    const printValue = this.parseRestOfLineAsSingleString()
 
     return {
       type: StatementType.PRINT,
@@ -163,14 +185,7 @@ export class Parser {
 
     this.expectPeek(TokenType.STRING) // Skip over the '=' token
 
-    let variableValue = ''
-    while (!this.curTokenIsEndOfStatement()) {
-      if (variableValue) {
-        variableValue += ' '
-      }
-      variableValue += this.curToken.literal
-      this.nextToken()
-    }
+    const variableValue = this.parseRestOfLineAsSingleString()
 
     return {
       type: StatementType.SET,
@@ -179,4 +194,16 @@ export class Parser {
       variableValue
     }
   }
+}
+
+export function concatenateUrlWithQueryParams(url: string, queryParams: Record<string, string>): string {
+  if (Object.entries(queryParams).length === 0) {
+    return url
+  }
+  const urlSearchParams = new URLSearchParams()
+  for (const [key, value] of Object.entries(queryParams)) {
+    urlSearchParams.set(key, value)
+  }
+  return url + '?' + urlSearchParams.toString()
+
 }

@@ -2,7 +2,6 @@
 
 ## Roadmap
 - Comments
-- Replace the Command type with just token type
 - Query params that automatically URL encode
 - IMPORT command
 - Remove token limit in lexer

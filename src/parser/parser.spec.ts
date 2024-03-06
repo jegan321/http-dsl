@@ -1,6 +1,6 @@
 import { expect, test, describe } from 'vitest'
 import { Lexer } from '../lexer/lexer'
-import { Parser } from './parser'
+import { Parser, concatenateUrlWithQueryParams } from './parser'
 import { PrintStatement, Program, RequestStatement, SetStatement } from './ast'
 
 function parseProgram(input: string): Program {
@@ -34,6 +34,35 @@ describe('Parser', () => {
     expect(request.tokenLiteral).toEqual('GET')
     expect(request.method).toEqual('GET')
     expect(request.url).toEqual('https://api.example.com')
+    expect(Object.entries(request.headers).length).toEqual(1)
+    expect(request.headers['content-type']).toEqual('application/json')
+  })
+  test('should parse GET request with query param', () => {
+    const input = `
+    GET https://api.example.com/search
+    &q=My search terms
+    `
+    const program = parseProgram(input)
+    expect(program.statements.length).toEqual(1)
+    const request = program.statements[0] as RequestStatement
+    expect(request.type).toEqual('REQUEST')
+    expect(request.tokenLiteral).toEqual('GET')
+    expect(request.method).toEqual('GET')
+    expect(request.url).toEqual('https://api.example.com/search?q=My+search+terms')
+  })
+  test('should parse GET request with query param and header', () => {
+    const input = `
+    GET https://api.example.com/search
+    &q=My search terms
+    content-type: application/json
+    `
+    const program = parseProgram(input)
+    expect(program.statements.length).toEqual(1)
+    const request = program.statements[0] as RequestStatement
+    expect(request.type).toEqual('REQUEST')
+    expect(request.tokenLiteral).toEqual('GET')
+    expect(request.method).toEqual('GET')
+    expect(request.url).toEqual('https://api.example.com/search?q=My+search+terms')
     expect(Object.entries(request.headers).length).toEqual(1)
     expect(request.headers['content-type']).toEqual('application/json')
   })
@@ -143,5 +172,40 @@ describe('Parser', () => {
     expect(request.type).toEqual('PRINT')
     expect(request.tokenLiteral).toEqual('PRINT')
     expect(request.printValue).toEqual('Hello, world!')
+  })
+})
+
+describe('concatenateUrlWithQueryParams', () => {
+  test('should return url when there are no query params', () => {
+    const url = 'https://api.example.com/users/search'
+    const queryParams = {}
+    const result = concatenateUrlWithQueryParams(url, queryParams)
+    expect(result).toBe('https://api.example.com/users/search')
+  })
+  test('should append query param', () => {
+    const url = 'https://api.example.com/users/search'
+    const queryParams = {
+      q: 'manager'
+    }
+    const result = concatenateUrlWithQueryParams(url, queryParams)
+    expect(result).toBe('https://api.example.com/users/search?q=manager')
+  })
+  test('should append two query params', () => {
+    const url = 'https://api.example.com/users/search'
+    const queryParams = {
+      q: 'manager',
+      size: '10'
+    }
+    const result = concatenateUrlWithQueryParams(url, queryParams)
+    expect(result).toBe('https://api.example.com/users/search?q=manager&size=10')
+  })
+  test('should append URL encode param', () => {
+    const url = 'https://api.example.com/users/search'
+    const queryParams = {
+      q: 'My search terms',
+      size: '10'
+    }
+    const result = concatenateUrlWithQueryParams(url, queryParams)
+    expect(result).toBe('https://api.example.com/users/search?q=My+search+terms&size=10')
   })
 })

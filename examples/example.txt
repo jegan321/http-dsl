@@ -2,7 +2,13 @@
 
 # https://jsonplaceholder.typicode.com/users/1
 
-GET https://jsonplaceholder.typicode.com/users/1
+GET https://jsonplaceholder.typicode.com/users/search
+&q=John Egan
+&size=10
+&sortProperty=dateCreated
+
+
+
 
 PRINT {{ response }}
 

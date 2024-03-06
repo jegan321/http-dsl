@@ -13,6 +13,7 @@ describe('Integration Tests', () => {
   const evaluator = new Evaluator(environment, httpClient, io)
   beforeEach(() => {
     io.writes = []
+    httpClient.sentRequests = []
   })
   test('should send GET request', async () => {
     httpClient.status = 200
@@ -27,6 +28,23 @@ describe('Integration Tests', () => {
     const program = parser.parseProgram()
     await evaluator.evaluate(program)
     expect(httpClient.sentRequests.length).toBe(1)
+  })
+  test('should send GET request with query params', async () => {
+    httpClient.status = 200
+    httpClient.headers = { 'content-type': 'application/json' }
+    httpClient.body = { message: 'Hello' }
+    const input = `
+        GET https://api.example.com/users/search
+        &q=My search terms
+        &size=10
+        content-type: application/json
+      `
+    const lexer = new Lexer(input)
+    const parser = new Parser(lexer)
+    const program = parser.parseProgram()
+    await evaluator.evaluate(program)
+    expect(httpClient.sentRequests.length).toBe(1)
+    expect(httpClient.sentRequests[0].url).toBe('https://api.example.com/users/search?q=My+search+terms&size=10')
   })
   test('should set variable and print it', async () => {
     const input = `
