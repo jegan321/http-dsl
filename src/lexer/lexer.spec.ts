@@ -150,6 +150,30 @@ describe('Lexer - token types', () => {
     const tokens = lexer.getAllTokens().map((token) => token.type)
     expect(tokens).toEqual(expectedTokens)
   })
+  test('should get token types for comment', () => {
+    const input = `# Ignore`
+    const lexer = new Lexer(input)
+    const expectedTokens = [TokenType.END_FILE]
+    const tokens = lexer.getAllTokens().map((token) => token.type)
+    expect(tokens).toEqual(expectedTokens)
+  })
+  test('should get token types for GET request with comment on same line', () => {
+    const input = `GET https://api.example.com # This sends a GET request`
+    const lexer = new Lexer(input)
+    const expectedTokens = [TokenType.GET, TokenType.STRING, TokenType.END_FILE]
+    const tokens = lexer.getAllTokens().map((token) => token.type)
+    expect(tokens).toEqual(expectedTokens)
+  })
+  test('should get token types for GET request with comment on separate line', () => {
+    const input = `
+      # This sends a GET request
+      GET https://api.example.com
+    `
+    const lexer = new Lexer(input)
+    const expectedTokens = [TokenType.NEWLINE, TokenType.GET, TokenType.STRING]
+    const tokens = lexer.getAllTokens().map((token) => token.type)
+    expect(tokens).toEqual(expectedTokens)
+  })
 })
 
 describe('Lexer - token literals', () => {

@@ -90,9 +90,17 @@ export class Lexer {
     return token
   }
 
+  // TODO: Rename to skipIgnorableCharacters or skipWhitespaceAndComments
   skipSpacesAndTabs() {
     while (this.char === ' ' || this.char === '\t') {
       this.readChar()
+    }
+    this.skipComments()
+  }
+
+  skipComments() {
+    if (this.char === '#') {
+      this.readLine()
     }
   }
 
@@ -106,6 +114,17 @@ export class Lexer {
     while (true) {
       this.readChar()
       if (['', ' ', '\n'].includes(this.char)) {
+        break
+      }
+    }
+    return this.input.substring(start, this.position)
+  }
+
+  readLine() {
+    const start = this.position
+    while (true) {
+      this.readChar()
+      if (['\n', ''].includes(this.char)) {
         break
       }
     }

@@ -1,1 +1,6 @@
-PRINT {{ boo }}
+# https://jsonplaceholder.typicode.com/users/1
+GET https://jsonplaceholder.typicode.com/users/1
+
+PRINT RESPONSE
+
+
