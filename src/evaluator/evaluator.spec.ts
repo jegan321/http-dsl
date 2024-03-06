@@ -8,7 +8,7 @@ import { Program, StatementType } from '../parser/ast'
 describe('evaluate', async () => {
   const httpClient = new MockHttpClient()
   const io = new MockInputOutput()
-  const environment = new Environment(() => Promise.resolve('unknown_value'))
+  const environment = new Environment()
   const evaluator = new Evaluator(environment, httpClient, io)
   beforeEach(() => {
     environment.reset()
@@ -37,7 +37,7 @@ describe('evaluate', async () => {
     httpClient.status = 200
     httpClient.headers = { 'content-type': 'application/json' }
     httpClient.body = { message: 'Hello' }
-    environment.setVariable('id', '999')
+    environment.variables.id = '999'
     const program = new Program([
       {
         type: StatementType.REQUEST,

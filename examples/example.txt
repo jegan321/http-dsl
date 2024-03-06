@@ -2,4 +2,10 @@ SET host = https://jsonplaceholder.typicode.com
 
 GET /users/1
 
+POST /users
+content-type: application/json
+{
+    "username": "dude"
+}
+
 

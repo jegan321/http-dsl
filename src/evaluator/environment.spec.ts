@@ -1,10 +1,13 @@
 import { expect, test, describe } from 'vitest'
 import { Environment } from './environment'
+import exp from 'constants'
 
-describe('getVariable', async () => {
-  test('should should use UnknownVariableGetter when variable is not set', async () => {
-    const environment = new Environment(() => Promise.resolve('mock_value'))
-    const value = await environment.getVariable('unknown_variable')
-    expect(value).toBe('mock_value')
+describe('reset', async () => {
+  test('should should remove all variables', () => {
+    const environment = new Environment()
+    environment.variables.foo = 'bar'
+    environment.variables.baz = 'qux'
+    environment.reset()
+    expect(environment.variables).toEqual({})
   })
 })

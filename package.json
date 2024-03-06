@@ -9,8 +9,8 @@
     "test:run": "vitest run",
     "prebuild": "node -p \"'export const VERSION = ' + JSON.stringify(require('./package.json').version) + ';'\" > src/version.ts",
     "build": "npm run format && vitest run && tsc",
-    "start": "tsc && node dist/src/index.js",
-    "example": "tsc && node dist/src/index.js examples/example.txt"
+    "start": "tsc && node dist/index.js",
+    "example": "tsc && node dist/index.js examples/example.txt"
   },
   "author": "John Egan",
   "license": "MIT",

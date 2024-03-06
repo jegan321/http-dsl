@@ -1,8 +1,8 @@
 import { Program, RequestStatement, SetStatement, StatementType } from '../parser/ast'
-import { Environment, UnknownVariableGetter } from './environment'
+import { Environment } from './environment'
 import { FetchHttpClient, HttpClient, HttpResponse } from './http-client'
 import { InputOutput, TerminalInputOutput } from './input-output'
-import { replaceVariables } from './replace-variables'
+import { replaceExpressions } from './replace-variables'
 
 export class Evaluator {
   private environment: Environment
@@ -17,7 +17,7 @@ export class Evaluator {
 
   static build(): Evaluator {
     const io = new TerminalInputOutput()
-    const environment = Environment.build(io)
+    const environment = new Environment()
     const httpClient = new FetchHttpClient()
     return new Evaluator(environment, httpClient, io)
   }
@@ -26,37 +26,37 @@ export class Evaluator {
     for (const statement of program.statements) {
       switch (statement.type) {
         case StatementType.REQUEST:
-          await this.replaceRequestStatementVariables(this.environment, statement)
-          if (statement.url.startsWith('/') && this.environment.containsVariable('host')) {
-            statement.url = await this.environment.getVariable('host') + statement.url
+          this.replaceRequestStatementVariables(this.environment, statement)
+          if (statement.url.startsWith('/') && this.environment.hasVariable('host')) {
+            statement.url = this.environment.variables.host + statement.url
           }
           const httpResponse = await this.httpClient.sendRequest(statement)
           this.printResponse(httpResponse)
           break
         case StatementType.PRINT:
-          const printValue = await replaceVariables(this.environment, statement.printValue)
+          const printValue = replaceExpressions(this.environment, statement.printValue)
           await this.io.write(printValue)
           break
         case StatementType.SET:
-          await this.replaceSetStatementVariables(this.environment, statement)
-          this.environment.setVariable(statement.variableName, statement.variableValue)
+          this.replaceSetStatementVariables(this.environment, statement)
+          this.environment.variables[statement.variableName] = statement.variableValue
           break
       }
     }
   }
 
-  async replaceRequestStatementVariables(environment: Environment, request: RequestStatement) {
-    request.method = await replaceVariables(environment, request.method)
-    request.url = await replaceVariables(environment, request.url)
+  replaceRequestStatementVariables(environment: Environment, request: RequestStatement) {
+    request.method = replaceExpressions(environment, request.method)
+    request.url = replaceExpressions(environment, request.url)
     for (const [key, value] of Object.entries(request.headers)) {
-      request.headers[key] = await replaceVariables(environment, value)
+      request.headers[key] = replaceExpressions(environment, value)
     }
-    const replacedBody = await replaceVariables(environment, request.body)
+    const replacedBody = replaceExpressions(environment, request.body)
     request.body = replacedBody ? replacedBody : undefined // Replace empty string with undefined
   }
 
-  async replaceSetStatementVariables(environment: Environment, setStatement: SetStatement) {
-    setStatement.variableValue = await replaceVariables(environment, setStatement.variableValue)
+  replaceSetStatementVariables(environment: Environment, setStatement: SetStatement) {
+    setStatement.variableValue = replaceExpressions(environment, setStatement.variableValue)
   }
 
   printResponse(httpResponse: HttpResponse) {

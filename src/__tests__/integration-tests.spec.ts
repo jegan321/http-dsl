@@ -9,7 +9,7 @@ import { Environment } from '../evaluator/environment'
 describe('Integration Tests', () => {
   const httpClient = new MockHttpClient()
   const io = new MockInputOutput()
-  const environment = new Environment(() => Promise.resolve('unknown_value'))
+  const environment = new Environment()
   const evaluator = new Evaluator(environment, httpClient, io)
   beforeEach(() => {
     io.writes = []

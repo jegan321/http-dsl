@@ -1,12 +1,6 @@
 import { Environment } from './environment'
 
-/**
- * Returns the value with all variables replaced with their values from the environment.
- * Variable syntax is `{{variableName}}`. If value is undefined, returns an empty string.
- *
- * TODO: Rename to expressions?
- */
-export async function replaceVariables(environment: Environment, value?: string): Promise<string> {
+export function replaceExpressions(environment: Environment, value?: string): string {
   if (value == null) {
     return ''
   }
@@ -20,7 +14,7 @@ export async function replaceVariables(environment: Environment, value?: string)
         throw new Error('Unmatched opening {{')
       }
       const variableName = value.substring(i + 2, end)
-      const variableValue = await environment.getVariable(variableName)
+      const variableValue = environment.variables[variableName]
       output += variableValue
       i = end + 1
     } else {

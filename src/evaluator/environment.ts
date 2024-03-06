@@ -1,42 +1,13 @@
-import { InputOutput } from './input-output'
-
-export interface UnknownVariableGetter {
-  (variableName: string): Promise<string>
-}
-
 export class Environment {
-  unknownVariableGetter: UnknownVariableGetter
   variables: Record<string, string> = {}
 
-  constructor(unknownVariableGetter: UnknownVariableGetter) {
-    this.unknownVariableGetter = unknownVariableGetter
-  }
-
-  static build(io: InputOutput) {
-    const unknownVariableGetter: UnknownVariableGetter = (variableName) => {
-      return io.prompt(`Enter value for unknown variable ${variableName}: `)
-    }
-    return new Environment(unknownVariableGetter)
-  }
-
-  setVariable(name: string, value: string): void {
-    this.variables[name] = value
-  }
-
-  getVariable(name: string): Promise<string> {
-    const variableValue = this.variables[name]
-    if (variableValue != null) {
-      return Promise.resolve(variableValue)
-    } else {
-      return this.unknownVariableGetter(name)
-    }
-  }
-
-  containsVariable(name: string): boolean {
-    return this.variables[name] != null
+  hasVariable(variableName: string): boolean {
+    return variableName in this.variables
   }
 
   reset() {
     this.variables = {}
   }
+
+  // TODO: Add helper methods
 }
