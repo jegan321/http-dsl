@@ -1,5 +1,6 @@
 import { Program, RequestStatement, SetStatement, StatementType } from '../parser/ast'
 import { getErrorMessage } from '../utils/error-utils'
+import { hasContentType } from '../utils/header-utils'
 import { Environment } from './environment'
 import { FetchHttpClient, HttpClient, HttpResponse } from './http-client'
 import { InputOutput, TerminalInputOutput } from './input-output'
@@ -38,7 +39,12 @@ export class Evaluator {
         case StatementType.REQUEST:
           this.replaceRequestStatementExpressions(this.environment, statement)
           if (statement.url.startsWith('/') && this.environment.hasVariable('host')) {
+            // Automatically use host variable if host is not specified in the statement
             statement.url = this.environment.variables.host + statement.url
+          }
+          if (!hasContentType(statement.headers)) {
+            // Default Content-Type to application/json for convenience
+            statement.headers['Content-Type'] = 'application/json'
           }
           const httpResponse = await this.httpClient.sendRequest(statement)
           this.environment.variables.response = httpResponse
