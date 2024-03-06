@@ -13,7 +13,12 @@ export function evaluateExpression(expression: string, environment: Environment)
         return 'null'
     }
     if (typeof result === 'object') {
-        // Convert objects and arrays into JSON
+        // If the object contains a stringify() method, use that
+        if (typeof result.stringify === 'function') {
+            return result.stringify()
+        }
+        
+        // Convert other objects and arrays into JSON. 
         return JSON.stringify(result)
     }
     // Convert booleans and numbers to strings

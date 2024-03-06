@@ -1,3 +1,4 @@
+import { stringify } from 'querystring'
 import { RequestStatement } from '../parser/ast'
 // import fetch from 'node-fetch' // TODO: This is complaining about Common JS
 
@@ -12,8 +13,17 @@ export class HttpResponse {
     this.body = body
   }
 
-  toString() {
-    return `YEAAAAH`
+  isJson(): boolean {
+    const contentTypeHeader = Object.keys(this.headers).find(headerName => headerName.toLowerCase() === 'content-type')
+    return contentTypeHeader != null && this.headers[contentTypeHeader].toLowerCase().includes('application/json')
+  }
+
+  stringify() {
+    let body = this.body
+    if (this.isJson()) {
+      body = JSON.stringify(JSON.parse(body), null, 2)
+    }
+    return `Status: ${this.status}\nBody: ${body}`
   }
 }
 
