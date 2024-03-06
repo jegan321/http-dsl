@@ -26,5 +26,5 @@
 - JS transpiler
 - Turn off prettier on spec files
 - Built-in helper function for basic auth
-
+- REPL up arrow
 

@@ -21,7 +21,7 @@ export class REPL {
 
   static build() {
     const io = new TerminalInputOutput()
-    const environment = Environment.build(io)
+    const environment = new Environment()
     const httpClient = new FetchHttpClient()
     return new REPL(environment, io, httpClient)
   }

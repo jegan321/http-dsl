@@ -26,7 +26,7 @@ export class Evaluator {
     for (const statement of program.statements) {
       switch (statement.type) {
         case StatementType.REQUEST:
-          this.replaceRequestStatementVariables(this.environment, statement)
+          this.replaceRequestStatementExpressions(this.environment, statement)
           if (statement.url.startsWith('/') && this.environment.hasVariable('host')) {
             statement.url = this.environment.variables.host + statement.url
           }
@@ -38,14 +38,14 @@ export class Evaluator {
           await this.io.write(printValue)
           break
         case StatementType.SET:
-          this.replaceSetStatementVariables(this.environment, statement)
+          this.replaceSetStatementExpressions(this.environment, statement)
           this.environment.variables[statement.variableName] = statement.variableValue
           break
       }
     }
   }
 
-  replaceRequestStatementVariables(environment: Environment, request: RequestStatement) {
+  replaceRequestStatementExpressions(environment: Environment, request: RequestStatement) {
     request.method = replaceExpressions(environment, request.method)
     request.url = replaceExpressions(environment, request.url)
     for (const [key, value] of Object.entries(request.headers)) {
@@ -55,7 +55,7 @@ export class Evaluator {
     request.body = replacedBody ? replacedBody : undefined // Replace empty string with undefined
   }
 
-  replaceSetStatementVariables(environment: Environment, setStatement: SetStatement) {
+  replaceSetStatementExpressions(environment: Environment, setStatement: SetStatement) {
     setStatement.variableValue = replaceExpressions(environment, setStatement.variableValue)
   }
 
