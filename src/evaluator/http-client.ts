@@ -1,5 +1,6 @@
 import { RequestStatement } from '../parser/ast'
 import { isContentType } from '../utils/header-utils'
+import { formatJson } from '../utils/json-utils'
 // import fetch from 'node-fetch' // TODO: This is complaining about Common JS
 
 export class HttpResponse {
@@ -16,7 +17,7 @@ export class HttpResponse {
   stringify() {
     let body = this.body
     if (isContentType('application/json', this.headers)) {
-      body = JSON.stringify(JSON.parse(body), null, 2)
+      body = formatJson(body)
     }
     return `Status: ${this.status}\nBody: ${body}`
   }

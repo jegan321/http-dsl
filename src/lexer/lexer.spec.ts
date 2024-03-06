@@ -1,6 +1,7 @@
 import { expect, test, describe } from 'vitest'
 import { Lexer } from './lexer'
 import { TokenType } from './tokens'
+import { formatJson } from '../utils/json-utils'
 
 describe('Lexer - token types', () => {
   test('should get token type for GET', () => {
@@ -208,8 +209,8 @@ describe('Lexer - token literals', () => {
       `
     const lexer = new Lexer(input)
     const literals = lexer.getAllTokens().map((token) => token.literal)
-    const requestBodyLiteral = JSON.stringify(JSON.parse(literals[3]))
-    expect(requestBodyLiteral).toEqual(`{"catalogNumber":"123","description":"My item"}`)
+    const requestBodyLiteral = formatJson(literals[3])
+    expect(JSON.parse(requestBodyLiteral)).toEqual({"catalogNumber":"123","description":"My item"})
   })
   test('should get token literals for POST, headers and request body', () => {
     const input = `
