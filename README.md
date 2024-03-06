@@ -2,7 +2,6 @@
 
 ## Roadmap
 - Comments
-- Expressions error handling for unknown vars
 - Replace the Command type with just token type
 - Query params that automatically URL encode
 - IMPORT command
@@ -28,4 +27,4 @@
 - Turn off prettier on spec files
 - Built-in helper function for basic auth
 - REPL up arrow
-
+- Add line number to error messages

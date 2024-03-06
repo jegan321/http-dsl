@@ -13,6 +13,16 @@ describe('expressions', async () => {
     const result = evaluateExpression(input, environment)
     expect(result).toBe('Hello')
   })
+  test('should throw error when variable does not exist', async () => {
+    const input = 'message'
+    let errorMessage = ''
+    try {
+      evaluateExpression(input, environment)
+    } catch (error) {
+      errorMessage = (error as Error).message
+    }
+    expect(errorMessage).toBe('message is not defined')
+  })
   test('should evaluate number literals', async () => {
     const input = '1 + 2'
     const result = evaluateExpression(input, environment)

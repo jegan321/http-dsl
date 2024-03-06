@@ -1,4 +1,5 @@
 import { Program, RequestStatement, SetStatement, StatementType } from '../parser/ast'
+import { getErrorMessage } from '../utils/error-utils'
 import { Environment } from './environment'
 import { FetchHttpClient, HttpClient, HttpResponse } from './http-client'
 import { InputOutput, TerminalInputOutput } from './input-output'
@@ -23,6 +24,15 @@ export class Evaluator {
   }
 
   async evaluate(program: Program) {
+    try {
+      await this.evaluateProgram(program)
+    } catch (error) {
+      const errorMessage = getErrorMessage(error)
+      this.io.write(errorMessage)
+    }
+  }
+
+  async evaluateProgram(program: Program) {
     for (const statement of program.statements) {
       switch (statement.type) {
         case StatementType.REQUEST:
@@ -43,6 +53,7 @@ export class Evaluator {
           break
       }
     }
+
   }
 
   replaceRequestStatementExpressions(environment: Environment, request: RequestStatement) {
