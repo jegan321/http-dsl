@@ -77,4 +77,30 @@ describe('Integration Tests', () => {
     expect(io.writes.length).toBe(1)
     expect(io.writes[0]).toBe('bar')
   })
+  test('should send POST request with array mapped variable', async () => {
+    httpClient.status = 200
+    httpClient.headers = { 'content-type': 'application/json' }
+    httpClient.body = { message: 'Hello' }
+    environment.variables.roles = [
+      {id: 1, name: 'Manager'},
+      {id: 2, name: 'Admin'},
+    ]
+    const input = `
+        POST https://api.example.com/users
+        content-type: application/json
+        {
+          "username": "user1",
+          "roleIds": {{ roles.map(role => role.id) }}
+        }
+      `
+    const lexer = new Lexer(input)
+    const parser = new Parser(lexer)
+    const program = parser.parseProgram()
+    await evaluator.evaluate(program)
+    expect(httpClient.sentRequests.length).toBe(1)
+    expect(JSON.parse(httpClient.sentRequests[0].body as string)).toEqual({
+      username: 'user1',
+      roleIds: [1, 2]
+    })
+  })
 })
