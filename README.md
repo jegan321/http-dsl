@@ -3,7 +3,6 @@
 ## Roadmap
 - Bug: Entire URL cannot be an expression. Lexer bug probably
 - Test duplicate query params
-- Integration test for mapping array from one API response into body of next one, such as GET /roles then POST /users
 - Remove token limit in lexer
 - default content type to json. Add function to header util to check if content type exists
 - Replace native fetch with node-fetch (need to fix commonjs bullshit)

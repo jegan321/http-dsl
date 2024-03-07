@@ -175,6 +175,13 @@ describe('Lexer - token types', () => {
     const tokens = lexer.getAllTokens().map((token) => token.type)
     expect(tokens).toEqual(expectedTokens)
   })
+  test('should get token types for expression with spaces around variable name', () => {
+    const input = `{{ url }}`
+    const lexer = new Lexer(input)
+    const expectedTokens = [TokenType.STRING]
+    const tokens = lexer.getAllTokens().map((token) => token.type)
+    expect(tokens).toEqual(expectedTokens)
+  })
 })
 
 describe('Lexer - token literals', () => {

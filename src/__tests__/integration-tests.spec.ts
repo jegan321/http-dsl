@@ -5,7 +5,6 @@ import { Evaluator } from '../evaluator/evaluator'
 import { MockHttpClient } from '../evaluator/http-client'
 import { MockInputOutput } from '../evaluator/input-output'
 import { Environment } from '../evaluator/environment'
-import { format } from 'path'
 import { formatJson } from '../utils/json-utils'
 
 describe('Integration Tests', () => {
@@ -30,6 +29,22 @@ describe('Integration Tests', () => {
     const program = parser.parseProgram()
     await evaluator.evaluate(program)
     expect(httpClient.sentRequests.length).toBe(1)
+  })
+  test('should send GET request with the entire URl as a variable', async () => {
+    httpClient.status = 200
+    httpClient.headers = { 'content-type': 'application/json' }
+    httpClient.body = { message: 'Hello' }
+    environment.variables.url = 'https://api.example.com/items'
+    const input = `
+        GET {{ url }}
+        content-type: application/json
+      `
+    const lexer = new Lexer(input)
+    const parser = new Parser(lexer)
+    const program = parser.parseProgram()
+    await evaluator.evaluate(program)
+    expect(httpClient.sentRequests.length).toBe(1)
+    expect(httpClient.sentRequests[0].url).toBe('https://api.example.com/items')
   })
   test('should send GET request with query params', async () => {
     httpClient.status = 200

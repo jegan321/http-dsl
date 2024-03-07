@@ -7,6 +7,7 @@ export class Lexer {
   private char: string
   private nextChar: string
   private prevToken?: Token
+  private insideExpression: boolean = false
 
   constructor(input: string) {
     this.input = input.trim()
@@ -35,6 +36,12 @@ export class Lexer {
     }
     this.position = this.nextPosition
     this.nextPosition++
+    if (this.char === '{' && this.input[this.position - 1] === '{') {
+      this.insideExpression = true
+    }
+    if (this.char === '}' && this.input[this.position - 1] === '}') {
+      this.insideExpression = false
+    }
   }
 
   /**
@@ -44,6 +51,7 @@ export class Lexer {
   nextToken(): Token {
     const token = this._nextToken()
     this.prevToken = token
+    console.log(token.literal)
     return token
   }
 
@@ -113,7 +121,10 @@ export class Lexer {
     const start = this.position
     while (true) {
       this.readChar()
-      if (['', ' ', '\n'].includes(this.char)) {
+      if (['', '\n'].includes(this.char)) {
+        break
+      }
+      if (this.char === ' ' && !this.insideExpression) {
         break
       }
     }
