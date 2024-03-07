@@ -96,7 +96,7 @@ export class Parser {
     this.nextToken() // Done with URL
 
     const headers: Record<string, string> = {}
-    const queryParams: Record<string, string> = {}
+    const queryParams: Record<string, string[]> = {}
     let body: string | undefined = undefined
 
     // Now there will be a newline or end stmt or eof
@@ -113,7 +113,10 @@ export class Parser {
           const elements = queryNameAndValue.split('=')
           const queryParamName = elements[0]
           const queryParamValue = elements.length > 1 ? elements[1] : ''
-          queryParams[queryParamName] = queryParamValue
+          if (queryParams[queryParamName] == null) {
+            queryParams[queryParamName] = []
+          }
+          queryParams[queryParamName].push(queryParamValue)
 
           // this.nextToken() // Don't call nextToken() because parseRestOfLineAsSingleString() already skips to the newline token
         } else {
@@ -215,13 +218,15 @@ export class Parser {
   }
 }
 
-export function concatenateUrlWithQueryParams(url: string, queryParams: Record<string, string>): string {
+export function concatenateUrlWithQueryParams(url: string, queryParams: Record<string, string[]>): string {
   if (Object.entries(queryParams).length === 0) {
     return url
   }
   const urlSearchParams = new URLSearchParams()
-  for (const [key, value] of Object.entries(queryParams)) {
-    urlSearchParams.set(key, value)
+  for (const [paramName, paramValues] of Object.entries(queryParams)) {
+    for (const paramValue of paramValues) {
+      urlSearchParams.append(paramName, paramValue)
+    }
   }
   return url + '?' + urlSearchParams.toString()
 }

@@ -51,7 +51,6 @@ export class Lexer {
   nextToken(): Token {
     const token = this._nextToken()
     this.prevToken = token
-    console.log(token.literal)
     return token
   }
 

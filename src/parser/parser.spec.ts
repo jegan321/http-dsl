@@ -210,7 +210,7 @@ describe('concatenateUrlWithQueryParams', () => {
   test('should append query param', () => {
     const url = 'https://api.example.com/users/search'
     const queryParams = {
-      q: 'manager'
+      q: ['manager']
     }
     const result = concatenateUrlWithQueryParams(url, queryParams)
     expect(result).toBe('https://api.example.com/users/search?q=manager')
@@ -218,8 +218,8 @@ describe('concatenateUrlWithQueryParams', () => {
   test('should append two query params', () => {
     const url = 'https://api.example.com/users/search'
     const queryParams = {
-      q: 'manager',
-      size: '10'
+      q: ['manager'],
+      size: ['10']
     }
     const result = concatenateUrlWithQueryParams(url, queryParams)
     expect(result).toBe('https://api.example.com/users/search?q=manager&size=10')
@@ -227,8 +227,8 @@ describe('concatenateUrlWithQueryParams', () => {
   test('should append URL encode param', () => {
     const url = 'https://api.example.com/users/search'
     const queryParams = {
-      q: 'My search terms',
-      size: '10'
+      q: ['My search terms'],
+      size: ['10']
     }
     const result = concatenateUrlWithQueryParams(url, queryParams)
     expect(result).toBe('https://api.example.com/users/search?q=My+search+terms&size=10')

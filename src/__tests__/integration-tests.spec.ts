@@ -79,7 +79,9 @@ describe('Integration Tests', () => {
     const program = parser.parseProgram()
     await evaluator.evaluate(program)
     expect(httpClient.sentRequests.length).toBe(1)
-    expect(httpClient.sentRequests[0].url).toBe('https://api.example.com/users/search?column=Name&column=Type&column=Created+Date')
+    expect(httpClient.sentRequests[0].url).toBe(
+      'https://api.example.com/users/search?column=Name&column=Type&column=Created+Date'
+    )
   })
   test('should send POST request', async () => {
     httpClient.status = 200
@@ -115,8 +117,8 @@ describe('Integration Tests', () => {
     httpClient.headers = { 'content-type': 'application/json' }
     httpClient.body = { message: 'Hello' }
     environment.variables.roles = [
-      {id: 1, name: 'Manager'},
-      {id: 2, name: 'Admin'},
+      { id: 1, name: 'Manager' },
+      { id: 2, name: 'Admin' }
     ]
     const input = `
         POST https://api.example.com/users
