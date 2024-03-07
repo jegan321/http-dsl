@@ -1,7 +1,7 @@
 import { expect, test, describe } from 'vitest'
 import { Lexer } from '../lexer/lexer'
 import { Parser, concatenateUrlWithQueryParams } from './parser'
-import { PrintStatement, Program, RequestStatement, SetStatement } from './ast'
+import { PrintStatement, Program, PromptStatement, RequestStatement, SetStatement } from './ast'
 
 function parseProgram(input: string): Program {
   const lexer = new Lexer(input)
@@ -172,6 +172,15 @@ describe('Parser', () => {
     expect(request.type).toEqual('PRINT')
     expect(request.tokenLiteral).toEqual('PRINT')
     expect(request.printValue).toEqual('Hello, world!')
+  })
+  test('should parser PROMPT name', () => {
+    const input = `PROMPT name`
+    const program = parseProgram(input)
+    expect(program.statements.length).toEqual(1)
+    const request = program.statements[0] as PromptStatement
+    expect(request.type).toEqual('PROMPT')
+    expect(request.tokenLiteral).toEqual('PROMPT')
+    expect(request.variableName).toEqual('name')
   })
 })
 

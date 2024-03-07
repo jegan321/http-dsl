@@ -1,7 +1,7 @@
 import { Lexer } from '../lexer/lexer'
 import { COMMAND_TOKENS, REQUEST_TOKENS, Token, TokenType } from '../lexer/tokens'
 import { isContentType } from '../utils/header-utils'
-import { Command, PrintStatement, Program, RequestStatement, SetStatement, Statement, StatementType } from './ast'
+import { Command, PrintStatement, Program, PromptStatement, RequestStatement, SetStatement, Statement, StatementType } from './ast'
 
 export class Parser {
   private lexer: Lexer
@@ -52,6 +52,8 @@ export class Parser {
       return this.parsePrintStatement()
     } else if (this.curToken.type === TokenType.SET) {
       return this.parseSetStatement()
+    } else if (this.curToken.type === TokenType.PROMPT) {
+      return this.parsePromptStatement()
     } else {
       this.errors.push(`Unimplemented command: ${this.curToken.literal}`)
       return null
@@ -214,6 +216,22 @@ export class Parser {
       tokenLiteral,
       variableName,
       variableValue
+    }
+  }
+
+  parsePromptStatement(): PromptStatement {
+    const tokenLiteral = this.curToken.literal
+    this.nextToken()
+
+    const variableName = this.curToken.literal
+    this.nextToken()
+
+    // TODO: Add parser error if there are two strings after PROMPT
+
+    return {
+      type: StatementType.PROMPT,
+      tokenLiteral,
+      variableName
     }
   }
 }

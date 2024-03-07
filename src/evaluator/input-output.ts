@@ -29,6 +29,7 @@ export class MockInputOutput implements InputOutput {
   public writes: any[] = []
 
   async prompt(promptText: string): Promise<string> {
+    this.writes.push(promptText)
     return this.promptResponse
   }
 

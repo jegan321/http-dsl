@@ -189,6 +189,13 @@ describe('Lexer - token types', () => {
     const tokens = lexer.getAllTokens().map((token) => token.type)
     expect(tokens).toEqual(expectedTokens)
   })
+  test('should get token types for PROMPT name', () => {
+    const input = `PROMPT name`
+    const lexer = new Lexer(input)
+    const expectedTokens = [TokenType.PROMPT, TokenType.STRING]
+    const tokens = lexer.getAllTokens().map((token) => token.type)
+    expect(tokens).toEqual(expectedTokens)
+  })
 })
 
 describe('Lexer - token literals', () => {

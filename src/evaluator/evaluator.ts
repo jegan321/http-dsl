@@ -53,6 +53,10 @@ export class Evaluator {
           const printValue = replaceExpressions(this.environment, statement.printValue)
           await this.io.write(printValue)
           break
+        case StatementType.PROMPT:
+          const userInput = await this.io.prompt(`Enter value for "${statement.variableName}": `)
+          this.environment.variables[statement.variableName] = userInput
+          break
         case StatementType.SET:
           this.replaceSetStatementExpressions(this.environment, statement)
           this.environment.variables[statement.variableName] = statement.variableValue

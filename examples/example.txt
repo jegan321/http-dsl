@@ -1,1 +1,3 @@
-print hello, world!
+prompt name
+
+print {{ name }}

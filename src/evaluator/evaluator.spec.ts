@@ -8,6 +8,7 @@ import { Program, StatementType } from '../parser/ast'
 describe('evaluate', async () => {
   const httpClient = new MockHttpClient()
   const io = new MockInputOutput()
+  io.promptResponse = 'mocked_prompt_response'
   const environment = new Environment()
   const evaluator = new Evaluator(environment, httpClient, io)
   beforeEach(() => {
@@ -80,6 +81,20 @@ describe('evaluate', async () => {
     expect(httpClient.sentRequests.length).toBe(0)
     expect(io.writes.length).toBe(0)
     expect(environment.variables.message).toBe('Hello, world!')
+  })
+  test('should prompt then set variable', async () => {
+    const program = new Program([
+      {
+        type: StatementType.PROMPT,
+        tokenLiteral: 'PROMPT',
+        variableName: 'message'
+      }
+    ])
+    await evaluator.evaluate(program)
+    expect(httpClient.sentRequests.length).toBe(0)
+    expect(io.writes.length).toBe(1)
+    expect(io.writes[0]).toBe(`Enter value for "message": `)
+    expect(environment.variables.message).toBe('mocked_prompt_response')
   })
   test('should send set variable then send request', async () => {
     httpClient.status = 200

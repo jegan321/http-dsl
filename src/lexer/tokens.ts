@@ -14,7 +14,8 @@ export enum TokenType {
   PATCH = 'PATCH',
   // TODO: Add other HTTP verbs
   SET = 'SET',
-  PRINT = 'PRINT'
+  PRINT = 'PRINT',
+  PROMPT = 'PROMPT'
 }
 
 export const COMMAND_TOKENS = [
@@ -24,7 +25,8 @@ export const COMMAND_TOKENS = [
   TokenType.DELETE,
   TokenType.PATCH,
   TokenType.SET,
-  TokenType.PRINT
+  TokenType.PRINT,
+  TokenType.PROMPT
 ]
 
 export const REQUEST_TOKENS = [TokenType.GET, TokenType.POST, TokenType.PUT, TokenType.DELETE]
@@ -50,7 +52,8 @@ export function getKeywordForLiteral(literal: string): TokenType | null {
     DELETE: TokenType.DELETE,
     PATCH: TokenType.PATCH,
     SET: TokenType.SET,
-    PRINT: TokenType.PRINT
+    PRINT: TokenType.PRINT,
+    PROMPT: TokenType.PROMPT
   }
   return keywordMap[literal.toUpperCase()]
 }
