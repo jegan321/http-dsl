@@ -68,13 +68,13 @@ export class Lexer {
   _nextToken(): Token {
     let token = new Token(TokenType.ILLEGAL, this.char)
 
-    this.skipSpacesAndTabs()
+    this.skipIgnorableCharacters()
 
     if (this.char === '') {
       // TODO: Is this needed for the parser? This block never happens when calling getAllTokens()
       token = new Token(TokenType.END_FILE, this.char)
     } else if (this.char === '\n') {
-      this.skipSpacesAndTabs()
+      this.skipIgnorableCharacters()
       if (this.nextChar === '\n') {
         this.readChar()
         this.readChar()
@@ -97,8 +97,7 @@ export class Lexer {
     return token
   }
 
-  // TODO: Rename to skipIgnorableCharacters or skipWhitespaceAndComments
-  skipSpacesAndTabs() {
+  skipIgnorableCharacters() {
     while (this.char === ' ' || this.char === '\t') {
       this.readChar()
     }

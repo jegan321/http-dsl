@@ -79,13 +79,5 @@ export class Evaluator {
     this.io.write(httpResponse.status)
     const responseBody = httpResponse.body
     this.io.write(responseBody)
-
-    // TODO: Below was needed for the axios version of HttpClient
-    // if (isJsonResponse(httpResponse)) {
-    //   var jsonString = JSON.stringify(responseBody, null, 2)
-    //   this.io.write(jsonString)
-    // } else {
-    //   this.io.write(responseBody)
-    // }
   }
 }
