@@ -11,6 +11,13 @@ describe('Lexer - token types', () => {
     const tokens = lexer.getAllTokens().map((token) => token.type)
     expect(tokens).toEqual(expectedTokens)
   })
+  test('should get token type for lowercase GET', () => {
+    const input = `get`
+    const lexer = new Lexer(input)
+    const expectedTokens = [TokenType.GET]
+    const tokens = lexer.getAllTokens().map((token) => token.type)
+    expect(tokens).toEqual(expectedTokens)
+  })
   test('should get token types for GET https://api.example.com', () => {
     const input = `GET https://api.example.com`
     const lexer = new Lexer(input)

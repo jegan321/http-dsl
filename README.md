@@ -1,10 +1,8 @@
 # HTTP DSL
 
 ## Roadmap
-- Remove token limit in lexer
-- default content type to json. Add function to header util to check if content type exists
 - Replace native fetch with node-fetch (need to fix commonjs bullshit)
-- Environment vars. Decide on syntax, should I prefix with env? Explicit vs implicit
+- Prompt command
 - Secret variables (hidden with * while typing)
 - Make HttpClient return a success flag?
 - Support array variables that prompt the user to select from the list of options

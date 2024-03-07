@@ -52,5 +52,5 @@ export function getKeywordForLiteral(literal: string): TokenType | null {
     SET: TokenType.SET,
     PRINT: TokenType.PRINT
   }
-  return keywordMap[literal]
+  return keywordMap[literal.toUpperCase()]
 }

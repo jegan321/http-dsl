@@ -56,10 +56,8 @@ export class Lexer {
 
   getAllTokens(): Token[] {
     const tokens = []
-    let tokenCount = 0
-    while (this.char && tokenCount < 100) {
+    while (this.char) {
       tokens.push(this.nextToken())
-      tokenCount++
     }
     // TODO: Should I add an EOF token here so it matches the behavior of the parser?
     return tokens
