@@ -69,7 +69,7 @@ describe('expressions', async () => {
     const result = evaluateExpression(input, environment)
     expect(result).toBe('["JOHN"]')
   })
-  test('should use toString() result when object has toString() method', async () => {
+  test('should use stringify() result when object has stringify() method', async () => {
     environment.variables.myObject = {
       stringify() {
         return 'Object string representation'

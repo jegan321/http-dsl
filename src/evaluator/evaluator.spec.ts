@@ -49,6 +49,24 @@ describe('evaluate', async () => {
     expect(httpClient.sentRequests.length).toBe(1)
     expect(httpClient.sentRequests[0].url).toBe('https://api.example.com/items/999')
   })
+  test('should send POST request where entire URL is an expressions', async () => {
+    httpClient.status = 200
+    httpClient.headers = { 'content-type': 'application/json' }
+    httpClient.body = { message: 'Hello' }
+    environment.variables.auth_url = 'https://api.example.com/login'
+    const program = new Program([
+      {
+        type: StatementType.REQUEST,
+        tokenLiteral: 'POST',
+        method: 'POST',
+        url: '{{auth_url}}',
+        headers: {}
+      }
+    ])
+    await evaluator.evaluate(program)
+    expect(httpClient.sentRequests.length).toBe(1)
+    expect(httpClient.sentRequests[0].url).toBe('https://api.example.com/login')
+  })
   test('should set variable in environment', async () => {
     const program = new Program([
       {
