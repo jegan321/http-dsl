@@ -63,6 +63,24 @@ describe('Integration Tests', () => {
     expect(httpClient.sentRequests.length).toBe(1)
     expect(httpClient.sentRequests[0].url).toBe('https://api.example.com/users/search?q=My+search+terms&size=10')
   })
+  test('should send GET request with duplicate query params', async () => {
+    httpClient.status = 200
+    httpClient.headers = { 'content-type': 'application/json' }
+    httpClient.body = { message: 'Hello' }
+    const input = `
+        GET https://api.example.com/users/search
+        &column=Name
+        &column=Type
+        &column=Created Date
+        content-type: application/json
+      `
+    const lexer = new Lexer(input)
+    const parser = new Parser(lexer)
+    const program = parser.parseProgram()
+    await evaluator.evaluate(program)
+    expect(httpClient.sentRequests.length).toBe(1)
+    expect(httpClient.sentRequests[0].url).toBe('https://api.example.com/users/search?column=Name&column=Type&column=Created+Date')
+  })
   test('should send POST request', async () => {
     httpClient.status = 200
     httpClient.headers = { 'content-type': 'application/json' }

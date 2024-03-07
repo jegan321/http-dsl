@@ -1,7 +1,6 @@
 # HTTP DSL
 
 ## Roadmap
-- Bug: Entire URL cannot be an expression. Lexer bug probably
 - Test duplicate query params
 - Remove token limit in lexer
 - default content type to json. Add function to header util to check if content type exists
