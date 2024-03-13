@@ -1,3 +1,15 @@
-GET https://api.dev.internal.trivalence.com/scm/api/v1/feature-flags
+PRINT Running tests
+PRINT
 
-print {{ response.body.map(ff => ff.name) }}
+PRINT - should search item master
+
+    #GET /facility-items
+    #PRINT found {{response.body.results.length}} items
+
+PRINT
+
+PRINT - should add to cart
+
+    PRINT Assertion error: Response status was 500
+
+PRINT

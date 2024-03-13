@@ -1,6 +1,8 @@
 # HTTP DSL
 
 ## Roadmap
+- Write tests for PRINT on its own (just newline)
+- DEFAULT HOST https://api.example.com
 - Bug: response.body is not an object (it is a string) so you can't do map() on it
 - Add line number to error messages
 - IF statement
