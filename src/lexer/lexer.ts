@@ -33,6 +33,9 @@ export class Lexer {
         this.nextChar = ''
       } else {
         this.nextChar = this.input[this.nextPosition + 1]
+        if (this.char === '\n') {
+          this.lineNumber++
+        }
       }
     }
     this.position = this.nextPosition
