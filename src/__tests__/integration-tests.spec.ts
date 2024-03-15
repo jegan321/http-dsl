@@ -99,6 +99,15 @@ describe('Integration Tests', () => {
     expect(httpClient.sentRequests.length).toBe(1)
     expect(httpClient.sentRequests[0].body).toBe(`{ "description": "Item desc", "cataloNumber": "123" }`)
   })
+  test('should print newline', async () => {
+    const input = `PRINT`
+    const lexer = new Lexer(input)
+    const parser = new Parser(lexer)
+    const program = parser.parseProgram()
+    await evaluator.evaluate(program)
+    expect(io.writes.length).toBe(1)
+    expect(io.writes[0]).toBe('')
+  })
   test('should set variable and print it', async () => {
     const input = `
         SET foo = bar
