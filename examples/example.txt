@@ -1,0 +1,9 @@
+POST https://jsonplaceholder.typicode.com/todos
+Content-Type: application/json
+{
+    "userId": 1,
+    "title": "Walk the dogs",
+    "completed": false
+}
+
+PRINT {{response}}
