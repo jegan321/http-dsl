@@ -1,8 +1,0 @@
-POST /fooooo
-{
-    "m": "b"
-}
-
-SET foo = bar
-
-SET SET
