@@ -1,14 +1,15 @@
 import { Environment } from './environment'
+import { base64 } from './helpers'
 
 /**
  * Returns the string value of a JavaScript expression
  */
 export function evaluateExpression(expression: string, environment: Environment): string {
   let code = `with (vars) {return ${expression}}`
-  const func = new Function('vars', code)
+  const func = new Function('vars', 'base64', code)
   const vars = environment.variables
   try {
-    const result = func(vars)
+    const result = func(vars, base64)
     if (result == null || typeof result === 'function') {
       // return null for null, undefined and functions
       return 'null'

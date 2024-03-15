@@ -5,7 +5,6 @@ import { Evaluator } from '../evaluator/evaluator'
 import { MockHttpClient } from '../evaluator/http-client'
 import { MockInputOutput } from '../evaluator/input-output'
 import { Environment } from '../evaluator/environment'
-import { formatJson } from '../utils/json-utils'
 
 describe('Integration tests', () => {
   const httpClient = new MockHttpClient()
@@ -154,5 +153,21 @@ describe('Integration tests', () => {
       expect(io.writes[0]).toBe('bar')
     })
   })
-  
+
+  describe('Helpers', () => {
+    test('should base64 encode', async () => {
+      const input = `
+          SET credentials = user1:password1
+
+          PRINT {{ base64(credentials) }}
+        `
+      const lexer = new Lexer(input)
+      const parser = new Parser(lexer)
+      const program = parser.parseProgram()
+      await evaluator.evaluate(program)
+      expect(io.writes.length).toBe(1)
+      expect(io.writes[0]).toBe('dXNlcjE6cGFzc3dvcmQx')
+    })
+  })
+
 })
