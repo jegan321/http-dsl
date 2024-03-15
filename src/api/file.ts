@@ -11,7 +11,7 @@ export class FileHandler {
     const program = parser.parseProgram()
     if (parser.errors.length) {
       for (const { line, message } of parser.errors) {
-        console.log(`Syntax error on line ${line}: ${message}`)
+        console.log(`Syntax error, line ${line}: ${message}`)
       }
       return
     }
