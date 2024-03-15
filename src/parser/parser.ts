@@ -3,11 +3,20 @@ import { COMMAND_TOKENS, REQUEST_TOKENS, Token, TokenType } from '../lexer/token
 import { isContentType } from '../utils/header-utils'
 import { Command, DefaultStatement, PrintStatement, Program, PromptStatement, RequestStatement, SetStatement, Statement, StatementType } from './ast'
 
+export class SyntaxError {
+  line: number
+  message: string
+  constructor(line: number, message: string) {
+    this.line = line
+    this.message = message
+  }
+ }
+
 export class Parser {
   private lexer: Lexer
   private curToken: Token
   private peekToken: Token
-  errors: string[]
+  errors: SyntaxError[]
 
   constructor(lexer: Lexer) {
     this.lexer = lexer
@@ -15,8 +24,8 @@ export class Parser {
 
     // Start with EOF tokens to keep type-checker happy but really
     // they are set in nextToken() calls below
-    this.curToken = new Token(TokenType.END_FILE, '')
-    this.peekToken = new Token(TokenType.END_FILE, '')
+    this.curToken = new Token(TokenType.END_FILE, '', 0)
+    this.peekToken = new Token(TokenType.END_FILE, '', 0)
 
     // Call nextToken twice to set curToken and peekToken
     this.nextToken()
@@ -42,7 +51,7 @@ export class Parser {
 
   parseStatement(): Statement | null {
     if (!COMMAND_TOKENS.includes(this.curToken.type)) {
-      this.errors.push(`Invalid token at beginning of statement: ${this.curToken.literal}`)
+      this.addSyntaxError(this.curToken, `Invalid token at beginning of statement: ${this.curToken.literal}`)
       return null
     }
 
@@ -57,7 +66,7 @@ export class Parser {
     } else if (this.curToken.type === TokenType.DEFAULT) {
       return this.parseDefaultStatement()
     } else {
-      this.errors.push(`Unimplemented command: ${this.curToken.literal}`)
+      this.addSyntaxError(this.curToken, `Unimplemented command: ${this.curToken.literal}`)
       return null
     }
   }
@@ -87,7 +96,7 @@ export class Parser {
       this.nextToken()
       return true
     } else {
-      this.errors.push(`Expected next token to be a ${type}, got ${this.peekToken.type} instead`)
+      this.addSyntaxError(this.curToken, `Expected next token to be a ${type}, got ${this.peekToken.type} instead`)
       return false
     }
   }
@@ -156,7 +165,7 @@ export class Parser {
       try {
         bodyObject = JSON.parse(body)
       } catch (error) {
-        this.errors.push(`Invalid JSON in body of application/x-www-form-urlencoded request: ${body}`)
+        this.addSyntaxError(this.curToken, `Invalid JSON in body of application/x-www-form-urlencoded request: ${body}`)
       }
       const urlSearchParams = new URLSearchParams()
       for (const [key, value] of Object.entries(bodyObject)) {
@@ -258,7 +267,7 @@ export class Parser {
       headerValue = this.curToken.literal
       this.nextToken()
     } else {
-      this.errors.push(`Invalid token after DEFAULT command: ${subType}`)
+      this.addSyntaxError(this.curToken, `Invalid token after DEFAULT command: ${subType}`)
     }
 
     return {
@@ -268,6 +277,11 @@ export class Parser {
       headerName,
       headerValue
     }
+  }
+
+  addSyntaxError(token: Token, message: string) {
+    const syntaxError = new SyntaxError(token.line, message)
+    this.errors.push(syntaxError)
   }
 }
 

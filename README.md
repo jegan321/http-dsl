@@ -1,7 +1,6 @@
 # HTTP DSL
 
 ## Roadmap
-- DEFAULT HOST https://api.example.com
 - Bug: response.body is not an object (it is a string) so you can't do map() on it
 - Add line number to error messages
 - Support multiple commands without a blank line between them

@@ -3,7 +3,7 @@ import { Token, TokenType } from './tokens'
 
 describe('Tokens', () => {
   test('should create token from type and literal', () => {
-    const token = new Token(TokenType.STRING, 'GET')
+    const token = new Token(TokenType.STRING, 'GET', 1)
     expect(token.type).toEqual(TokenType.STRING)
     expect(token.literal).toEqual('GET')
   })

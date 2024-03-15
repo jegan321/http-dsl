@@ -36,10 +36,12 @@ export const REQUEST_TOKENS = [TokenType.GET, TokenType.POST, TokenType.PUT, Tok
 export class Token {
   type: TokenType
   literal: string
+  line: number
 
-  constructor(type: TokenType, literal: string) {
+  constructor(type: TokenType, literal: string, line: number) {
     this.type = type
     this.literal = literal
+    this.line = line
   }
 }
 

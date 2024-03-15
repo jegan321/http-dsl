@@ -6,6 +6,7 @@ export class Lexer {
   private nextPosition: number
   private char: string
   private nextChar: string
+  private lineNumber: number
   private insideExpression: boolean = false
 
   constructor(input: string) {
@@ -14,6 +15,7 @@ export class Lexer {
     this.nextPosition = 0
     this.char = ''
     this.nextChar = ''
+    this.lineNumber = 1
     this.readChar()
   }
 
@@ -43,15 +45,6 @@ export class Lexer {
     }
   }
 
-  /**
-   * Look at current character return the corresponding token. Then
-   * advance the cursors.
-   */
-  nextToken(): Token {
-    const token = this._nextToken()
-    return token
-  }
-
   getAllTokens(): Token[] {
     const tokens = []
     while (this.char) {
@@ -61,36 +54,40 @@ export class Lexer {
     return tokens
   }
 
-  _nextToken(): Token {
-    let token = new Token(TokenType.ILLEGAL, this.char)
+  nextToken(): Token {
+    let token = this.createToken(TokenType.ILLEGAL, this.char)
 
     this.skipIgnorableCharacters()
 
     if (this.char === '') {
       // TODO: Is this needed for the parser? This block never happens when calling getAllTokens()
-      token = new Token(TokenType.END_FILE, this.char)
+      token = new Token(TokenType.END_FILE, this.char, this.lineNumber)
     } else if (this.char === '\n') {
       this.skipIgnorableCharacters()
       if (this.nextChar === '\n') {
         this.readChar()
         this.readChar()
-        return new Token(TokenType.END_STATEMENT, this.char)
+        return this.createToken(TokenType.END_STATEMENT, this.char)
       } else {
-        token = new Token(TokenType.NEWLINE, this.char)
+        token = this.createToken(TokenType.NEWLINE, this.char)
       }
     } else if (this.isBeginningOfMultiLineString()) {
       const literal = this.readMultiLineString()
-      return new Token(TokenType.MULTI_LINE_STRING, literal)
+      return this.createToken(TokenType.MULTI_LINE_STRING, literal)
     } else if (this.isBeginningOfString()) {
       const literal = this.readString()
       const keyword = getKeywordForLiteral(literal)
       const tokenType = keyword || TokenType.STRING
-      return new Token(tokenType, literal)
+      return this.createToken(tokenType, literal)
     }
 
     this.readChar()
 
     return token
+  }
+
+  createToken(tokenType: TokenType, literal: string) {
+    return new Token(tokenType, literal, this.lineNumber)
   }
 
   skipIgnorableCharacters() {
