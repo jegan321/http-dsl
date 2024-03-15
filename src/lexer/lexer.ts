@@ -6,7 +6,6 @@ export class Lexer {
   private nextPosition: number
   private char: string
   private nextChar: string
-  private prevToken?: Token
   private insideExpression: boolean = false
 
   constructor(input: string) {
@@ -50,7 +49,6 @@ export class Lexer {
    */
   nextToken(): Token {
     const token = this._nextToken()
-    this.prevToken = token
     return token
   }
 

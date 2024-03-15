@@ -1,7 +1,7 @@
 import { Lexer } from '../lexer/lexer'
 import { COMMAND_TOKENS, REQUEST_TOKENS, Token, TokenType } from '../lexer/tokens'
 import { isContentType } from '../utils/header-utils'
-import { Command, PrintStatement, Program, PromptStatement, RequestStatement, SetStatement, Statement, StatementType } from './ast'
+import { Command, DefaultStatement, PrintStatement, Program, PromptStatement, RequestStatement, SetStatement, Statement, StatementType } from './ast'
 
 export class Parser {
   private lexer: Lexer
@@ -54,6 +54,8 @@ export class Parser {
       return this.parseSetStatement()
     } else if (this.curToken.type === TokenType.PROMPT) {
       return this.parsePromptStatement()
+    } else if (this.curToken.type === TokenType.DEFAULT) {
+      return this.parseDefaultStatement()
     } else {
       this.errors.push(`Unimplemented command: ${this.curToken.literal}`)
       return null
@@ -232,6 +234,39 @@ export class Parser {
       type: StatementType.PROMPT,
       tokenLiteral,
       variableName
+    }
+  }
+
+  parseDefaultStatement(): DefaultStatement {
+    const tokenLiteral = this.curToken.literal
+    this.nextToken()
+
+    let host: string | undefined = undefined
+    let headerName: string | undefined = undefined
+    let headerValue: string | undefined = undefined
+
+    const subType = this.curToken.literal
+    const subTypeUpper = subType.toUpperCase()
+    this.nextToken()
+    if (subTypeUpper === 'HOST') {
+      host = this.curToken.literal // TODO: Validate host starts with http or something
+      this.nextToken()
+    } else if (subTypeUpper === 'HEADER') {
+      headerName = this.curToken.literal
+      this.nextToken()
+      this.expectPeek(TokenType.STRING) // Skip over the '=' token
+      headerValue = this.curToken.literal
+      this.nextToken()
+    } else {
+      this.errors.push(`Invalid token after DEFAULT command: ${subType}`)
+    }
+
+    return {
+      type: StatementType.DEFAULT,
+      tokenLiteral,
+      host,
+      headerName,
+      headerValue
     }
   }
 }

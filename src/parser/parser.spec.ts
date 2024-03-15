@@ -1,7 +1,7 @@
 import { expect, test, describe } from 'vitest'
 import { Lexer } from '../lexer/lexer'
 import { Parser, concatenateUrlWithQueryParams } from './parser'
-import { PrintStatement, Program, PromptStatement, RequestStatement, SetStatement } from './ast'
+import { DefaultStatement, PrintStatement, Program, PromptStatement, RequestStatement, SetStatement } from './ast'
 
 function parseProgram(input: string): Program {
   const lexer = new Lexer(input)
@@ -181,6 +181,25 @@ describe('Parser', () => {
     expect(request.type).toEqual('PROMPT')
     expect(request.tokenLiteral).toEqual('PROMPT')
     expect(request.variableName).toEqual('name')
+  })
+  test('should parse DEFAULT HOST https://api.example.com', () => {
+    const input = `DEFAULT HOST https://api.example.com`
+    const program = parseProgram(input)
+    expect(program.statements.length).toEqual(1)
+    const request = program.statements[0] as DefaultStatement
+    expect(request.type).toEqual('DEFAULT')
+    expect(request.tokenLiteral).toEqual('DEFAULT')
+    expect(request.host).toEqual('https://api.example.com')
+  })
+  test('should parse DEFAULT HEADER Accept = content-type/json', () => {
+    const input = `DEFAULT HEADER Accept = content-type/json`
+    const program = parseProgram(input)
+    expect(program.statements.length).toEqual(1)
+    const request = program.statements[0] as DefaultStatement
+    expect(request.type).toEqual('DEFAULT')
+    expect(request.tokenLiteral).toEqual('DEFAULT')
+    expect(request.headerName).toEqual('Accept')
+    expect(request.headerValue).toEqual('content-type/json')
   })
 })
 

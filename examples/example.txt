@@ -1,15 +1,3 @@
-PRINT Running tests
-PRINT
-
-PRINT - should search item master
-
-    #GET /facility-items
-    #PRINT found {{response.body.results.length}} items
-
-PRINT
-
-PRINT - should add to cart
-
-    PRINT Assertion error: Response status was 500
-
+PRINT Should search item master
+    PRINT Yoo
 PRINT

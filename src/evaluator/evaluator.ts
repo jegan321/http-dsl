@@ -1,6 +1,6 @@
 import { Program, RequestStatement, SetStatement, StatementType } from '../parser/ast'
 import { getErrorMessage } from '../utils/error-utils'
-import { hasContentType } from '../utils/header-utils'
+import { hasContentType, hasHeader } from '../utils/header-utils'
 import { Environment } from './environment'
 import { FetchHttpClient, HttpClient, HttpResponse } from './http-client'
 import { InputOutput, TerminalInputOutput } from './input-output'
@@ -38,13 +38,18 @@ export class Evaluator {
       switch (statement.type) {
         case StatementType.REQUEST:
           this.replaceRequestStatementExpressions(this.environment, statement)
-          if (statement.url.startsWith('/') && this.environment.hasVariable('host')) {
-            // Automatically use host variable if host is not specified in the statement
-            statement.url = this.environment.variables.host + statement.url
+          if (statement.url.startsWith('/') && this.environment.defaultHost) {
+            // Automatically use defaultHost if host is not specified in the statement
+            statement.url = this.environment.defaultHost + statement.url
           }
           if (!hasContentType(statement.headers)) {
             // Default Content-Type to application/json for convenience
             statement.headers['Content-Type'] = 'application/json'
+          }
+          for (const [defaultHeaderName, defaultHeaderValue] of Object.entries(this.environment.defaultHeaders)) {
+            if (!hasHeader(statement.headers, defaultHeaderName)) {
+              statement.headers[defaultHeaderName] = defaultHeaderValue
+            }
           }
           const httpResponse = await this.httpClient.sendRequest(statement)
           this.environment.variables.response = httpResponse
@@ -60,6 +65,14 @@ export class Evaluator {
         case StatementType.SET:
           this.replaceSetStatementExpressions(this.environment, statement)
           this.environment.variables[statement.variableName] = statement.variableValue
+          break
+        case StatementType.DEFAULT:
+          if (statement.host) {
+            this.environment.defaultHost = statement.host
+          }
+          if (statement.headerName && statement.headerValue) {
+            this.environment.defaultHeaders[statement.headerName] = statement.headerValue
+          }
           break
       }
     }

@@ -2,7 +2,8 @@ export enum StatementType {
   REQUEST = 'REQUEST',
   SET = 'SET',
   PRINT = 'PRINT',
-  PROMPT = 'PROMPT'
+  PROMPT = 'PROMPT',
+  DEFAULT = 'DEFAULT',
 }
 
 export enum Command {
@@ -17,7 +18,7 @@ export enum Command {
   PRINT = 'PRINT'
 }
 
-export type Statement = RequestStatement | PrintStatement | SetStatement | PromptStatement
+export type Statement = RequestStatement | PrintStatement | SetStatement | PromptStatement | DefaultStatement
 
 export interface RequestStatement {
   type: StatementType.REQUEST
@@ -45,6 +46,14 @@ export interface PromptStatement {
   type: StatementType.PROMPT
   tokenLiteral: string
   variableName: string
+}
+
+export interface DefaultStatement {
+  type: StatementType.DEFAULT
+  tokenLiteral: string
+  host?: string
+  headerName?: string
+  headerValue?: string
 }
 
 export class Program {

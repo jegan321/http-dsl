@@ -125,10 +125,9 @@ describe('evaluate', async () => {
     httpClient.body = { message: 'Hello' }
     const program = new Program([
       {
-        type: StatementType.SET,
-        tokenLiteral: 'SET',
-        variableName: 'host',
-        variableValue: 'https://api.example.com'
+        type: StatementType.DEFAULT,
+        tokenLiteral: 'DEFAULT',
+        host: 'https://api.example.com'
       },
       {
         type: StatementType.REQUEST,
@@ -153,5 +152,26 @@ describe('evaluate', async () => {
     await evaluator.evaluate(program)
     expect(io.writes.length).toBe(1)
     expect(io.writes[0]).toBe('Hello, world!')
+  })
+  test('should set default header', async () => {
+    const program = new Program([
+      {
+        type: StatementType.DEFAULT,
+        tokenLiteral: 'DEFAULT',
+        headerName: 'Accept',
+        headerValue: 'application/json'
+      },
+      {
+        type: StatementType.REQUEST,
+        tokenLiteral: 'GET',
+        method: 'GET',
+        url: '/items/123',
+        headers: {}
+      }
+    ])
+    await evaluator.evaluate(program)
+    expect(httpClient.sentRequests.length).toBe(1)
+    expect(httpClient.sentRequests[0].url).toBe('http://localhost:8080/items/123')
+    expect(httpClient.sentRequests[0].headers.Accept).toBe('application/json')
   })
 })
