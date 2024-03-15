@@ -1,6 +1,6 @@
 # HTTP DSL
 
-A simple scripting language for sending HTTP requests.
+A simple scripting language for sending HTTP requests. Its goals are to be easy to read and fast to write.
 
 ```
 POST https://jsonplaceholder.typicode.com/todos
@@ -26,4 +26,10 @@ PRINT Hello, world!
 Sets the value of a variable and creates the variable if it doesn't exist already.
 ```
 SET name = John
+```
+
+### PROMPT
+Prompts the user in the terminal for the value of a variable.
+```
+PROMPT password
 ```
