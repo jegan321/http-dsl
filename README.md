@@ -25,8 +25,23 @@ PRINT {{response}}
 - VSCode extension with syntax highlighting and shortcuts
 - Read/write JSON files
 
+## Sending HTTP Requests
+The language is built around sending HTTP requests. The syntax is inspired by the HTTP protocol itself.
 
-## Commands
+HTTP Protocol:
+```
+GET /users HTTP/1.1
+Host: jsonplaceholder.typicode.com
+Accept: application/json
+```
+
+Language syntax:
+```
+GET https://jsonplaceholder.typicode.com/users
+Accept: application/json
+```
+
+## Other Commands
 
 ### Print
 Prints to the console.
