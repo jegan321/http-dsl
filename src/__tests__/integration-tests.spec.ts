@@ -127,6 +127,24 @@ describe('Integration tests', () => {
         roleIds: [1, 2]
       })
     })
+    test('should send POST request with Content-Type: application/x-www-form-urlencoded', async () => {
+      httpClient.status = 200
+      httpClient.headers = { 'content-type': 'application/json' }
+      httpClient.body = { access_token: 'token' }
+      const input = `
+        POST /oauth2/token
+        Content-Type: application/x-www-form-urlencoded
+        Authorization: Basic MnJ2OHUydHFxY2ow
+        {
+          "grant_type": "client_credentials"
+        }
+      `
+      const lexer = new Lexer(input)
+      const parser = new Parser(lexer)
+      const program = parser.parseProgram()
+      await evaluator.evaluate(program)
+      expect(httpClient.sentRequests.length).toBe(1)
+    })
   })
 
   describe('Printing', () => {

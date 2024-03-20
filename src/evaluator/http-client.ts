@@ -47,10 +47,11 @@ export class FetchHttpClient implements HttpClient {
 }
 
 export class MockHttpClient implements HttpClient {
-  public status: number = 200
-  public headers: Record<string, string> = {}
-  public body: Record<string, any> = {}
-  public sentRequests: RequestStatement[] = []
+  // TODO: Rename theses field to be more clear
+  status: number = 200
+  headers: Record<string, string> = {}
+  body: Record<string, any> = {}
+  sentRequests: RequestStatement[] = []
   async sendRequest(request: RequestStatement): Promise<HttpResponse> {
     this.sentRequests.push(request)
 

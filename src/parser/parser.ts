@@ -137,8 +137,7 @@ export class Parser {
           const headerName = this.curToken.literal.replace(':', '')
           this.nextToken() // Done with header name
 
-          const headerValue = this.curToken.literal
-          this.nextToken() // Done with header value
+          const headerValue = this.parseRestOfLineAsSingleString() // Done with header value
 
           headers[headerName] = headerValue
         }
