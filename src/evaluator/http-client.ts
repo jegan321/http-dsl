@@ -6,20 +6,30 @@ import { formatJson } from '../utils/json-utils'
 export class HttpResponse {
   status: number
   headers: Record<string, string>
-  body: string
+  body: string | Record<string, any>
 
   constructor(status: number, headers: Record<string, string>, body: string) {
     this.status = status
     this.headers = headers
-    this.body = body
+
+    this.body = isContentType('application/json', this.headers) ? parseJsonBody(body) : body
   }
 
   stringify() {
     let body = this.body
-    if (isContentType('application/json', this.headers)) {
-      body = formatJson(body)
+    if (typeof body === 'object') {
+      body = JSON.stringify(body, null, 2)
     }
     return `Status: ${this.status}\nBody: ${body}`
+  }
+}
+
+function parseJsonBody(body: string): string | Record<string, any> {
+  try {
+    return JSON.parse(body)
+  } catch (error) {
+    // TODO: currently I am ignoring the error and returning the body as string
+    return body
   }
 }
 

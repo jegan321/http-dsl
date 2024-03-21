@@ -91,10 +91,4 @@ export class Evaluator {
   replaceSetStatementExpressions(environment: Environment, setStatement: SetStatement) {
     setStatement.variableValue = replaceExpressions(environment, setStatement.variableValue)
   }
-
-  printResponse(httpResponse: HttpResponse) {
-    this.io.write(httpResponse.status)
-    const responseBody = httpResponse.body
-    this.io.write(responseBody)
-  }
 }

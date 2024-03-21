@@ -1,15 +1,16 @@
 ASSERT command. If it fails then log an Assertion error and exit
 Bug: comments aren't working in symmetric script
 WRITE command
-Bug: response.body is not an object (it is a string) so you can't do map() on it
 Turn off prettier on spec files
 Replace native fetch with node-fetch (need to fix commonjs bullshit)
 Built-in helper function for loading file contents: file('./data.json', { parse: false })
 Refactor to make lexer get all the tokens and inject them into the parser. Or have a variable for next 10 tokens at all times
 IMPORT command and EXPORT command
 IF statement
-Document form urlencoded bodies (json)
+Document: form urlencoded bodies (json), comments
 Add parser test for parsing authorization header that has two words in the header value (like Authorization: Basic xxx)
 Add timestamp to response.stringify()
+Evaluator errors should print line Number AND print the type of error. Currently just says "Error evaluating expression"
+
 
 
