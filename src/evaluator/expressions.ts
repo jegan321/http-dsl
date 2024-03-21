@@ -27,10 +27,14 @@ export function evaluateExpression(expression: string, environment: Environment)
     // Convert booleans and numbers to strings
     return result + ''
   } catch (error) {
+    let errorMessage = ''
     if (error instanceof ReferenceError) {
-      throw new Error(error.message)
+      errorMessage = error.message
+    } else if (error instanceof Error) {
+      errorMessage = 'Error evaluating expression: ' + error.message
     } else {
-      throw new Error('Error evaluating expression')
+      errorMessage = 'Error evaluating expression'
     }
+    throw new Error(errorMessage)
   }
 }
