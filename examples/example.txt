@@ -1,9 +1,3 @@
-POST https://jsonplaceholder.typicode.com/todos
-Content-Type: application/json
-{
-    "userId": 1,
-    "title": "Walk the dogs",
-    "completed": false
-}
+SET arr = {{ [1, 2] }}
 
-PRINT {{response}}
+PRINT {{typeof results}}
