@@ -172,6 +172,26 @@ describe('Integration tests', () => {
     })
   })
 
+  describe('Expressions', () => {
+    test('should print expression containing newlines', async () => {
+      const input = `
+          SET message = {{ 'Hello world' }}
+          SET transformed_message = {{ 
+            message
+              .toUpperCase()
+              .split(' ')[0] 
+          }}
+          PRINT {{ transformed_message }}
+        `
+      const lexer = new Lexer(input)
+      const parser = new Parser(lexer)
+      const program = parser.parseProgram()
+      await evaluator.evaluate(program)
+      expect(io.writes.length).toBe(1)
+      expect(io.writes[0]).toBe('HELLO')
+    })
+  })
+
   describe('Helpers', () => {
     test('should base64 encode', async () => {
       const input = `

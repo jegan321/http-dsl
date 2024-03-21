@@ -5,7 +5,8 @@ import { base64 } from './helpers'
  * Returns the string value of a JavaScript expression
  */
 export function evaluateExpression(expression: string, environment: Environment): string {
-  let code = `with (vars) {return ${expression}}`
+  const trimmedExpression = expression.trim()
+  let code = `with (vars) {return ${trimmedExpression}}`
   const func = new Function('vars', 'base64', code)
   const vars = environment.variables
   try {

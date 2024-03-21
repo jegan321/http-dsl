@@ -115,10 +115,10 @@ export class Lexer {
     const start = this.position
     while (true) {
       this.readChar()
-      if (['', '\n'].includes(this.char)) {
+      if (this.char === '') {
         break
       }
-      if (this.char === ' ' && !this.insideExpression) {
+      if ([' ', '\n'].includes(this.char) && !this.insideExpression) {
         break
       }
     }

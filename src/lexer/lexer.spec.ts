@@ -189,6 +189,24 @@ describe('Lexer - token types', () => {
     const tokens = lexer.getAllTokens().map((token) => token.type)
     expect(tokens).toEqual(expectedTokens)
   })
+  test('should get token types for expression with newlines', () => {
+    const input = `{{ 
+      url 
+    }}`
+    const lexer = new Lexer(input)
+    const expectedTokens = [TokenType.STRING]
+    const tokens = lexer.getAllTokens().map((token) => token.type)
+    expect(tokens).toEqual(expectedTokens)
+  })
+  test('should get token types for expression with newlines', () => {
+    const input = `SET access_token = {{ 
+      response.body.access_token 
+    }}`
+    const lexer = new Lexer(input)
+    const expectedTokens = [TokenType.SET, TokenType.STRING, TokenType.STRING, TokenType.STRING]
+    const tokens = lexer.getAllTokens().map((token) => token.type)
+    expect(tokens).toEqual(expectedTokens)
+  })
   test('should get token types for PROMPT name', () => {
     const input = `PROMPT name`
     const lexer = new Lexer(input)
