@@ -1,8 +1,10 @@
 import { createInterface } from 'node:readline'
+import fs from 'node:fs'
 
 export interface InputOutput {
   prompt(promptText: string): Promise<string>
   write(value: any): Promise<void>
+  writeToFile(fileName: string, content: string): Promise<void>
 }
 
 export class TerminalInputOutput implements InputOutput {
@@ -22,11 +24,16 @@ export class TerminalInputOutput implements InputOutput {
   async write(value: any): Promise<void> {
     console.log(value)
   }
+
+  async writeToFile(fileName: string, content: string): Promise<void> {
+      fs.writeFileSync(fileName, content)
+  }
 }
 
 export class MockInputOutput implements InputOutput {
-  public promptResponse: string = ''
-  public writes: any[] = []
+  promptResponse: string = ''
+  writes: any[] = []
+  fileWrites: { fileName: string, content: string }[] = []
 
   async prompt(promptText: string): Promise<string> {
     this.writes.push(promptText)
@@ -35,5 +42,9 @@ export class MockInputOutput implements InputOutput {
 
   async write(value: any): Promise<void> {
     this.writes.push(value)
+  }
+
+  async writeToFile(fileName: string, content: string): Promise<void> {
+    this.fileWrites.push({ fileName, content })
   }
 }

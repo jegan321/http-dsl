@@ -1,4 +1,4 @@
-# HTTP DSL
+# FetchDSL
 
 A simple scripting language for sending HTTP requests.
 
@@ -60,3 +60,9 @@ Prompts the user in the terminal for the value of a variable.
 ```
 PROMPT password
 ```
+
+## Other Names
+- RequestDSL
+- RequestQL
+- HTTPScript
+- FetchDSL
