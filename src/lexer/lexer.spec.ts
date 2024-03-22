@@ -214,6 +214,13 @@ describe('Lexer - token types', () => {
     const tokens = lexer.getAllTokens().map((token) => token.type)
     expect(tokens).toEqual(expectedTokens)
   })
+  test('should get token type for WRITE', () => {
+    const input = `WRITE output.json {{ response.body }}`
+    const lexer = new Lexer(input)
+    const expectedTokens = [TokenType.WRITE, TokenType.STRING, TokenType.STRING]
+    const tokens = lexer.getAllTokens().map((token) => token.type)
+    expect(tokens).toEqual(expectedTokens)
+  })
 })
 
 describe('Lexer - token literals', () => {

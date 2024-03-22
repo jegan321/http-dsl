@@ -17,6 +17,7 @@ export enum TokenType {
   PRINT = 'PRINT',
   PROMPT = 'PROMPT',
   DEFAULT = 'DEFAULT',
+  WRITE = 'WRITE',
 }
 
 export const COMMAND_TOKENS = [
@@ -59,6 +60,7 @@ export function getKeywordForLiteral(literal: string): TokenType | null {
     PRINT: TokenType.PRINT,
     PROMPT: TokenType.PROMPT,
     DEFAULT: TokenType.DEFAULT,
+    WRITE: TokenType.WRITE,
   }
   return keywordMap[literal.toUpperCase()]
 }
