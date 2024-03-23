@@ -1,0 +1,29 @@
+{
+  "results": [
+    {
+      "symmetric": {
+        "Item Device ID": 35857795,
+        "Symmetric Item ID": "S0000027576381",
+        "Parent Company Name": null,
+        "Manufacturer Name Cleansed": null,
+        "Catalog Number": null,
+        "Device Packaging UOM": "1EA",
+        "Catalog Number Cleansed": null,
+        "Catalog Number Alternate": null,
+        "Catalog Number Alternate Cleansed": null,
+        "Description 80": "SCREW BONE 150X5.5MM CANCELL PARTIAL THREAD",
+        "Description 90": "SCREW BONE 150X5.5MM CANCELL PARTIAL THREAD",
+        "Image URLs": null,
+        "Noun": "SCREW",
+        "Vendor Info": "Globus Medical: 1206.415",
+        "GTINs": null,
+        "GUDID Primary UDI-DI": null,
+        "GMDN Term Code": null,
+        "GMDN Preferred Term": null,
+        "UNSPSC": "42321506"
+      },
+      "match": {},
+      "item_master": {}
+    }
+  ]
+}

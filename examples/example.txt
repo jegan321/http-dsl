@@ -1,4 +1,1 @@
-# This sends a GET request
-GET https://api.example.com/items
-content-type: application/json
-# GET request has been sent
+WRITE output.txt Hellozz
