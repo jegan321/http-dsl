@@ -1,7 +1,7 @@
 import { expect, test, describe } from 'vitest'
 import { Lexer } from '../lexer/lexer'
 import { Parser, concatenateUrlWithQueryParams } from './parser'
-import { DefaultStatement, PrintStatement, Program, PromptStatement, RequestStatement, SetStatement } from './ast'
+import { DefaultStatement, PrintStatement, Program, PromptStatement, RequestStatement, SetStatement, WriteStatement } from './ast'
 
 function parseProgram(input: string): Program {
   const lexer = new Lexer(input)
@@ -200,6 +200,16 @@ describe('Parser', () => {
     expect(request.tokenLiteral).toEqual('DEFAULT')
     expect(request.headerName).toEqual('Accept')
     expect(request.headerValue).toEqual('content-type/json')
+  })
+  test('should parse WRITE message.txt Hello', () => {
+    const input = `WRITE message.txt Hello`
+    const program = parseProgram(input)
+    expect(program.statements.length).toEqual(1)
+    const request = program.statements[0] as WriteStatement
+    expect(request.type).toEqual('WRITE')
+    expect(request.tokenLiteral).toEqual('WRITE')
+    expect(request.fileName).toEqual('message.txt')
+    expect(request.content).toEqual('Hello')
   })
 })
 

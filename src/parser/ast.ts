@@ -4,6 +4,7 @@ export enum StatementType {
   PRINT = 'PRINT',
   PROMPT = 'PROMPT',
   DEFAULT = 'DEFAULT',
+  WRITE = 'WRITE',
 }
 
 export enum Command {
@@ -18,7 +19,7 @@ export enum Command {
   PRINT = 'PRINT'
 }
 
-export type Statement = RequestStatement | PrintStatement | SetStatement | PromptStatement | DefaultStatement
+export type Statement = RequestStatement | PrintStatement | SetStatement | PromptStatement | DefaultStatement | WriteStatement
 
 export interface RequestStatement {
   type: StatementType.REQUEST
@@ -54,6 +55,13 @@ export interface DefaultStatement {
   host?: string
   headerName?: string
   headerValue?: string
+}
+
+export interface WriteStatement {
+  type: StatementType.WRITE
+  tokenLiteral: string
+  fileName: string
+  content: string
 }
 
 export class Program {

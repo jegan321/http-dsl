@@ -1,7 +1,7 @@
 import { Lexer } from '../lexer/lexer'
 import { COMMAND_TOKENS, REQUEST_TOKENS, Token, TokenType } from '../lexer/tokens'
 import { isContentType } from '../utils/header-utils'
-import { Command, DefaultStatement, PrintStatement, Program, PromptStatement, RequestStatement, SetStatement, Statement, StatementType } from './ast'
+import { Command, DefaultStatement, PrintStatement, Program, PromptStatement, RequestStatement, SetStatement, Statement, StatementType, WriteStatement } from './ast'
 
 export class SyntaxError {
   line: number
@@ -65,6 +65,8 @@ export class Parser {
       return this.parsePromptStatement()
     } else if (this.curToken.type === TokenType.DEFAULT) {
       return this.parseDefaultStatement()
+    } else if (this.curToken.type === TokenType.WRITE) {
+      return this.parseWriteStatement()
     } else {
       this.addSyntaxError(this.curToken, `Unimplemented command: ${this.curToken.literal}`)
       return null
@@ -275,6 +277,23 @@ export class Parser {
       host,
       headerName,
       headerValue
+    }
+  }
+
+  parseWriteStatement(): WriteStatement {
+    const tokenLiteral = this.curToken.literal
+    this.nextToken()
+
+    const fileName = this.curToken.literal
+    this.nextToken() // Done with file name
+
+    const content = this.parseRestOfLineAsSingleString()
+
+    return {
+      type: StatementType.WRITE,
+      tokenLiteral,
+      fileName,
+      content
     }
   }
 

@@ -29,7 +29,8 @@ export const COMMAND_TOKENS = [
   TokenType.SET,
   TokenType.PRINT,
   TokenType.PROMPT,
-  TokenType.DEFAULT
+  TokenType.DEFAULT,
+  TokenType.WRITE,
 ]
 
 export const REQUEST_TOKENS = [TokenType.GET, TokenType.POST, TokenType.PUT, TokenType.DELETE]
