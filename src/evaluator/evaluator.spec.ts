@@ -174,4 +174,16 @@ describe('evaluate', async () => {
     expect(httpClient.sentRequests[0].url).toBe('http://localhost:8080/items/123')
     expect(httpClient.sentRequests[0].headers.Accept).toBe('application/json')
   })
+  test('should write to file', async () => {
+    const program = new Program([
+      {
+        type: StatementType.WRITE,
+        tokenLiteral: 'DEFAULT',
+        fileName: 'output.txt',
+        content: 'Hello, world!'
+      }
+    ])
+    await evaluator.evaluate(program)
+    expect(io.fileWrites).toStrictEqual([{ fileName: 'output.txt', content: 'Hello, world!' }])
+  })
 })

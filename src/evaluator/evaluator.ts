@@ -74,6 +74,11 @@ export class Evaluator {
             this.environment.defaultHeaders[statement.headerName] = statement.headerValue
           }
           break
+        case StatementType.WRITE:
+          const fileName = replaceExpressions(this.environment, statement.fileName)
+          const content = replaceExpressions(this.environment, statement.content)
+          this.io.writeToFile(fileName, content)
+          break
       }
     }
   }
