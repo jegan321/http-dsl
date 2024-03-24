@@ -14,4 +14,4 @@ Add parser test for parsing authorization header that has two words in the heade
 Add timestamp to response.stringify()
 Evaluator errors should print line Number
 SET arr = {{ [1, 2] }} saves a string variable instead of an array
-
+Save request in a variable as well so they can print the request and then the response
