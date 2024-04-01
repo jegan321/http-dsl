@@ -2,7 +2,7 @@ export class Environment {
   variables: Record<string, any> = {}
   defaultHost: string = 'http://localhost:8080'
   defaultHeaders: Record<string, string> = {}
-  
+
   hasVariable(variableName: string): boolean {
     return variableName in this.variables
   }

@@ -4,7 +4,7 @@ export enum StatementType {
   PRINT = 'PRINT',
   PROMPT = 'PROMPT',
   DEFAULT = 'DEFAULT',
-  WRITE = 'WRITE',
+  WRITE = 'WRITE'
 }
 
 export enum Command {
@@ -19,7 +19,13 @@ export enum Command {
   PRINT = 'PRINT'
 }
 
-export type Statement = RequestStatement | PrintStatement | SetStatement | PromptStatement | DefaultStatement | WriteStatement
+export type Statement =
+  | RequestStatement
+  | PrintStatement
+  | SetStatement
+  | PromptStatement
+  | DefaultStatement
+  | WriteStatement
 
 export interface RequestStatement {
   type: StatementType.REQUEST

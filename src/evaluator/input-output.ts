@@ -26,14 +26,14 @@ export class TerminalInputOutput implements InputOutput {
   }
 
   async writeToFile(fileName: string, content: string): Promise<void> {
-      fs.writeFileSync(fileName, content)
+    fs.writeFileSync(fileName, content)
   }
 }
 
 export class MockInputOutput implements InputOutput {
   promptResponse: string = ''
   writes: any[] = []
-  fileWrites: { fileName: string, content: string }[] = []
+  fileWrites: { fileName: string; content: string }[] = []
 
   async prompt(promptText: string): Promise<string> {
     this.writes.push(promptText)

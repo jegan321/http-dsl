@@ -1,7 +1,15 @@
 import { expect, test, describe } from 'vitest'
 import { Lexer } from '../lexer/lexer'
 import { Parser, concatenateUrlWithQueryParams } from './parser'
-import { DefaultStatement, PrintStatement, Program, PromptStatement, RequestStatement, SetStatement, WriteStatement } from './ast'
+import {
+  DefaultStatement,
+  PrintStatement,
+  Program,
+  PromptStatement,
+  RequestStatement,
+  SetStatement,
+  WriteStatement
+} from './ast'
 
 function parseProgram(input: string): Program {
   const lexer = new Lexer(input)

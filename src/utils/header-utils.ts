@@ -2,7 +2,7 @@
  * Return true if the headers contain the given header name (ignoring case)
  */
 export function hasHeader(headers: Record<string, string>, headerName: string): boolean {
-  return Object.keys(headers).some((key) => key.toLowerCase() ===  headerName.toLowerCase())
+  return Object.keys(headers).some((key) => key.toLowerCase() === headerName.toLowerCase())
 }
 
 /**

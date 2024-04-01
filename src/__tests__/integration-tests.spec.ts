@@ -223,5 +223,4 @@ describe('Integration tests', () => {
       expect(io.writes[0]).toBe('dXNlcjE6cGFzc3dvcmQx')
     })
   })
-
 })

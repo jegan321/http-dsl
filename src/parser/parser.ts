@@ -1,7 +1,18 @@
 import { Lexer } from '../lexer/lexer'
 import { COMMAND_TOKENS, REQUEST_TOKENS, Token, TokenType } from '../lexer/tokens'
 import { isContentType } from '../utils/header-utils'
-import { Command, DefaultStatement, PrintStatement, Program, PromptStatement, RequestStatement, SetStatement, Statement, StatementType, WriteStatement } from './ast'
+import {
+  Command,
+  DefaultStatement,
+  PrintStatement,
+  Program,
+  PromptStatement,
+  RequestStatement,
+  SetStatement,
+  Statement,
+  StatementType,
+  WriteStatement
+} from './ast'
 
 export class SyntaxError {
   line: number
@@ -10,7 +21,7 @@ export class SyntaxError {
     this.line = line
     this.message = message
   }
- }
+}
 
 export class Parser {
   private lexer: Lexer
