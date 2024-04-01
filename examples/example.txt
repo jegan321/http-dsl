@@ -1,1 +1,7 @@
-WRITE output.txt Hellozz
+DEFAULT HOST http://localhost:8080/scm/api
+
+DEFAULT HEADER Authentication = Basic {{ base64('trivalence:admin') }}
+
+GET /v1/accounts/me
+
+PRINT {{ response }}

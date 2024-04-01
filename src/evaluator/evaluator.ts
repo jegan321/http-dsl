@@ -68,10 +68,10 @@ export class Evaluator {
           break
         case StatementType.DEFAULT:
           if (statement.host) {
-            this.environment.defaultHost = statement.host
+            this.environment.defaultHost = replaceExpressions(this.environment, statement.host)
           }
           if (statement.headerName && statement.headerValue) {
-            this.environment.defaultHeaders[statement.headerName] = statement.headerValue
+            this.environment.defaultHeaders[statement.headerName] = replaceExpressions(this.environment, statement.headerValue)
           }
           break
         case StatementType.WRITE:
