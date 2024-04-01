@@ -265,8 +265,7 @@ export class Parser {
       headerName = this.curToken.literal
       this.nextToken()
       this.expectPeek(TokenType.STRING) // Skip over the '=' token
-      headerValue = this.curToken.literal
-      this.nextToken()
+      headerValue = this.parseRestOfLineAsSingleString()
     } else {
       this.addSyntaxError(this.curToken, `Invalid token after DEFAULT command: ${subType}`)
     }

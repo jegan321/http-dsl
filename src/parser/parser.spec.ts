@@ -201,6 +201,19 @@ describe('Parser', () => {
     expect(request.headerName).toEqual('Accept')
     expect(request.headerValue).toEqual('content-type/json')
   })
+  test('should parse default header and GET request', () => {
+    const input = `
+      DEFAULT HEADER Authentication = Basic xyz
+      GET /v1/accounts/me
+    `
+    const program = parseProgram(input)
+    expect(program.statements.length).toEqual(2)
+    const request = program.statements[0] as DefaultStatement
+    expect(request.type).toEqual('DEFAULT')
+    expect(request.tokenLiteral).toEqual('DEFAULT')
+    expect(request.headerName).toEqual('Authentication')
+    expect(request.headerValue).toEqual('Basic xyz')
+  })
   test('should parse WRITE message.txt Hello', () => {
     const input = `WRITE message.txt Hello`
     const program = parseProgram(input)
