@@ -1,16 +1,7 @@
 ASSERT command. If it fails then log an Assertion error and exit
+SET arr = {{ [1, 2] }} saves a string variable instead of an array
 Bug: comments aren't working in scripts
 WRITE command
-Turn off prettier on spec files
-Replace native fetch with node-fetch (need to fix commonjs bullshit)
 Built-in helper function for loading file contents: file('./data.json', { parse: false })
-Refactor to make lexer get all the tokens and inject them into the parser. Or have a variable for next 10 tokens at all times
-IMPORT command and EXPORT command
-IF statements
-Loops
-Some way to push to arrays
 Update README: form urlencoded bodies (json), comments
 Add timestamp to response.stringify()
-Evaluator errors should print line Number
-SET arr = {{ [1, 2] }} saves a string variable instead of an array
-Save request in a variable as well so they can print the request and then the response
