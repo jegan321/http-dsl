@@ -1,7 +1,7 @@
 import { Environment } from './environment'
-import { evaluateExpression } from './expressions'
+import { evaluateExpression, evaluateExpressionAsString } from './expressions'
 
-export function replaceExpressions(environment: Environment, value?: string): string {
+export function replaceExpressionsInString(environment: Environment, value?: string): string {
   if (value == null) {
     return ''
   }
@@ -15,7 +15,7 @@ export function replaceExpressions(environment: Environment, value?: string): st
         throw new Error('Unmatched opening {{')
       }
       const expression = value.substring(i + 2, end)
-      const evaluatedExpressions = evaluateExpression(expression, environment)
+      const evaluatedExpressions = evaluateExpressionAsString(expression, environment)
       output += evaluatedExpressions
       i = end + 1
     } else {
@@ -23,4 +23,18 @@ export function replaceExpressions(environment: Environment, value?: string): st
     }
   }
   return output
+}
+
+export function isSingleExpressionString(value: string): boolean {
+  const trimmedValue = value.trim()
+  return trimmedValue.startsWith('{{') && trimmedValue.endsWith('}}')
+}
+
+export function replaceSingleExpression(environment: Environment, value: string): any {
+  const trimmedValue = value.trim()
+  if (!isSingleExpressionString(trimmedValue)) {
+    throw new Error('Expected a single expression string')
+  }
+  const expression = trimmedValue.substring(2, trimmedValue.length - 2)
+  return evaluateExpression(expression, environment)
 }

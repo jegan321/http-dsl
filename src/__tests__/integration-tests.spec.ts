@@ -206,6 +206,18 @@ describe('Integration tests', () => {
       expect(io.writes.length).toBe(1)
       expect(io.writes[0]).toBe('HELLO')
     })
+    test('should set variable to array literal', async () => {
+      const input = `
+        SET numbers = {{ [1, 2, 3] }}
+      `
+      const lexer = new Lexer(input)
+      const parser = new Parser(lexer)
+      const program = parser.parseProgram()
+      await evaluator.evaluate(program)
+      expect(environment.variables.numbers).toEqual([1, 2, 3])
+      expect(environment.variables.numbers.length).toBe(3)
+      expect(environment.variables.numbers[0]).toBe(1)
+    })
   })
 
   describe('Helpers', () => {

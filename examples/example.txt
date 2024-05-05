@@ -1,7 +1,7 @@
-DEFAULT HOST http://localhost:8080/scm/api
+set foo = {{ [1, 2] }} hello
 
-DEFAULT HEADER Authentication = Basic {{ base64('trivalence:admin') }}
+print {{foo}}
 
-GET /v1/accounts/me
 
-PRINT {{ response }}
+set bar = [1, 2] + [3]
+

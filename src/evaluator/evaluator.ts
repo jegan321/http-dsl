@@ -4,7 +4,7 @@ import { hasContentType, hasHeader } from '../utils/header-utils'
 import { Environment } from './environment'
 import { FetchHttpClient, HttpClient, HttpResponse } from './http-client'
 import { InputOutput, TerminalInputOutput } from './input-output'
-import { replaceExpressions } from './replace-expressions'
+import { isSingleExpressionString, replaceExpressionsInString, replaceSingleExpression } from './replace-expressions'
 
 export class Evaluator {
   private environment: Environment
@@ -55,7 +55,7 @@ export class Evaluator {
           this.environment.variables.response = httpResponse
           break
         case StatementType.PRINT:
-          const printValue = replaceExpressions(this.environment, statement.printValue)
+          const printValue = replaceExpressionsInString(this.environment, statement.printValue)
           await this.io.write(printValue)
           break
         case StatementType.PROMPT:
@@ -63,20 +63,20 @@ export class Evaluator {
           this.environment.variables[statement.variableName] = userInput
           break
         case StatementType.SET:
-          this.replaceSetStatementExpressions(this.environment, statement)
-          this.environment.variables[statement.variableName] = statement.variableValue
+          const replaceFunction = isSingleExpressionString(statement.variableValue) ? replaceSingleExpression : replaceExpressionsInString
+          this.environment.variables[statement.variableName] = replaceFunction(this.environment, statement.variableValue)
           break
         case StatementType.DEFAULT:
           if (statement.host) {
-            this.environment.defaultHost = replaceExpressions(this.environment, statement.host)
+            this.environment.defaultHost = replaceExpressionsInString(this.environment, statement.host)
           }
           if (statement.headerName && statement.headerValue) {
-            this.environment.defaultHeaders[statement.headerName] = replaceExpressions(this.environment, statement.headerValue)
+            this.environment.defaultHeaders[statement.headerName] = replaceExpressionsInString(this.environment, statement.headerValue)
           }
           break
         case StatementType.WRITE:
-          const fileName = replaceExpressions(this.environment, statement.fileName)
-          const content = replaceExpressions(this.environment, statement.content)
+          const fileName = replaceExpressionsInString(this.environment, statement.fileName)
+          const content = replaceExpressionsInString(this.environment, statement.content)
           this.io.writeToFile(fileName, content)
           break
       }
@@ -84,16 +84,12 @@ export class Evaluator {
   }
 
   replaceRequestStatementExpressions(environment: Environment, request: RequestStatement) {
-    request.method = replaceExpressions(environment, request.method)
-    request.url = replaceExpressions(environment, request.url)
+    request.method = replaceExpressionsInString(environment, request.method)
+    request.url = replaceExpressionsInString(environment, request.url)
     for (const [key, value] of Object.entries(request.headers)) {
-      request.headers[key] = replaceExpressions(environment, value)
+      request.headers[key] = replaceExpressionsInString(environment, value)
     }
-    const replacedBody = replaceExpressions(environment, request.body)
+    const replacedBody = replaceExpressionsInString(environment, request.body)
     request.body = replacedBody ? replacedBody : undefined // Replace empty string with undefined
-  }
-
-  replaceSetStatementExpressions(environment: Environment, setStatement: SetStatement) {
-    setStatement.variableValue = replaceExpressions(environment, setStatement.variableValue)
   }
 }

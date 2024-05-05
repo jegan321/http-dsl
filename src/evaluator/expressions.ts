@@ -2,30 +2,15 @@ import { Environment } from './environment'
 import { base64 } from './helpers'
 
 /**
- * Returns the string value of a JavaScript expression
+ * Returns the value of a JavaScript expression. Could return a string, number, object, etc.
  */
-export function evaluateExpression(expression: string, environment: Environment): string {
+export function evaluateExpression(expression: string, environment: Environment): any {
   const trimmedExpression = expression.trim()
   let code = `with (vars) {return ${trimmedExpression}}`
   const func = new Function('vars', 'base64', code)
   const vars = environment.variables
   try {
-    const result = func(vars, base64)
-    if (result == null || typeof result === 'function') {
-      // return null for null, undefined and functions
-      return 'null'
-    }
-    if (typeof result === 'object') {
-      // If the object contains a stringify() method, use that
-      if (typeof result.stringify === 'function') {
-        return result.stringify()
-      }
-
-      // Convert other objects and arrays into JSON.
-      return JSON.stringify(result)
-    }
-    // Convert booleans and numbers to strings
-    return result + ''
+    return func(vars, base64)
   } catch (error) {
     let errorMessage = ''
     if (error instanceof ReferenceError) {
@@ -37,4 +22,26 @@ export function evaluateExpression(expression: string, environment: Environment)
     }
     throw new Error(errorMessage)
   }
+}
+
+/**
+ * Returns the string value of a JavaScript expression
+ */
+export function evaluateExpressionAsString(expression: string, environment: Environment): string {
+  var result = evaluateExpression(expression, environment)
+  if (result == null || typeof result === 'function') {
+    // return null for null, undefined and functions
+    return 'null'
+  }
+  if (typeof result === 'object') {
+    // If the object contains a stringify() method, use that
+    if (typeof result.stringify === 'function') {
+      return result.stringify()
+    }
+
+    // Convert other objects and arrays into JSON.
+    return JSON.stringify(result)
+  }
+  // Convert booleans and numbers to strings
+  return result + ''
 }
