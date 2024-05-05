@@ -63,15 +63,23 @@ export class Evaluator {
           this.environment.variables[statement.variableName] = userInput
           break
         case StatementType.SET:
-          const replaceFunction = isSingleExpressionString(statement.variableValue) ? replaceSingleExpression : replaceExpressionsInString
-          this.environment.variables[statement.variableName] = replaceFunction(this.environment, statement.variableValue)
+          const replaceFunction = isSingleExpressionString(statement.variableValue)
+            ? replaceSingleExpression
+            : replaceExpressionsInString
+          this.environment.variables[statement.variableName] = replaceFunction(
+            this.environment,
+            statement.variableValue
+          )
           break
         case StatementType.DEFAULT:
           if (statement.host) {
             this.environment.defaultHost = replaceExpressionsInString(this.environment, statement.host)
           }
           if (statement.headerName && statement.headerValue) {
-            this.environment.defaultHeaders[statement.headerName] = replaceExpressionsInString(this.environment, statement.headerValue)
+            this.environment.defaultHeaders[statement.headerName] = replaceExpressionsInString(
+              this.environment,
+              statement.headerValue
+            )
           }
           break
         case StatementType.WRITE:
