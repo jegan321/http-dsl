@@ -218,6 +218,25 @@ describe('Integration tests', () => {
       expect(environment.variables.numbers.length).toBe(3)
       expect(environment.variables.numbers[0]).toBe(1)
     })
+    test('should print object literal and array literal', async () => {
+      const input = `
+        SET obj = {{ 
+          { 
+            key: "value" 
+          } 
+        }}
+        SET numbers = {{ [1, 2, 3] }}
+        PRINT {{ obj }}
+        PRINT {{ numbers }}
+      `
+      const lexer = new Lexer(input)
+      const parser = new Parser(lexer)
+      const program = parser.parseProgram()
+      await evaluator.evaluate(program)
+      expect(io.writes.length).toBe(2)
+      expect(io.writes[0]).toBe(`{"key":"value"}`)
+      expect(io.writes[1]).toBe(`[1,2,3]`)
+    })
   })
 
   describe('Helpers', () => {
