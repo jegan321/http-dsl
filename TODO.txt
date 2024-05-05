@@ -1,5 +1,4 @@
 Bug: comments aren't working in scripts
-SET arr = {{ [1, 2] }} saves a string variable instead of an array
 ASSERT command. If it fails then log an Assertion error and exit
 WRITE command
 Built-in helper function for loading file contents: file('./data.json', { parse: false })
