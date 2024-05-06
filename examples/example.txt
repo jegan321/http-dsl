@@ -1,7 +1,6 @@
-set foo = {{ [1, 2] }} hello
+SET names = {{ ['john','charli']}}
 
-print {{foo}}
+SET names = {{ [...names, 'Beau']}}
 
-
-set bar = [1, 2] + [3]
-
+# Print the names
+PRINT {{ names.join('|')}}

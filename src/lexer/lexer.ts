@@ -103,6 +103,7 @@ export class Lexer {
   skipComments() {
     if (this.char === '#') {
       this.readLine()
+      this.readChar()
     }
   }
 
