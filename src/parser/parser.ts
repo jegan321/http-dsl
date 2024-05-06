@@ -56,8 +56,20 @@ export class Parser {
         statements.push(statement)
       }
       this.nextToken()
+      this.skipWhiteSpaceTokens()
     }
     return new Program(statements)
+  }
+
+  skipWhiteSpaceTokens() {
+    const whiteSpaceTokens = [
+      TokenType.NEWLINE,
+      TokenType.END_STATEMENT,
+    ]
+    while (whiteSpaceTokens.includes(this.curToken.type)) {
+      console.log('Skipping whitespace token:', this.curToken)
+      this.nextToken()
+    }
   }
 
   parseStatement(): Statement | null {

@@ -186,6 +186,22 @@ describe('Integration tests', () => {
       expect(io.writes.length).toBe(1)
       expect(io.writes[0]).toBe('bar')
     })
+    test('should send GET request and print response with two blank lines between', async () => {
+      httpClient.status = 200
+      httpClient.headers = { 'content-type': 'application/json' }
+      httpClient.body = { message: 'Hello' }
+      const input = `
+          GET https://api.example.com/items
+
+
+          PRINT {{ response }}
+        `
+      const lexer = new Lexer(input)
+      const parser = new Parser(lexer)
+      const program = parser.parseProgram()
+      await evaluator.evaluate(program)
+      expect(httpClient.sentRequests.length).toBe(1)
+    })
   })
 
   describe('Expressions', () => {

@@ -1,6 +1,4 @@
-SET names = {{ ['john','charli']}}
+GET https://api.dev.internal.trivalence.com/scm/api/v1/states
 
-SET names = {{ [...names, 'Beau']}}
 
-# Print the names
-PRINT {{ names.join('|')}}
+print {{response}}
