@@ -62,10 +62,7 @@ export class Parser {
   }
 
   skipWhiteSpaceTokens() {
-    const whiteSpaceTokens = [
-      TokenType.NEWLINE,
-      TokenType.END_STATEMENT,
-    ]
+    const whiteSpaceTokens = [TokenType.NEWLINE, TokenType.END_STATEMENT]
     while (whiteSpaceTokens.includes(this.curToken.type)) {
       console.log('Skipping whitespace token:', this.curToken)
       this.nextToken()
