@@ -20,7 +20,9 @@ export class HttpResponse {
     if (typeof body === 'object') {
       body = JSON.stringify(body, null, 2)
     }
-    return `Status: ${this.status}\nBody: ${body}`
+    const statusLine = `Status: ${this.status}`
+    const responseHeaders = Object.entries(this.headers).map(([key, value]) => `${key}: ${value}`).join('\n')
+    return `${statusLine}\n\n${responseHeaders}\n\n${body}`
   }
 }
 
