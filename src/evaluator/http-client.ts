@@ -7,10 +7,20 @@ export class HttpResponse {
   status: number
   headers: Record<string, string>
   body: string | Record<string, any>
+  timeInMillis: number
+  timestamp: number
 
-  constructor(status: number, headers: Record<string, string>, body: string) {
+  constructor(
+    status: number,
+    headers: Record<string, string>,
+    body: string,
+    timeTook: number,
+    timestamp: number = Date.now()
+  ) {
     this.status = status
     this.headers = headers
+    this.timeInMillis = timeTook
+    this.timestamp = timestamp
 
     this.body = isContentType('application/json', this.headers) ? parseJsonBody(body) : body
   }
@@ -20,9 +30,14 @@ export class HttpResponse {
     if (typeof body === 'object') {
       body = JSON.stringify(body, null, 2)
     }
+
+    const receivedResponseLine = `Received response in ${parseFloat(this.timeInMillis.toFixed(4))} milliseconds`
+    const dateLine = `Date: ${new Date(this.timestamp).toLocaleString()}`
     const statusLine = `Status: ${this.status}`
-    const responseHeaders = Object.entries(this.headers).map(([key, value]) => `${key}: ${value}`).join('\n')
-    return `${statusLine}\n\n${responseHeaders}\n\n${body}`
+    const responseHeaders = Object.entries(this.headers)
+      .map(([key, value]) => `${key}: ${value}`)
+      .join('\n')
+    return `${receivedResponseLine}\n${dateLine}\n${statusLine}\n\n${responseHeaders}\n\n${body}`
   }
 }
 
@@ -41,11 +56,16 @@ export interface HttpClient {
 
 export class FetchHttpClient implements HttpClient {
   async sendRequest(requestStatement: RequestStatement): Promise<HttpResponse> {
+    const startTime = performance.now()
+
     const response = await fetch(requestStatement.url, {
       method: requestStatement.method,
       headers: requestStatement.headers,
       body: requestStatement.body
     })
+
+    const endTime = performance.now()
+    const timeTook = endTime - startTime
 
     const responseHeaders: Record<string, string> = {}
     response.headers.forEach((value, key) => {
@@ -54,7 +74,7 @@ export class FetchHttpClient implements HttpClient {
 
     const body = await response.text()
 
-    return new HttpResponse(response.status, responseHeaders, body)
+    return new HttpResponse(response.status, responseHeaders, body, timeTook)
   }
 }
 
@@ -67,6 +87,6 @@ export class MockHttpClient implements HttpClient {
   async sendRequest(request: RequestStatement): Promise<HttpResponse> {
     this.sentRequests.push(request)
 
-    return new HttpResponse(this.status, this.headers, JSON.stringify(this.body, null, 2))
+    return new HttpResponse(this.status, this.headers, JSON.stringify(this.body, null, 2), 200)
   }
 }

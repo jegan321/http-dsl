@@ -26,7 +26,8 @@ describe('HttpResponse', async () => {
     const httpResponse = new HttpResponse(
       200,
       { 'content-type': 'application/json' },
-      JSON.stringify({ message: 'Hello' })
+      JSON.stringify({ message: 'Hello' }),
+      100
     )
     expect(httpResponse.stringify()).toBe(`Status: 200\nBody: {\n  "message": "Hello"\n}`)
   })
