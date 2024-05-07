@@ -161,6 +161,27 @@ describe('Integration tests', () => {
       await evaluator.evaluate(program)
       expect(httpClient.sentRequests.length).toBe(1)
     })
+    test('should send GET request with default host and default headers', async () => {
+      httpClient.status = 200
+      httpClient.headers = { 'content-type': 'application/json' }
+      httpClient.body = { message: 'Hello' }
+      const input = `
+          DEFAULT HOST https://api.example.com
+          DEFAULT HEADER Accept = application/json
+          DEFAULT HEADER Authorization = Bearer 123
+          GET /items
+          Content-Type: application/json
+        `
+      const lexer = new Lexer(input)
+      const parser = new Parser(lexer)
+      const program = parser.parseProgram()
+      await evaluator.evaluate(program)
+      expect(httpClient.sentRequests.length).toBe(1)
+      expect(httpClient.sentRequests[0].url).toBe('https://api.example.com/items')
+      expect(httpClient.sentRequests[0].headers['Accept']).toBe('application/json')
+      expect(httpClient.sentRequests[0].headers['Content-Type']).toBe('application/json')
+      expect(httpClient.sentRequests[0].headers['Authorization']).toBe('Bearer 123')
+    })
   })
 
   describe('Printing', () => {

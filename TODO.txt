@@ -1,6 +1,6 @@
-Bug: comments aren't working in scripts
+Add timestamp to response.stringify()
+Save request in a variable
 ASSERT command. If it fails then log an Assertion error and exit
 WRITE command
 Built-in helper function for loading file contents: file('./data.json', { parse: false })
 Update README: form urlencoded bodies (json), comments
-Add timestamp to response.stringify()

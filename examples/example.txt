@@ -1,7 +1,6 @@
-SET host = https://api.dev.internal.trivalence.com/scm
+DEFAULT HOST http://localhost:8080/scm
 
+GET /api/v1/accounts/me
+Authentication: Basic {{ base64('trivalence_admin:admin') }}
 
-GET {{host}}/api/v1/states
-
-
-print {{response}}
+PRINT {{ response }}
