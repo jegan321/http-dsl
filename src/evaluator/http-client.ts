@@ -21,7 +21,7 @@ export class HttpRequest {
     const headers = Object.entries(this.headers)
       .map(([key, value]) => `${key}: ${value}`)
       .join('\n')
-    return `${requestLine}\n${headers}\n\n${this.body}`
+    return `${requestLine}\n${headers}\n\n${this.body || ''}`
   }
 }
 
@@ -53,7 +53,7 @@ export class HttpResponse {
       body = JSON.stringify(body, null, 2)
     }
 
-    const receivedResponseLine = `Received response in ${parseFloat(this.timeInMillis.toFixed(4))} milliseconds`
+    const receivedResponseLine = `Received response in ${Math.trunc(this.timeInMillis)} milliseconds`
     const dateLine = `Date: ${new Date(this.timestamp).toLocaleString()}`
     const statusLine = `Status: ${this.status}`
     const responseHeaders = Object.entries(this.headers)

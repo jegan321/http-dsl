@@ -52,6 +52,7 @@ export class Evaluator {
             }
           }
           const httpRequest = new HttpRequest(statement.method, statement.url, statement.headers, statement.body)
+          this.environment.variables.request = httpRequest
           const httpResponse = await this.httpClient.sendRequest(httpRequest)
           this.environment.variables.response = httpResponse
           break
