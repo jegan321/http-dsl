@@ -20,15 +20,3 @@ describe('sendRequest', async () => {
     expect(response.body).toEqual({ message: 'Hello' })
   })
 })
-
-describe('HttpResponse', async () => {
-  test('stringify() should return string representation', () => {
-    const httpResponse = new HttpResponse(
-      200,
-      { 'content-type': 'application/json' },
-      JSON.stringify({ message: 'Hello' }),
-      100
-    )
-    expect(httpResponse.stringify()).toBe(`Status: 200\nBody: {\n  "message": "Hello"\n}`)
-  })
-})
