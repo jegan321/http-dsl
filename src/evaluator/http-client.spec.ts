@@ -1,5 +1,5 @@
 import { expect, test, describe } from 'vitest'
-import { HttpResponse, MockHttpClient } from './http-client'
+import { HttpRequest, HttpResponse, MockHttpClient } from './http-client'
 import { StatementType } from '../parser/ast'
 
 describe('sendRequest', async () => {
@@ -8,13 +8,8 @@ describe('sendRequest', async () => {
     httpClient.status = 200
     httpClient.headers = { 'content-type': 'application/json' }
     httpClient.body = { message: 'Hello' }
-    const response = await httpClient.sendRequest({
-      type: StatementType.REQUEST,
-      tokenLiteral: 'GET',
-      method: 'GET',
-      url: 'https://example.com',
-      headers: {}
-    })
+    const httpRequest = new HttpRequest('GET', 'https://example.com', {})
+    const response = await httpClient.sendRequest(httpRequest)
     expect(response.status).toBe(200)
     expect(response.headers['content-type']).toBe('application/json')
     expect(response.body).toEqual({ message: 'Hello' })

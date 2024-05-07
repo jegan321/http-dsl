@@ -3,6 +3,28 @@ import { isContentType } from '../utils/header-utils'
 import { formatJson } from '../utils/json-utils'
 // import fetch from 'node-fetch' // TODO: This is complaining about Common JS
 
+export class HttpRequest {
+  method: string
+  url: string
+  headers: Record<string, string>
+  body?: string
+
+  constructor(method: string, url: string, headers: Record<string, string>, body?: string) {
+    this.method = method
+    this.url = url
+    this.headers = headers
+    this.body = body
+  }
+
+  stringify() {
+    const requestLine = `${this.method} ${this.url}`
+    const headers = Object.entries(this.headers)
+      .map(([key, value]) => `${key}: ${value}`)
+      .join('\n')
+    return `${requestLine}\n${headers}\n\n${this.body}`
+  }
+}
+
 export class HttpResponse {
   status: number
   headers: Record<string, string>
@@ -51,17 +73,17 @@ function parseJsonBody(body: string): string | Record<string, any> {
 }
 
 export interface HttpClient {
-  sendRequest: (request: RequestStatement) => Promise<HttpResponse>
+  sendRequest: (request: HttpRequest) => Promise<HttpResponse>
 }
 
 export class FetchHttpClient implements HttpClient {
-  async sendRequest(requestStatement: RequestStatement): Promise<HttpResponse> {
+  async sendRequest(httpRequest: HttpRequest): Promise<HttpResponse> {
     const startTime = performance.now()
 
-    const response = await fetch(requestStatement.url, {
-      method: requestStatement.method,
-      headers: requestStatement.headers,
-      body: requestStatement.body
+    const response = await fetch(httpRequest.url, {
+      method: httpRequest.method,
+      headers: httpRequest.headers,
+      body: httpRequest.body
     })
 
     const endTime = performance.now()
@@ -83,8 +105,8 @@ export class MockHttpClient implements HttpClient {
   status: number = 200
   headers: Record<string, string> = {}
   body: Record<string, any> = {}
-  sentRequests: RequestStatement[] = []
-  async sendRequest(request: RequestStatement): Promise<HttpResponse> {
+  sentRequests: HttpRequest[] = []
+  async sendRequest(request: HttpRequest): Promise<HttpResponse> {
     this.sentRequests.push(request)
 
     return new HttpResponse(this.status, this.headers, JSON.stringify(this.body, null, 2), 200)

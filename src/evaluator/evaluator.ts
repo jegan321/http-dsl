@@ -2,7 +2,7 @@ import { Program, RequestStatement, SetStatement, StatementType } from '../parse
 import { getErrorMessage } from '../utils/error-utils'
 import { hasContentType, hasHeader } from '../utils/header-utils'
 import { Environment } from './environment'
-import { FetchHttpClient, HttpClient, HttpResponse } from './http-client'
+import { FetchHttpClient, HttpClient, HttpRequest, HttpResponse } from './http-client'
 import { InputOutput, TerminalInputOutput } from './input-output'
 import { isSingleExpressionString, replaceExpressionsInString, replaceSingleExpression } from './replace-expressions'
 
@@ -51,7 +51,8 @@ export class Evaluator {
               statement.headers[defaultHeaderName] = defaultHeaderValue
             }
           }
-          const httpResponse = await this.httpClient.sendRequest(statement)
+          const httpRequest = new HttpRequest(statement.method, statement.url, statement.headers, statement.body)
+          const httpResponse = await this.httpClient.sendRequest(httpRequest)
           this.environment.variables.response = httpResponse
           break
         case StatementType.PRINT:
