@@ -1,4 +1,7 @@
-GET https://api.dev.internal.trivalence.com/scm/api/v1/states
+SET host = https://api.dev.internal.trivalence.com/scm
+
+
+GET {{host}}/api/v1/states
 
 
 print {{response}}
