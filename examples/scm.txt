@@ -1,5 +1,4 @@
 default host http://localhost:8080/scm
-
 default header Authorization = Basic {{ base64('trivalence_admin:admin')}}
 default header X-Facility-ID = 1
 

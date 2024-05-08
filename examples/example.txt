@@ -1,1 +1,5 @@
-print hello
+default host https://jsonplaceholder.typicode.com
+
+GET /users
+
+PRINT User's names: {{ response.body.map(u => u.name).join(', ')}}
