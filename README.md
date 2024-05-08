@@ -16,7 +16,7 @@ PRINT {{ response.body }}
 
 ## Goals
 - Easy to read and understand, even for someone who has never seen the syntax before
-- Enables you to quickly test an API or create automated tests for regression testing
+- Enables you to quickly use an API or create automated regression tests
 
 ## Features
 - Send HTTP requests using language primitives instead of an SDK or third party library
