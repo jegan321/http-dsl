@@ -1,6 +1,1 @@
-default host http://localhost:8080/scm
-default header Authorization = Basic {{ base64('trivalence_admin:admin')}}
-
-GET /api/v1/accounts/me
-
-PRINT {{ response.body.roles }}
+print hello

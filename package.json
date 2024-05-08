@@ -11,7 +11,8 @@
     "build": "npm run format && vitest run && tsc",
     "start": "tsc && node dist/index.js examples/example.txt",
     "symmetric": "tsc && node dist/index.js temp/symmetric.txt",
-    "repl": "tsc && node dist/index.js"
+    "repl": "tsc && node dist/index.js",
+    "scm": "tsc && node dist/index.js examples/scm.txt"
   },
   "author": "John Egan",
   "license": "MIT",
