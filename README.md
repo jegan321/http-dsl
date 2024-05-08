@@ -112,6 +112,17 @@ PRINT User's names: {{ response.body.map(u => u.name).join(', ')}}
 
 The variable `request` will always contain information about the most recent request. Same for the `response` variable.
 
+```
+POST /comments
+{
+    "postId": 1,
+    "body": "Hello, world!"
+}
+
+PRINT {{ request }}
+PRINT {{ response }}
+```
+
 ## Other Commands
 
 ### Print
