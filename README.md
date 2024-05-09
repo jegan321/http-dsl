@@ -63,7 +63,7 @@ Content-Type: application/json
     "email": "Sincere1@april.biz"
 }
 
-PRINT Created user!
+PRINT Updated user email!
 ```
 
 The `Content-Type` header is optional if you want to send `application/json`
@@ -103,6 +103,17 @@ GET /users/{{ id }}
 ```
 
 By default, everything is a string. In the above example `id` is set to the string value `"2"`. However, by using the double curly brace syntax (`{{foo}}`) you can use any JavaScript expression.
+
+```
+SET number = {{ 1 }}
+PRINT number + 1 = {{ number + 1 }}
+
+SET boolean = {{ true }}
+PRINT boolean is not {{ !boolean }}
+
+SET array = {{ ['one', 'two', 'three'] }}
+PRINT array length is {{ array.length }}
+```
 
 ```
 GET /users

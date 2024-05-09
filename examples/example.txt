@@ -1,5 +1,8 @@
-default host https://jsonplaceholder.typicode.com
+SET number = {{ 1 }}
+PRINT number + 1 = {{ number + 1 }}
 
-GET /users
+SET boolean = {{ true }}
+PRINT boolean is not {{ !boolean }}
 
-PRINT User's names: {{ response.body.map(u => u.name).join(', ')}}
+SET array = {{ ['one', 'two', 'three'] }}
+PRINT array length is {{ array.length }}
