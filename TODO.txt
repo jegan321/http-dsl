@@ -1,5 +1,5 @@
 ASSERT command. If it fails then log an Assertion error and exit
 Built-in helper function for loading file contents: file('./data.json', { parse: false })
-Update README: form urlencoded bodies (json), comments
+Update README: comments
 Always exit if any request returns non-200?
 Implement PATCH

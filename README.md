@@ -96,6 +96,18 @@ GET /users/2
 PRINT User 2: {{ response.body.username}}
 ```
 
+To POST form data, set the Content-Type header and send the parameters as JSON key/value pairs
+
+```
+POST https://jsonplaceholder.typicode.com/users
+Content-Type: application/x-www-form-urlencoded
+{
+    "name": "Leanne Graham",
+    "username": "Bret",
+    "email": "Sincere@april.biz"
+}
+```
+
 Create variables using the `SET` keyword
 ```
 SET id = 1
@@ -119,6 +131,19 @@ PRINT upper case: {{
 }}
 ```
 
+The variable `request` will always contain information about the most recent request. Same for the `response` variable.
+
+```
+POST /comments
+{
+    "postId": 1,
+    "body": "Hello, world!"
+}
+
+PRINT {{ request }}
+PRINT {{ response }}
+```
+
 You can use the `PROMPT` command to set variables from user input. The below example will print `Enter value for "name":` to the terminal. 
 
 ```
@@ -134,17 +159,10 @@ GET /users/1
 WRITE output.json {{ response.body }}
 ```
 
-The variable `request` will always contain information about the most recent request. Same for the `response` variable.
-
+Comments start with `#`
 ```
-POST /comments
-{
-    "postId": 1,
-    "body": "Hello, world!"
-}
-
-PRINT {{ request }}
-PRINT {{ response }}
+# This is a comment
+PRINT Hello!
 ```
 
 ## Other Names

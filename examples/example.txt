@@ -1,3 +1,9 @@
-GET https://jsonplaceholder.typicode.com/users/1
+POST https://jsonplaceholder.typicode.com/users
+Content-Type: application/x-www-form-urlencoded
+{
+    "name": "Leanne Graham",
+    "username": "Bret",
+    "email": "Sincere@april.biz"
+}
 
-WRITE output.json {{ response.body }}
+PRINT {{ response }}
