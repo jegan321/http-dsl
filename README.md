@@ -1,4 +1,4 @@
-# FetchDSL
+# HTTP DSL
 
 A simple scripting language for sending HTTP requests.
 
@@ -98,11 +98,11 @@ PRINT User 2: {{ response.body.username}}
 
 Create variables using the `SET` keyword
 ```
-SET id = 3
+SET id = 1
 GET /users/{{ id }}
 ```
 
-By default, everything is a string. In the above example `id` is set to the string value `"2"`. However, by using the double curly brace syntax (`{{foo}}`) you can use any JavaScript expression.
+Everything is a string by default. In the above example, `id` is set to the string value `"1"`. However, by using the double curly brace syntax you can use any JavaScript expression.
 
 ```
 SET number = {{ 1 }}
@@ -112,13 +112,26 @@ SET boolean = {{ true }}
 PRINT boolean is not {{ !boolean }}
 
 SET array = {{ ['one', 'two', 'three'] }}
-PRINT array length is {{ array.length }}
+PRINT upper case: {{ 
+    array
+        .map(element => element.toUpperCase())
+        .join(', ') 
+}}
 ```
 
-```
-GET /users
+You can use the `PROMPT` command to set variables from user input. The below example will print `Enter value for "name":` to the terminal. 
 
-PRINT User's names: {{ response.body.map(u => u.name).join(', ')}}
+```
+PROMPT name
+PRINT Hello, {{ name }}!
+```
+
+The `WRITE` command is used to write data to a text file
+
+```
+GET /users/1
+
+WRITE output.json {{ response.body }}
 ```
 
 The variable `request` will always contain information about the most recent request. Same for the `response` variable.
@@ -132,26 +145,6 @@ POST /comments
 
 PRINT {{ request }}
 PRINT {{ response }}
-```
-
-## Other Commands
-
-### Print
-Prints to the console.
-```
-PRINT Hello, world!
-```
-
-### SET
-Sets the value of a variable and creates the variable if it doesn't exist already.
-```
-SET name = John
-```
-
-### PROMPT
-Prompts the user in the terminal for the value of a variable.
-```
-PROMPT password
 ```
 
 ## Other Names
