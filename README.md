@@ -42,7 +42,6 @@ Accept: application/json
 ```
 
 Send a POST request with a body by writing the JSON followed by a blank line:
-
 ```
 POST https://jsonplaceholder.typicode.com/users
 Content-Type: application/json
@@ -53,17 +52,6 @@ Content-Type: application/json
 }
 
 PRINT Created user!
-```
-
-GET, POST, PUT, DELETE, PATCH and OPTIONS are supported.
-```
-PATCH https://jsonplaceholder.typicode.com/users/1
-Content-Type: application/json
-{
-    "email": "Sincere1@april.biz"
-}
-
-PRINT Updated user email!
 ```
 
 The `Content-Type` header is optional if you want to send `application/json`
@@ -97,7 +85,6 @@ PRINT User 2: {{ response.body.username}}
 ```
 
 To POST form data, set the Content-Type header and send the parameters as JSON key/value pairs
-
 ```
 POST https://jsonplaceholder.typicode.com/users
 Content-Type: application/x-www-form-urlencoded
@@ -125,9 +112,7 @@ PRINT boolean is not {{ !boolean }}
 
 SET array = {{ ['one', 'two', 'three'] }}
 PRINT upper case: {{ 
-    array
-        .map(element => element.toUpperCase())
-        .join(', ') 
+  array.map(element => element.toUpperCase()).join(', ') 
 }}
 ```
 
