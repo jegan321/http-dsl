@@ -1,3 +1,4 @@
 ASSERT command. If it fails then log an Assertion error and exit
 Always exit if any request returns non-200
 Implement PATCH
+Include line number for evaluator errors too

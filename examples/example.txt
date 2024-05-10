@@ -1,4 +1,4 @@
-POST https://jsonplaceholder.typicode.com/users
+POST https://jsonplaceholder.typicode.com/usersz
 Content-Type: application/x-www-form-urlencoded
 {
     "name": "Leanne Graham",
@@ -6,4 +6,4 @@ Content-Type: application/x-www-form-urlencoded
     "email": "Sincere@april.biz"
 }
 
-PRINT {{ response }}
+PRINT Hello!

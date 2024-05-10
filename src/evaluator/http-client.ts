@@ -61,6 +61,10 @@ export class HttpResponse {
       .join('\n')
     return `${receivedResponseLine}\n${dateLine}\n${statusLine}\n\n${responseHeaders}\n\n${body}`
   }
+
+  isOk() {
+    return this.status >= 200 && this.status < 300
+  }
 }
 
 function parseJsonBody(body: string): string | Record<string, any> {
@@ -106,6 +110,7 @@ export class MockHttpClient implements HttpClient {
   headers: Record<string, string> = {}
   body: Record<string, any> = {}
   sentRequests: HttpRequest[] = []
+
   async sendRequest(request: HttpRequest): Promise<HttpResponse> {
     this.sentRequests.push(request)
 

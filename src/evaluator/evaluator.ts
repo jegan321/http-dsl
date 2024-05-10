@@ -55,6 +55,12 @@ export class Evaluator {
           this.environment.variables.request = httpRequest
           const httpResponse = await this.httpClient.sendRequest(httpRequest)
           this.environment.variables.response = httpResponse
+
+          if (!httpResponse.isOk()) {
+            this.io.write(`Request failed with status ${httpResponse.status}. ${httpRequest.url}`)
+            process.exit(1)
+          }
+
           break
         case StatementType.PRINT:
           const printValue = replaceExpressionsInString(this.environment, statement.printValue)
