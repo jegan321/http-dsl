@@ -1,0 +1,44 @@
+SET accountNumber = 79357
+SET poNumber = SHRA-0001571
+
+PRINT accountNumber {{ accountNumber }}
+PRINT poNumber {{ poNumber }}
+PRINT
+
+DEFAULT HOST https://jnj-prod.apigee.net
+
+POST /oauth/client_credential/accesstoken?grant_type=client_credentials
+Content-Type: application/x-www-form-urlencoded
+{
+    "client_id": "R8UVEi203NAuJDfUxFufEEmE2uJdowSq",
+    "client_secret": "f7a1O11mLoqMnTsu"
+}
+
+SET accessToken = {{ response.body.access_token }}
+
+PRINT Retrieved access token {{ accessToken }}
+PRINT
+
+POST /sc-md-b2b/v1/orders/status/{{ accountNumber }}/bulk
+Authorization: Bearer {{ accessToken }}
+Content-Type: application/json
+{
+    "fromDate": "",
+    "toDate": "",
+    "channel": "",
+    "sector": "",
+    "poDetails": [
+        {
+            "poNumber": "{{ poNumber }}",
+            "sku": ""
+        }
+    ],
+    "currentPage": 1,
+    "pageSize": 100
+}
+
+PRINT {{ 
+    response.body.result
+        .map((r, index) => `Line ${index+1}: ${r.sku} -> ${r.status}, ${r.deliveryInfo[0]?.lineStatus || ''}`)
+        .join('\n')
+}}

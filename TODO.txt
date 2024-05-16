@@ -1,4 +1,20 @@
+Next Up:
+
+
+SCM MVP (Only features needed for scm regression tests):
 ASSERT command. If it fails then log an Assertion error and exit
-Always exit if any request returns non-200
 Implement PATCH
 Include line number for evaluator errors too
+Create test scripts for scm to see try to find bugs
+Very simple VSCode extension for syntax highlighting only
+CLI feature to run a whole directory instead of just one file
+
+
+
+Backlog:
+For loops
+If statements
+Helper for reading files
+Advanced extension features
+EXIT command that calls process.exit() with a message
+

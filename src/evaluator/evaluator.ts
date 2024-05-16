@@ -58,6 +58,7 @@ export class Evaluator {
 
           if (!httpResponse.isOk()) {
             this.io.write(`Request failed with status ${httpResponse.status}. ${httpRequest.url}`)
+            this.io.write(httpResponse.body)
             process.exit(1)
           }
 
