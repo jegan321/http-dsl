@@ -186,4 +186,40 @@ describe('evaluate', async () => {
     await evaluator.evaluate(program)
     expect(io.fileWrites).toStrictEqual([{ fileName: 'output.txt', content: 'Hello, world!' }])
   })
+  test('should assert {{true}}', async () => {
+    const program = new Program([
+      {
+        type: StatementType.ASSERT,
+        tokenLiteral: 'ASSERT',
+        expression: '{{true}}'
+      }
+    ])
+    await evaluator.evaluate(program)
+    expect(io.writes.length).toBe(0)
+  })
+  test('should assert {{false}}', async () => {
+    const program = new Program([
+      {
+        type: StatementType.ASSERT,
+        tokenLiteral: 'ASSERT',
+        expression: '{{false}}'
+      }
+    ])
+    await evaluator.evaluate(program)
+    expect(io.writes.length).toBe(1)
+    expect(io.writes[0]).toBe(`Assertion failed: {{false}}`)
+  })
+  test('should assert {{false}} with failure message', async () => {
+    const program = new Program([
+      {
+        type: StatementType.ASSERT,
+        tokenLiteral: 'ASSERT',
+        expression: '{{false}}',
+        failureMessage: 'The test failed...'
+      }
+    ])
+    await evaluator.evaluate(program)
+    expect(io.writes.length).toBe(1)
+    expect(io.writes[0]).toBe(`Assertion failed: {{false}}\nThe test failed...`)
+  })
 })

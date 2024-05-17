@@ -3,7 +3,8 @@ SET poNumber = SHRA-0001571
 
 PRINT accountNumber {{ accountNumber }}
 PRINT poNumber {{ poNumber }}
-PRINT
+
+PRINT # blank line
 
 DEFAULT HOST https://jnj-prod.apigee.net
 
@@ -17,7 +18,8 @@ Content-Type: application/x-www-form-urlencoded
 SET accessToken = {{ response.body.access_token }}
 
 PRINT Retrieved access token {{ accessToken }}
-PRINT
+
+PRINT # blank line
 
 POST /sc-md-b2b/v1/orders/status/{{ accountNumber }}/bulk
 Authorization: Bearer {{ accessToken }}

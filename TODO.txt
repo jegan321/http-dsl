@@ -2,8 +2,6 @@ Next Up:
 
 
 SCM MVP (Only features needed for scm regression tests):
-ASSERT command. If it fails then log an Assertion error and exit
-Implement PATCH
 Include line number for evaluator errors too
 Create test scripts for scm to see try to find bugs
 Very simple VSCode extension for syntax highlighting only

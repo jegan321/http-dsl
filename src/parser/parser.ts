@@ -2,7 +2,7 @@ import { Lexer } from '../lexer/lexer'
 import { COMMAND_TOKENS, REQUEST_TOKENS, Token, TokenType } from '../lexer/tokens'
 import { isContentType } from '../utils/header-utils'
 import {
-  Command,
+  AssertStatement,
   DefaultStatement,
   PrintStatement,
   Program,
@@ -86,6 +86,8 @@ export class Parser {
       return this.parseDefaultStatement()
     } else if (this.curToken.type === TokenType.WRITE) {
       return this.parseWriteStatement()
+    } else if (this.curToken.type === TokenType.ASSERT) {
+      return this.parseAssertStatement()
     } else {
       this.addSyntaxError(this.curToken, `Unimplemented command: ${this.curToken.literal}`)
       return null
@@ -312,6 +314,23 @@ export class Parser {
       tokenLiteral,
       fileName,
       content
+    }
+  }
+
+  parseAssertStatement(): AssertStatement {
+    const tokenLiteral = this.curToken.literal
+    this.nextToken() // Done with ASSERT token
+
+    const expression = this.curToken.literal
+    this.nextToken() // Done with expression
+
+    const failureMessage = this.parseRestOfLineAsSingleString()
+
+    return {
+      type: StatementType.ASSERT,
+      tokenLiteral,
+      expression,
+      failureMessage
     }
   }
 

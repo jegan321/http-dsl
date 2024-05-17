@@ -2,6 +2,7 @@ import { expect, test, describe } from 'vitest'
 import { Lexer } from '../lexer/lexer'
 import { Parser, concatenateUrlWithQueryParams } from './parser'
 import {
+  AssertStatement,
   DefaultStatement,
   PrintStatement,
   Program,
@@ -231,6 +232,16 @@ describe('Parser', () => {
     expect(request.tokenLiteral).toEqual('WRITE')
     expect(request.fileName).toEqual('message.txt')
     expect(request.content).toEqual('Hello')
+  })
+  test('should parse ASSERT true', () => {
+    const input = `ASSERT true`
+    const program = parseProgram(input)
+    expect(program.statements.length).toEqual(1)
+    const request = program.statements[0] as AssertStatement
+    expect(request.type).toEqual('ASSERT')
+    expect(request.tokenLiteral).toEqual('ASSERT')
+    expect(request.expression).toEqual('true')
+    expect(request.failureMessage).toEqual('')
   })
 })
 

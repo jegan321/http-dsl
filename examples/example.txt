@@ -1,9 +1,4 @@
-POST https://jsonplaceholder.typicode.com/usersz
-Content-Type: application/x-www-form-urlencoded
-{
-    "name": "Leanne Graham",
-    "username": "Bret",
-    "email": "Sincere@april.biz"
-}
-
-PRINT Hello!
+set names = {{['john']}}
+print before
+assert {{ names.length > 5 }} OOPS
+print after

@@ -17,7 +17,8 @@ export enum TokenType {
   PRINT = 'PRINT',
   PROMPT = 'PROMPT',
   DEFAULT = 'DEFAULT',
-  WRITE = 'WRITE'
+  WRITE = 'WRITE',
+  ASSERT = 'ASSERT'
 }
 
 export const COMMAND_TOKENS = [
@@ -30,10 +31,11 @@ export const COMMAND_TOKENS = [
   TokenType.PRINT,
   TokenType.PROMPT,
   TokenType.DEFAULT,
-  TokenType.WRITE
+  TokenType.WRITE,
+  TokenType.ASSERT
 ]
 
-export const REQUEST_TOKENS = [TokenType.GET, TokenType.POST, TokenType.PUT, TokenType.DELETE]
+export const REQUEST_TOKENS = [TokenType.GET, TokenType.POST, TokenType.PUT, TokenType.DELETE, TokenType.PATCH]
 
 export class Token {
   type: TokenType
@@ -61,7 +63,8 @@ export function getKeywordForLiteral(literal: string): TokenType | null {
     PRINT: TokenType.PRINT,
     PROMPT: TokenType.PROMPT,
     DEFAULT: TokenType.DEFAULT,
-    WRITE: TokenType.WRITE
+    WRITE: TokenType.WRITE,
+    ASSERT: TokenType.ASSERT
   }
   return keywordMap[literal.toUpperCase()]
 }

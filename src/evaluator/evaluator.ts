@@ -96,6 +96,16 @@ export class Evaluator {
           const content = replaceExpressionsInString(this.environment, statement.content)
           this.io.writeToFile(fileName, content)
           break
+        case StatementType.ASSERT:
+          const expressionValue = replaceSingleExpression(this.environment, statement.expression)
+          if (!expressionValue) {
+            let errorMessage = `Assertion failed: ${statement.expression}`
+            if (statement.failureMessage) {
+              errorMessage += '\n' + statement.failureMessage
+            }
+            throw new Error(errorMessage)
+          }
+          break
       }
     }
   }

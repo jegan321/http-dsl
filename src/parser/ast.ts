@@ -4,7 +4,8 @@ export enum StatementType {
   PRINT = 'PRINT',
   PROMPT = 'PROMPT',
   DEFAULT = 'DEFAULT',
-  WRITE = 'WRITE'
+  WRITE = 'WRITE',
+  ASSERT = 'ASSERT'
 }
 
 export enum Command {
@@ -26,6 +27,7 @@ export type Statement =
   | PromptStatement
   | DefaultStatement
   | WriteStatement
+  | AssertStatement
 
 export interface RequestStatement {
   type: StatementType.REQUEST
@@ -68,6 +70,13 @@ export interface WriteStatement {
   tokenLiteral: string
   fileName: string
   content: string
+}
+
+export interface AssertStatement {
+  type: StatementType.ASSERT
+  tokenLiteral: string
+  expression: string
+  failureMessage?: string
 }
 
 export class Program {
