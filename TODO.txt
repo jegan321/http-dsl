@@ -2,17 +2,16 @@ Next Up:
 
 
 SCM MVP (Only features needed for scm regression tests):
-Include line number for evaluator errors too
-Create test scripts for scm to see try to find bugs
 Very simple VSCode extension for syntax highlighting only
-CLI feature to run a whole directory instead of just one file
+Create test scripts for scm to see try to find bugs
 
 
 
 Backlog:
 For loops
 If statements
+CLI feature to run a whole directory instead of just one file
 Helper for reading files
-Advanced extension features
+Advanced features for VSCode extension
 EXIT command that calls process.exit() with a message
 

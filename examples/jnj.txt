@@ -1,5 +1,5 @@
-SET accountNumber = 79357
-SET poNumber = SHRA-0001571
+SET accountNumber = 00079357z
+SET poNumber = SHRA0001571 
 
 PRINT accountNumber {{ accountNumber }}
 PRINT poNumber {{ poNumber }}
