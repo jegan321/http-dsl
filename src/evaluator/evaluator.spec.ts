@@ -24,6 +24,7 @@ describe('evaluate', async () => {
       {
         type: StatementType.REQUEST,
         tokenLiteral: 'GET',
+        lineNumber: 1,
         method: 'GET',
         url: 'https://api.example.com',
         headers: {}
@@ -41,6 +42,7 @@ describe('evaluate', async () => {
       {
         type: StatementType.REQUEST,
         tokenLiteral: 'GET',
+        lineNumber: 1,
         method: 'GET',
         url: 'https://api.example.com/items/{{id}}',
         headers: {}
@@ -59,6 +61,7 @@ describe('evaluate', async () => {
       {
         type: StatementType.REQUEST,
         tokenLiteral: 'POST',
+        lineNumber: 1,
         method: 'POST',
         url: '{{auth_url}}',
         headers: {}
@@ -73,6 +76,7 @@ describe('evaluate', async () => {
       {
         type: StatementType.SET,
         tokenLiteral: 'SET',
+        lineNumber: 1,
         variableName: 'message',
         variableValue: 'Hello, world!'
       }
@@ -104,12 +108,14 @@ describe('evaluate', async () => {
       {
         type: StatementType.SET,
         tokenLiteral: 'SET',
+        lineNumber: 1,
         variableName: 'id',
         variableValue: '999'
       },
       {
         type: StatementType.REQUEST,
         tokenLiteral: 'GET',
+        lineNumber: 1,
         method: 'GET',
         url: 'https://api.example.com/items/{{id}}',
         headers: {}
@@ -127,11 +133,13 @@ describe('evaluate', async () => {
       {
         type: StatementType.DEFAULT,
         tokenLiteral: 'DEFAULT',
+        lineNumber: 1,
         host: 'https://api.example.com'
       },
       {
         type: StatementType.REQUEST,
         tokenLiteral: 'GET',
+        lineNumber: 1,
         method: 'GET',
         url: '/items/123',
         headers: {}
@@ -146,6 +154,7 @@ describe('evaluate', async () => {
       {
         type: StatementType.PRINT,
         tokenLiteral: 'PRINT',
+        lineNumber: 1,
         printValue: 'Hello, world!'
       }
     ])
@@ -158,12 +167,14 @@ describe('evaluate', async () => {
       {
         type: StatementType.DEFAULT,
         tokenLiteral: 'DEFAULT',
+        lineNumber: 1,
         headerName: 'Accept',
         headerValue: 'application/json'
       },
       {
         type: StatementType.REQUEST,
         tokenLiteral: 'GET',
+        lineNumber: 1,
         method: 'GET',
         url: '/items/123',
         headers: {}
@@ -179,6 +190,7 @@ describe('evaluate', async () => {
       {
         type: StatementType.WRITE,
         tokenLiteral: 'DEFAULT',
+        lineNumber: 1,
         fileName: 'output.txt',
         content: 'Hello, world!'
       }
@@ -191,6 +203,7 @@ describe('evaluate', async () => {
       {
         type: StatementType.ASSERT,
         tokenLiteral: 'ASSERT',
+        lineNumber: 1,
         expression: '{{true}}'
       }
     ])
@@ -202,24 +215,29 @@ describe('evaluate', async () => {
       {
         type: StatementType.ASSERT,
         tokenLiteral: 'ASSERT',
+        lineNumber: 1,
         expression: '{{false}}'
       }
     ])
     await evaluator.evaluate(program)
-    expect(io.writes.length).toBe(1)
-    expect(io.writes[0]).toBe(`Assertion failed: {{false}}`)
+    expect(io.writes.length).toBe(2)
+    expect(io.writes[0]).toBe(`Runtime error on line 1:`)
+    expect(io.writes[1]).toBe(`Assertion failed: {{false}}`)
   })
   test('should assert {{false}} with failure message', async () => {
     const program = new Program([
       {
         type: StatementType.ASSERT,
         tokenLiteral: 'ASSERT',
+        lineNumber: 1,
         expression: '{{false}}',
         failureMessage: 'The test failed...'
       }
     ])
     await evaluator.evaluate(program)
-    expect(io.writes.length).toBe(1)
-    expect(io.writes[0]).toBe(`Assertion failed: {{false}}\nThe test failed...`)
+    expect(io.writes.length).toBe(3)
+    expect(io.writes[0]).toBe(`Runtime error on line 1:`)
+    expect(io.writes[1]).toBe(`Assertion failed: {{false}}`)
+    expect(io.writes[2]).toBe(`The test failed...`)
   })
 })

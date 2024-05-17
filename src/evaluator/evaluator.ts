@@ -27,9 +27,11 @@ export class Evaluator {
   async evaluate(program: Program) {
     try {
       await this.evaluateProgram(program)
-    } catch (error) {
-      const errorMessage = getErrorMessage(error)
-      this.io.write(errorMessage)
+    } catch (error: any) {
+      if (!error.silent) {
+        const errorMessage = getErrorMessage(error)
+        this.io.write(errorMessage)
+      }
     }
   }
 
@@ -57,9 +59,10 @@ export class Evaluator {
           this.environment.variables.response = httpResponse
 
           if (!httpResponse.isOk()) {
-            this.io.write(`Request failed with status ${httpResponse.status}. ${httpRequest.url}`)
-            this.io.write(httpResponse.body)
-            process.exit(1)
+            this.exitWithErrors(statement.lineNumber, [
+              `Request failed with status ${httpResponse.status}. ${httpRequest.url}`,
+              httpResponse.body
+            ])
           }
 
           break
@@ -99,11 +102,10 @@ export class Evaluator {
         case StatementType.ASSERT:
           const expressionValue = replaceSingleExpression(this.environment, statement.expression)
           if (!expressionValue) {
-            let errorMessage = `Assertion failed: ${statement.expression}`
-            if (statement.failureMessage) {
-              errorMessage += '\n' + statement.failureMessage
-            }
-            throw new Error(errorMessage)
+            this.exitWithErrors(statement.lineNumber, [
+              `Assertion failed: ${statement.expression}`,
+              statement.failureMessage
+            ])
           }
           break
       }
@@ -118,5 +120,17 @@ export class Evaluator {
     }
     const replacedBody = replaceExpressionsInString(environment, request.body)
     request.body = replacedBody ? replacedBody : undefined // Replace empty string with undefined
+  }
+
+  exitWithErrors(lineNumber: number, messages: any[]) {
+    this.io.write(`Runtime error on line ${lineNumber}:`)
+    for (const message of messages) {
+      if (message) {
+        this.io.write(message)
+      }
+    }
+    const error: any = new Error()
+    error.silent = true
+    throw error
   }
 }

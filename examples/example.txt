@@ -1,4 +1,3 @@
-set names = {{['john']}}
-print before
-assert {{ names.length > 5 }} OOPS
-print after
+GET https://jsonplaceholder.typicode.com/posts
+
+ASSERT {{response.body.length < 2}} should not have more than 2 results

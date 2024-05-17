@@ -125,6 +125,8 @@ export class Parser {
   }
 
   parseRequestStatement(): RequestStatement {
+    const lineNumber = this.curToken.line
+
     const commandLiteral = this.curToken.literal
     this.nextToken() // Done with command
 
@@ -201,6 +203,7 @@ export class Parser {
     return {
       type: StatementType.REQUEST,
       tokenLiteral: commandLiteral,
+      lineNumber,
       method: commandLiteral,
       url: concatenateUrlWithQueryParams(url, queryParams),
       headers,
@@ -221,6 +224,8 @@ export class Parser {
   }
 
   parsePrintStatement(): PrintStatement {
+    const lineNumber = this.curToken.line
+
     const tokenLiteral = this.curToken.literal
     this.nextToken() // Done with PRINT token
 
@@ -229,11 +234,14 @@ export class Parser {
     return {
       type: StatementType.PRINT,
       tokenLiteral,
+      lineNumber,
       printValue
     }
   }
 
   parseSetStatement(): SetStatement {
+    const lineNumber = this.curToken.line
+
     const tokenLiteral = this.curToken.literal
     this.nextToken()
 
@@ -247,6 +255,7 @@ export class Parser {
     return {
       type: StatementType.SET,
       tokenLiteral,
+      lineNumber,
       variableName,
       variableValue
     }
@@ -269,6 +278,8 @@ export class Parser {
   }
 
   parseDefaultStatement(): DefaultStatement {
+    const lineNumber = this.curToken.line
+
     const tokenLiteral = this.curToken.literal
     this.nextToken()
 
@@ -294,6 +305,7 @@ export class Parser {
     return {
       type: StatementType.DEFAULT,
       tokenLiteral,
+      lineNumber,
       host,
       headerName,
       headerValue
@@ -301,6 +313,8 @@ export class Parser {
   }
 
   parseWriteStatement(): WriteStatement {
+    const lineNumber = this.curToken.line
+
     const tokenLiteral = this.curToken.literal
     this.nextToken()
 
@@ -312,12 +326,15 @@ export class Parser {
     return {
       type: StatementType.WRITE,
       tokenLiteral,
+      lineNumber,
       fileName,
       content
     }
   }
 
   parseAssertStatement(): AssertStatement {
+    const lineNumber = this.curToken.line
+    
     const tokenLiteral = this.curToken.literal
     this.nextToken() // Done with ASSERT token
 
@@ -329,6 +346,7 @@ export class Parser {
     return {
       type: StatementType.ASSERT,
       tokenLiteral,
+      lineNumber,
       expression,
       failureMessage
     }
