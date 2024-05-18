@@ -1,4 +1,4 @@
-SET accountNumber = 00079357z
+SET accountNumber = 00079357
 SET poNumber = SHRA0001571 
 
 PRINT accountNumber {{ accountNumber }}
@@ -25,18 +25,11 @@ POST /sc-md-b2b/v1/orders/status/{{ accountNumber }}/bulk
 Authorization: Bearer {{ accessToken }}
 Content-Type: application/json
 {
-    "fromDate": "",
-    "toDate": "",
-    "channel": "",
-    "sector": "",
     "poDetails": [
         {
-            "poNumber": "{{ poNumber }}",
-            "sku": ""
+            "poNumber": "{{ poNumber }}"
         }
-    ],
-    "currentPage": 1,
-    "pageSize": 100
+    ]
 }
 
 PRINT {{ 
