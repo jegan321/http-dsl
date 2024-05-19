@@ -8,6 +8,7 @@ Create test scripts for scm to see try to find bugs
 
 
 Backlog:
+Add documentation for query params
 For loops
 If statements
 CLI feature to run a whole directory instead of just one file
