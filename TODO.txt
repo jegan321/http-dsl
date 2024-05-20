@@ -15,4 +15,6 @@ CLI feature to run a whole directory instead of just one file
 Helper for reading files
 Advanced features for VSCode extension
 EXIT command that calls process.exit() with a message
-
+JS transpiler
+cURL transpiler
+Make REPL automatically print response after each request
