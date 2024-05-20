@@ -25,7 +25,7 @@ PRINT {{ response.body }}
 - VSCode extension with syntax highlighting and shortcuts
 - Read/write JSON files
 
-## Sending HTTP Requests
+## Documentation
 The language is built around sending HTTP requests. The syntax is inspired by the HTTP protocol itself.
 
 HTTP Protocol:
