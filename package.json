@@ -13,7 +13,8 @@
     "symmetric": "tsc && node dist/index.js temp/symmetric.txt",
     "repl": "tsc && node dist/index.js",
     "scm": "tsc && node dist/index.js examples/scm.txt",
-    "jnj": "tsc && node dist/index.js examples/jnj.txt"
+    "jnj": "tsc && node dist/index.js examples/jnj.txt",
+    "hs": "tsc && node dist/index.js examples/hs.hdsl"
   },
   "author": "John Egan",
   "license": "MIT",
