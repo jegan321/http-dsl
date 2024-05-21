@@ -2,9 +2,6 @@ Next Up:
 Bug two comments and then prompt results in parser error Line 2, syntax error. Invalid token at beginning of statement: #
 Bug with application/x-www-form-urlencoded and expressions
 
-SCM MVP (Only features needed for scm regression tests):
-Very simple VSCode extension for syntax highlighting only
-Create test scripts for scm to see try to find bugs
 
 
 
@@ -20,4 +17,5 @@ JS transpiler
 cURL transpiler
 Make REPL automatically print response after each request
 Maybe implement semicolons to make REPL convenient
+Make extension add icons for .http files
 
