@@ -334,7 +334,7 @@ export class Parser {
 
   parseAssertStatement(): AssertStatement {
     const lineNumber = this.curToken.line
-    
+
     const tokenLiteral = this.curToken.literal
     this.nextToken() // Done with ASSERT token
 

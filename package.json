@@ -3,6 +3,9 @@
   "version": "0.1.0",
   "private": true,
   "main": "index.js",
+  "bin": {
+    "http": "dist/index.js"
+  },
   "scripts": {
     "format": "prettier --write src/",
     "test": "vitest",
