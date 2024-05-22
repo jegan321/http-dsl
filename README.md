@@ -96,7 +96,7 @@ GET /users/2
 PRINT User 2: {{ response.body.username}}
 ```
 
-To POST form data, set the Content-Type header and send the parameters as JSON key/value pairs
+To POST form data, set the Content-Type header appropriately and send the parameters as JSON key/value pairs
 ```
 POST https://jsonplaceholder.typicode.com/users
 Content-Type: application/x-www-form-urlencoded
