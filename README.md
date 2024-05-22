@@ -75,7 +75,6 @@ POST https://jsonplaceholder.typicode.com/users
     "username": "Bret",
     "email": "Sincere@april.biz"
 }
-
 ```
 
 You can change the default value for `Content-Type` or any other header
