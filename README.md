@@ -26,7 +26,7 @@ PRINT {{ response.body }}
 - Read/write JSON files
 
 ## Usage
-Install globally with npm or your preferred package manager:
+Install globally with npm:
 ```sh
 npm install -g http-dsl
 ```
