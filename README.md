@@ -164,7 +164,7 @@ PRINT Hello!
 
 ## More Examples
 
-Retrieve an access token and query for past due invoices:
+Retrieve an access token and then query for past due invoices:
 ```
 DEFAULT HOST {{ process.env.HOST_NAME }}
 
