@@ -25,6 +25,19 @@ PRINT {{ response.body }}
 - VSCode extension with syntax highlighting and shortcuts
 - Read/write JSON files
 
+## Usage
+Install globally with npm or your preferred package manager:
+```sh
+npm install -g http-dsl
+```
+
+Create a file that ends in `.http` with your code and run it with the `http` command:
+```
+echo "PRINT Hello world" > hello.http
+
+http hello.http
+```
+
 ## Documentation
 The language is built around sending HTTP requests. The syntax is inspired by the HTTP protocol itself.
 
