@@ -19,3 +19,4 @@ Make REPL automatically print response after each request
 Maybe implement semicolons to make REPL convenient
 Make extension add icons for .http files
 Change stringify of response and request to not include headers
+Move __tests__/integreation-tests.spec.ts to the src folder
