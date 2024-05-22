@@ -162,6 +162,35 @@ Comments start with `#`
 PRINT Hello!
 ```
 
+## More Examples
+
+Retrieve an access token and query for past due invoices:
+```
+DEFAULT HOST {{ process.env.HOST_NAME }}
+
+PROMPT password
+
+POST /token
+Content-Type: application/x-www-form-urlencoded
+Accept: application/json
+{
+    "username": "admin",
+    "password": "{{ password }}"
+}
+
+SET token = {{ response.body.access_token }}
+
+GET /invoices?status=open
+Accept: application/json
+
+PRINT Past due invoices: {{
+    response.body
+        .filter(invoice => new Date(invoice.dueDate) < new Date())
+        .map(invoice => invoice.invoiceNumber)
+        .join(', ')
+}}
+```
+
 ## Other Names
 - RequestDSL
 - RequestQL
