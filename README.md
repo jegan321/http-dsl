@@ -98,12 +98,11 @@ PRINT User 2: {{ response.body.username}}
 
 To POST form data, set the Content-Type header appropriately and send the parameters as JSON key/value pairs
 ```
-POST https://jsonplaceholder.typicode.com/users
+POST https://jsonplaceholder.typicode.com/login
 Content-Type: application/x-www-form-urlencoded
 {
-    "name": "Leanne Graham",
-    "username": "Bret",
-    "email": "Sincere@april.biz"
+    "username": "admin",
+    "password": "admin_password"
 }
 ```
 
@@ -126,6 +125,9 @@ SET array = {{ ['one', 'two', 'three'] }}
 PRINT upper case: {{ 
   array.map(element => element.toUpperCase()).join(', ') 
 }}
+
+SET host = {{ process.env.HOST_NAME }}
+PRINT host name from environment variable: {{ host }}
 ```
 
 The variable `request` will always contain information about the most recent request. Same for the `response` variable.
