@@ -31,7 +31,7 @@ Install globally with npm:
 npm install -g http-dsl
 ```
 
-Create a file that ends in `.http` with your code and run it with the `http` command:
+Create a source file that ends in `.http` and then run it with the `http` command:
 ```
 echo "PRINT Hello world" > hello.http
 
