@@ -170,6 +170,7 @@ Retrieve an access token and then query for past due invoices:
 ```
 DEFAULT HOST {{ process.env.HOST_NAME }}
 
+# User must enter the password every time
 PROMPT password
 
 POST /token
