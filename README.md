@@ -185,8 +185,8 @@ Accept: application/json
 
 PRINT Past due invoices: {{
     response.body
-        .filter(invoice => new Date(invoice.dueDate) < new Date())
-        .map(invoice => invoice.invoiceNumber)
+        .filter(invoice => new Date(invoice.due_date) < new Date())
+        .map(invoice => invoice.invoice_num)
         .join(', ')
 }}
 ```
