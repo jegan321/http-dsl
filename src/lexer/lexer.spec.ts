@@ -221,6 +221,20 @@ describe('Lexer - token types', () => {
     const tokens = lexer.getAllTokens().map((token) => token.type)
     expect(tokens).toEqual(expectedTokens)
   })
+  test('should get token types for if statement', () => {
+    const input = `
+      IF true
+        PRINT Hello
+      END
+    `
+    const lexer = new Lexer(input)
+    const expectedTokens = [
+      TokenType.IF, TokenType.STRING, TokenType.NEWLINE,
+        TokenType.PRINT, TokenType.STRING, TokenType.NEWLINE,
+      TokenType.END]
+    const tokens = lexer.getAllTokens().map((token) => token.type)
+    expect(tokens).toEqual(expectedTokens)
+  })
 })
 
 describe('Lexer - token literals', () => {

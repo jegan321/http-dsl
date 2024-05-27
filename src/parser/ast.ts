@@ -6,19 +6,8 @@ export enum StatementType {
   DEFAULT = 'DEFAULT',
   WRITE = 'WRITE',
   TEST = 'TEST',
-  ASSERT = 'ASSERT'
-}
-
-export enum Command {
-  // Request commands
-  GET = 'GET',
-  POST = 'POST',
-  PUT = 'PUT',
-  DELETE = 'DELETE',
-
-  // Other commands
-  SET = 'SET',
-  PRINT = 'PRINT'
+  ASSERT = 'ASSERT',
+  IF = 'IF'
 }
 
 export type Statement =
@@ -30,6 +19,7 @@ export type Statement =
   | WriteStatement
   | TestStatement
   | AssertStatement
+  | IfStatement
 
 export interface RequestStatement {
   type: StatementType.REQUEST
@@ -99,4 +89,12 @@ export class Program {
   constructor(statements: Statement[]) {
     this.statements = statements
   }
+}
+
+export interface IfStatement {
+  type: StatementType.IF
+  tokenLiteral: string
+  lineNumber: number
+  condition: string
+  statements: Statement[]
 }

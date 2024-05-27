@@ -4,6 +4,7 @@ import { Parser, concatenateUrlWithQueryParams } from './parser'
 import {
   AssertStatement,
   DefaultStatement,
+  IfStatement,
   PrintStatement,
   Program,
   PromptStatement,
@@ -11,6 +12,7 @@ import {
   SetStatement,
   WriteStatement
 } from './ast'
+import exp from 'constants'
 
 function parseProgram(input: string): Program {
   const lexer = new Lexer(input)
@@ -242,6 +244,31 @@ describe('Parser', () => {
     expect(request.tokenLiteral).toEqual('ASSERT')
     expect(request.expression).toEqual('true')
     expect(request.failureMessage).toEqual('')
+  })
+  test('should parse if statement', () => {
+    const input = `
+      IF true
+        PRINT Hello
+        PRINT World
+      END
+    `
+    const program = parseProgram(input)
+    expect(program.statements.length).toEqual(1)
+
+    const IfStatement = program.statements[0] as IfStatement
+    expect(IfStatement.type).toEqual('IF')
+    expect(IfStatement.tokenLiteral).toEqual('IF')
+    expect(IfStatement.lineNumber).toEqual(1)
+    expect(IfStatement.condition).toEqual('true')
+    expect(IfStatement.statements.length).toEqual(2)
+
+    const printStatement = IfStatement.statements[0] as PrintStatement
+    expect(printStatement.type).toEqual('PRINT')
+    expect(printStatement.printValue).toEqual('Hello')
+
+    const printStatement2 = IfStatement.statements[1] as PrintStatement
+    expect(printStatement2.type).toEqual('PRINT')
+    expect(printStatement2.printValue).toEqual('World')
   })
 })
 

@@ -4,6 +4,7 @@ import { isContentType } from '../utils/header-utils'
 import {
   AssertStatement,
   DefaultStatement,
+  IfStatement,
   PrintStatement,
   Program,
   PromptStatement,
@@ -91,6 +92,8 @@ export class Parser {
       return this.parseTestStatement()
     } else if (this.curToken.type === TokenType.ASSERT) {
       return this.parseAssertStatement()
+    } else if (this.curToken.type === TokenType.IF) {
+      return this.parseIfStatement()
     } else {
       this.addSyntaxError(this.curToken, `Unimplemented command: ${this.curToken.literal}`)
       return null
@@ -115,6 +118,19 @@ export class Parser {
 
   peekTokenIsEndOfStatement(): boolean {
     return this.peekTokenIs(TokenType.END_STATEMENT) || this.peekTokenIs(TokenType.END_FILE)
+  }
+
+  /**
+   * Assert current token is the given type and move to the next token
+   */
+  expectCurrent(type: TokenType): boolean {
+    if (this.curTokenIs(type)) {
+      this.nextToken()
+      return true
+    } else {
+      this.addSyntaxError(this.curToken, `Expected current token to be a ${type}, got ${this.curToken.type} instead`)
+      return false
+    }
   }
 
   expectPeek(type: TokenType): boolean {
@@ -366,6 +382,40 @@ export class Parser {
       expression,
       failureMessage
     }
+  }
+
+  parseIfStatement(): IfStatement {
+    const lineNumber = this.curToken.line
+
+    const tokenLiteral = this.curToken.literal
+    this.nextToken() // Done with IF token
+
+    const condition = this.curToken.literal
+    this.nextToken() // Done with condition
+
+    this.expectCurrent(TokenType.NEWLINE) // Skip over the newline token after the condition
+
+    const statements = this.parseBlock()
+
+    return {
+      type: StatementType.IF,
+      tokenLiteral,
+      lineNumber,
+      condition,
+      statements
+    }
+  }
+
+  parseBlock(): Statement[] {
+    const statements: Statement[] = []
+    while (!this.curTokenIs(TokenType.END)) {
+      const statement = this.parseStatement()
+      if (statement != null) {
+        statements.push(statement)
+      }
+      this.nextToken()
+    }
+    return statements
   }
 
   addSyntaxError(token: Token, message: string) {
