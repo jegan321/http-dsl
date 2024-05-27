@@ -105,7 +105,8 @@ export class Evaluator {
         case StatementType.IF:
           const conditionValue = replaceSingleExpression(env, statement.condition)
           if (conditionValue) {
-            await this.evaluateStatements(env, statement.statements)
+            const innerEnvironment = new Environment(env)
+            await this.evaluateStatements(innerEnvironment, statement.statements)
           }
       }
     }

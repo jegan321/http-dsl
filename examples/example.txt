@@ -1,1 +1,12 @@
-PRINT Run some tests!
+DEFAULT HOST https://jsonplaceholder.typicode.com
+
+SET userId = {{ 2 }}
+
+IF {{ userId > 0 }}
+
+    GET /users/1
+
+    PRINT {{ response }}
+
+END
+

@@ -37,8 +37,7 @@ export const COMMAND_TOKENS = [
   TokenType.WRITE,
   TokenType.TEST,
   TokenType.ASSERT,
-  TokenType.IF,
-  TokenType.END
+  TokenType.IF
 ]
 
 export const REQUEST_TOKENS = [TokenType.GET, TokenType.POST, TokenType.PUT, TokenType.DELETE, TokenType.PATCH]

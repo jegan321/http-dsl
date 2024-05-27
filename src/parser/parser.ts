@@ -123,12 +123,12 @@ export class Parser {
   /**
    * Assert current token is the given type and move to the next token
    */
-  expectCurrent(type: TokenType): boolean {
-    if (this.curTokenIs(type)) {
+  expectCurrentIsAnyOf(types: TokenType[]): boolean {
+    if (types.includes(this.curToken.type)) {
       this.nextToken()
       return true
     } else {
-      this.addSyntaxError(this.curToken, `Expected current token to be a ${type}, got ${this.curToken.type} instead`)
+      this.addSyntaxError(this.curToken, `Expected current token to be one of ${types.join(', ')}, got ${this.curToken.type} instead`)
       return false
     }
   }
@@ -393,7 +393,10 @@ export class Parser {
     const condition = this.curToken.literal
     this.nextToken() // Done with condition
 
-    this.expectCurrent(TokenType.NEWLINE) // Skip over the newline token after the condition
+    // Skip over new line/end statement
+    this.expectCurrentIsAnyOf([
+      TokenType.NEWLINE, TokenType.END_STATEMENT
+    ])
 
     const statements = this.parseBlock()
 

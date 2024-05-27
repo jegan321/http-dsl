@@ -37,7 +37,7 @@ describe('evaluate', async () => {
     httpClient.status = 200
     httpClient.headers = { 'content-type': 'application/json' }
     httpClient.body = { message: 'Hello' }
-    environment.variables.id = '999'
+    environment.set('id', '999')
     const program = new Program([
       {
         type: StatementType.REQUEST,
@@ -56,7 +56,7 @@ describe('evaluate', async () => {
     httpClient.status = 200
     httpClient.headers = { 'content-type': 'application/json' }
     httpClient.body = { message: 'Hello' }
-    environment.variables.auth_url = 'https://api.example.com/login'
+    environment.set('auth_url', 'https://api.example.com/login')
     const program = new Program([
       {
         type: StatementType.REQUEST,
@@ -84,7 +84,7 @@ describe('evaluate', async () => {
     await evaluator.evaluate(program)
     expect(httpClient.sentRequests.length).toBe(0)
     expect(io.writes.length).toBe(0)
-    expect(environment.variables.message).toBe('Hello, world!')
+    expect(environment.get('message')).toBe('Hello, world!')
   })
   test('should prompt then set variable', async () => {
     const program = new Program([
@@ -98,7 +98,7 @@ describe('evaluate', async () => {
     expect(httpClient.sentRequests.length).toBe(0)
     expect(io.writes.length).toBe(1)
     expect(io.writes[0]).toBe(`Enter value for "message": `)
-    expect(environment.variables.message).toBe('mocked_prompt_response')
+    expect(environment.get('message')).toBe('mocked_prompt_response')
   })
   test('should send set variable then send request', async () => {
     httpClient.status = 200

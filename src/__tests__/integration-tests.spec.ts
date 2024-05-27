@@ -36,7 +36,7 @@ describe('Integration tests', () => {
       httpClient.status = 200
       httpClient.headers = { 'content-type': 'application/json' }
       httpClient.body = { message: 'Hello' }
-      environment.variables.url = 'https://api.example.com/items'
+      environment.set('url', 'https://api.example.com/items')
       const input = `
           GET {{ url }}
           content-type: application/json
@@ -121,10 +121,10 @@ describe('Integration tests', () => {
       httpClient.status = 200
       httpClient.headers = { 'content-type': 'application/json' }
       httpClient.body = { message: 'Hello' }
-      environment.variables.roles = [
+      environment.set('roles', [
         { id: 1, name: 'Manager' },
         { id: 2, name: 'Admin' }
-      ]
+      ])
       const input = `
         POST https://api.example.com/users
         content-type: application/json
@@ -251,9 +251,9 @@ describe('Integration tests', () => {
       const parser = new Parser(lexer)
       const program = parser.parseProgram()
       await evaluator.evaluate(program)
-      expect(environment.variables.numbers).toEqual([1, 2, 3])
-      expect(environment.variables.numbers.length).toBe(3)
-      expect(environment.variables.numbers[0]).toBe(1)
+      expect(environment.get('numbers')).toEqual([1, 2, 3])
+      expect(environment.get('numbers').length).toBe(3)
+      expect(environment.get('numbers')[0]).toBe(1)
     })
     test('should print object literal and array literal', async () => {
       const input = `
