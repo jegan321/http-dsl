@@ -26,17 +26,13 @@ export class Evaluator {
 
   async evaluate(program: Program) {
     try {
-      await this.evaluateProgram(program)
+      await this.evaluateStatements(program.statements)
     } catch (error: any) {
       if (!error.silent) {
         const errorMessage = getErrorMessage(error)
         this.io.write(errorMessage)
       }
     }
-  }
-
-  async evaluateProgram(program: Program): Promise<void> {
-    await this.evaluateStatements(program.statements)
   }
 
   async evaluateStatements(statements: Statement[]): Promise<void> {
