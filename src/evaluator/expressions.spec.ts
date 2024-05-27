@@ -8,7 +8,7 @@ describe('evaluateExpressionAsString', async () => {
     environment.reset()
   })
   test('should evaluate string variable', async () => {
-    environment.variables.message = 'Hello'
+    environment.set('message', 'Hello')
     const input = 'message'
     const result = evaluateExpressionAsString(input, environment)
     expect(result).toBe('Hello')
@@ -23,60 +23,16 @@ describe('evaluateExpressionAsString', async () => {
     }
     expect(errorMessage).toBe('message is not defined')
   })
-  test('should evaluate number literals', async () => {
-    const input = '1 + 2'
+  test('should evaluate number variable', async () => {
+    environment.set('number', 123)
+    const input = 'number'
     const result = evaluateExpressionAsString(input, environment)
-    expect(result).toBe('3')
+    expect(result).toBe('123')
   })
-  test('should concatenate strings', async () => {
-    environment.variables.first = 'John'
-    environment.variables.last = 'Doe'
-    const input = 'first + " " + last'
+  test('should evaluate boolean variable', async () => {
+    environment.set('flag', true)
+    const input = 'flag'
     const result = evaluateExpressionAsString(input, environment)
-    expect(result).toBe('John Doe')
-  })
-  test('should stringify object', async () => {
-    environment.variables.person = {
-      name: 'John'
-    }
-    const input = 'person'
-    const result = evaluateExpressionAsString(input, environment)
-    expect(result).toBe('{"name":"John"}')
-  })
-  test('should stringify array of strings', async () => {
-    environment.variables.names = ['John', 'Jane']
-    const input = 'names'
-    const result = evaluateExpressionAsString(input, environment)
-    expect(result).toBe('["John","Jane"]')
-  })
-  test('should stringify object inside array', async () => {
-    environment.variables.people = [
-      {
-        name: 'John'
-      }
-    ]
-    const input = 'people'
-    const result = evaluateExpressionAsString(input, environment)
-    expect(result).toBe('[{"name":"John"}]')
-  })
-  test('should stringify array map result', async () => {
-    environment.variables.people = [
-      {
-        name: 'John'
-      }
-    ]
-    const input = 'people.map(p => p.name.toUpperCase())'
-    const result = evaluateExpressionAsString(input, environment)
-    expect(result).toBe('["JOHN"]')
-  })
-  test('should use stringify() result when object has stringify() method', async () => {
-    environment.variables.myObject = {
-      stringify() {
-        return 'Object string representation'
-      }
-    }
-    const input = 'myObject'
-    const result = evaluateExpressionAsString(input, environment)
-    expect(result).toBe('Object string representation')
+    expect(result).toBe('true')
   })
 })

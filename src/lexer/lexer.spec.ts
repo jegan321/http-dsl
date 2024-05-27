@@ -229,9 +229,14 @@ describe('Lexer - token types', () => {
     `
     const lexer = new Lexer(input)
     const expectedTokens = [
-      TokenType.IF, TokenType.STRING, TokenType.NEWLINE,
-        TokenType.PRINT, TokenType.STRING, TokenType.NEWLINE,
-      TokenType.END]
+      TokenType.IF,
+      TokenType.STRING,
+      TokenType.NEWLINE,
+      TokenType.PRINT,
+      TokenType.STRING,
+      TokenType.NEWLINE,
+      TokenType.END
+    ]
     const tokens = lexer.getAllTokens().map((token) => token.type)
     expect(tokens).toEqual(expectedTokens)
   })

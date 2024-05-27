@@ -54,9 +54,9 @@ export class Evaluator {
             }
           }
           const httpRequest = new HttpRequest(statement.method, statement.url, statement.headers, statement.body)
-          env.variables.request = httpRequest
+          env.set('request', httpRequest)
           const httpResponse = await this.httpClient.sendRequest(httpRequest)
-          env.variables.response = httpResponse
+          env.set('response', httpResponse)
 
           if (!httpResponse.isOk()) {
             this.exitWithErrors(statement.lineNumber, [
@@ -72,13 +72,13 @@ export class Evaluator {
           break
         case StatementType.PROMPT:
           const userInput = await this.io.prompt(`Enter value for "${statement.variableName}": `)
-          env.variables[statement.variableName] = userInput
+          env.set(statement.variableName, userInput)
           break
         case StatementType.SET:
           const replaceFunction = isSingleExpressionString(statement.variableValue)
             ? replaceSingleExpression
             : replaceExpressionsInString
-          env.variables[statement.variableName] = replaceFunction(env, statement.variableValue)
+          env.set(statement.variableName, replaceFunction(env, statement.variableValue))
           break
         case StatementType.DEFAULT:
           if (statement.host) {
@@ -105,7 +105,7 @@ export class Evaluator {
         case StatementType.IF:
           const conditionValue = replaceSingleExpression(env, statement.condition)
           if (conditionValue) {
-            await this.evaluateStatements(statement.statements)
+            await this.evaluateStatements(env, statement.statements)
           }
       }
     }
