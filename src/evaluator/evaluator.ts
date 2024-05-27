@@ -7,12 +7,12 @@ import { InputOutput, TerminalInputOutput } from './input-output'
 import { isSingleExpressionString, replaceExpressionsInString, replaceSingleExpression } from './replace-expressions'
 
 export class Evaluator {
-  private environment: Environment
+  private globalEnvironment: Environment
   private httpClient: HttpClient
   private io: InputOutput
 
   constructor(environment: Environment, httpClient: HttpClient, io: InputOutput) {
-    this.environment = environment
+    this.globalEnvironment = environment
     this.httpClient = httpClient
     this.io = io
   }
@@ -26,7 +26,7 @@ export class Evaluator {
 
   async evaluate(program: Program) {
     try {
-      await this.evaluateStatements(program.statements)
+      await this.evaluateStatements(this.globalEnvironment, program.statements)
     } catch (error: any) {
       if (!error.silent) {
         const errorMessage = getErrorMessage(error)
@@ -35,28 +35,28 @@ export class Evaluator {
     }
   }
 
-  async evaluateStatements(statements: Statement[]): Promise<void> {
+  async evaluateStatements(env: Environment, statements: Statement[]): Promise<void> {
     for (const statement of statements) {
       switch (statement.type) {
         case StatementType.REQUEST:
-          this.replaceRequestStatementExpressions(this.environment, statement)
-          if (statement.url.startsWith('/') && this.environment.defaultHost) {
+          this.replaceRequestStatementExpressions(env, statement)
+          if (statement.url.startsWith('/') && env.defaultHost) {
             // Automatically use defaultHost if host is not specified in the statement
-            statement.url = this.environment.defaultHost + statement.url
+            statement.url = env.defaultHost + statement.url
           }
           if (!hasContentType(statement.headers)) {
             // Default Content-Type to application/json for convenience
             statement.headers['Content-Type'] = 'application/json'
           }
-          for (const [defaultHeaderName, defaultHeaderValue] of Object.entries(this.environment.defaultHeaders)) {
+          for (const [defaultHeaderName, defaultHeaderValue] of Object.entries(env.defaultHeaders)) {
             if (!hasHeader(statement.headers, defaultHeaderName)) {
               statement.headers[defaultHeaderName] = defaultHeaderValue
             }
           }
           const httpRequest = new HttpRequest(statement.method, statement.url, statement.headers, statement.body)
-          this.environment.variables.request = httpRequest
+          env.variables.request = httpRequest
           const httpResponse = await this.httpClient.sendRequest(httpRequest)
-          this.environment.variables.response = httpResponse
+          env.variables.response = httpResponse
 
           if (!httpResponse.isOk()) {
             this.exitWithErrors(statement.lineNumber, [
@@ -67,40 +67,34 @@ export class Evaluator {
 
           break
         case StatementType.PRINT:
-          const printValue = replaceExpressionsInString(this.environment, statement.printValue)
+          const printValue = replaceExpressionsInString(env, statement.printValue)
           await this.io.write(printValue)
           break
         case StatementType.PROMPT:
           const userInput = await this.io.prompt(`Enter value for "${statement.variableName}": `)
-          this.environment.variables[statement.variableName] = userInput
+          env.variables[statement.variableName] = userInput
           break
         case StatementType.SET:
           const replaceFunction = isSingleExpressionString(statement.variableValue)
             ? replaceSingleExpression
             : replaceExpressionsInString
-          this.environment.variables[statement.variableName] = replaceFunction(
-            this.environment,
-            statement.variableValue
-          )
+          env.variables[statement.variableName] = replaceFunction(env, statement.variableValue)
           break
         case StatementType.DEFAULT:
           if (statement.host) {
-            this.environment.defaultHost = replaceExpressionsInString(this.environment, statement.host)
+            env.defaultHost = replaceExpressionsInString(env, statement.host)
           }
           if (statement.headerName && statement.headerValue) {
-            this.environment.defaultHeaders[statement.headerName] = replaceExpressionsInString(
-              this.environment,
-              statement.headerValue
-            )
+            env.defaultHeaders[statement.headerName] = replaceExpressionsInString(env, statement.headerValue)
           }
           break
         case StatementType.WRITE:
-          const fileName = replaceExpressionsInString(this.environment, statement.fileName)
-          const content = replaceExpressionsInString(this.environment, statement.content)
+          const fileName = replaceExpressionsInString(env, statement.fileName)
+          const content = replaceExpressionsInString(env, statement.content)
           this.io.writeToFile(fileName, content)
           break
         case StatementType.ASSERT:
-          const expressionValue = replaceSingleExpression(this.environment, statement.expression)
+          const expressionValue = replaceSingleExpression(env, statement.expression)
           if (!expressionValue) {
             this.exitWithErrors(statement.lineNumber, [
               `Assertion failed: ${statement.expression}`,
@@ -109,22 +103,21 @@ export class Evaluator {
           }
           break
         case StatementType.IF:
-          const conditionValue = replaceSingleExpression(this.environment, statement.condition)
+          const conditionValue = replaceSingleExpression(env, statement.condition)
           if (conditionValue) {
             await this.evaluateStatements(statement.statements)
-          
           }
       }
     }
   }
 
-  replaceRequestStatementExpressions(environment: Environment, request: RequestStatement) {
-    request.method = replaceExpressionsInString(environment, request.method)
-    request.url = replaceExpressionsInString(environment, request.url)
+  replaceRequestStatementExpressions(env: Environment, request: RequestStatement) {
+    request.method = replaceExpressionsInString(env, request.method)
+    request.url = replaceExpressionsInString(env, request.url)
     for (const [key, value] of Object.entries(request.headers)) {
-      request.headers[key] = replaceExpressionsInString(environment, value)
+      request.headers[key] = replaceExpressionsInString(env, value)
     }
-    const replacedBody = replaceExpressionsInString(environment, request.body)
+    const replacedBody = replaceExpressionsInString(env, request.body)
     request.body = replacedBody ? replacedBody : undefined // Replace empty string with undefined
   }
 
