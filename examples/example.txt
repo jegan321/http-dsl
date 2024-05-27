@@ -1,11 +1,1 @@
-DEFAULT HOST {{ process.env.HOST_NAME }}
-
-PROMPT password
-
-POST /token
-Content-Type: application/x-www-form-urlencoded
-Accept: application/json
-{
-    "username": "admin",
-    "password": "{{ password }}"
-}
+PRINT Run some tests!

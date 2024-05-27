@@ -11,6 +11,7 @@ import {
   SetStatement,
   Statement,
   StatementType,
+  TestStatement,
   WriteStatement
 } from './ast'
 
@@ -86,6 +87,8 @@ export class Parser {
       return this.parseDefaultStatement()
     } else if (this.curToken.type === TokenType.WRITE) {
       return this.parseWriteStatement()
+    } else if (this.curToken.type === TokenType.TEST) {
+      return this.parseTestStatement()
     } else if (this.curToken.type === TokenType.ASSERT) {
       return this.parseAssertStatement()
     } else {
@@ -329,6 +332,19 @@ export class Parser {
       lineNumber,
       fileName,
       content
+    }
+  }
+
+  parseTestStatement(): TestStatement {
+    const lineNumber = this.curToken.line
+
+    const tokenLiteral = this.curToken.literal
+    this.nextToken() // Done with TEST token
+
+    return {
+      type: StatementType.TEST,
+      tokenLiteral,
+      lineNumber
     }
   }
 

@@ -5,6 +5,7 @@ export enum StatementType {
   PROMPT = 'PROMPT',
   DEFAULT = 'DEFAULT',
   WRITE = 'WRITE',
+  TEST = 'TEST',
   ASSERT = 'ASSERT'
 }
 
@@ -27,6 +28,7 @@ export type Statement =
   | PromptStatement
   | DefaultStatement
   | WriteStatement
+  | TestStatement
   | AssertStatement
 
 export interface RequestStatement {
@@ -75,6 +77,12 @@ export interface WriteStatement {
   lineNumber: number
   fileName: string
   content: string
+}
+
+export interface TestStatement {
+  type: StatementType.TEST
+  tokenLiteral: string
+  lineNumber: number
 }
 
 export interface AssertStatement {
