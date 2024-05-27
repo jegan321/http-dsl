@@ -1,4 +1,4 @@
-import { Program, RequestStatement, SetStatement, StatementType } from '../parser/ast'
+import { Program, RequestStatement, SetStatement, Statement, StatementType } from '../parser/ast'
 import { getErrorMessage } from '../utils/error-utils'
 import { hasContentType, hasHeader } from '../utils/header-utils'
 import { Environment } from './environment'
@@ -35,8 +35,12 @@ export class Evaluator {
     }
   }
 
-  async evaluateProgram(program: Program) {
-    for (const statement of program.statements) {
+  async evaluateProgram(program: Program): Promise<void> {
+    await this.evaluateStatements(program.statements)
+  }
+
+  async evaluateStatements(statements: Statement[]): Promise<void> {
+    for (const statement of statements) {
       switch (statement.type) {
         case StatementType.REQUEST:
           this.replaceRequestStatementExpressions(this.environment, statement)
@@ -108,6 +112,12 @@ export class Evaluator {
             ])
           }
           break
+        case StatementType.IF:
+          const conditionValue = replaceSingleExpression(this.environment, statement.condition)
+          if (conditionValue) {
+            await this.evaluateStatements(statement.statements)
+          
+          }
       }
     }
   }
