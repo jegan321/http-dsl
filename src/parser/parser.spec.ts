@@ -348,12 +348,12 @@ describe('concatenateUrlWithQueryParams', () => {
     expect(requestStatement.url).toEqual('https://api.example.com/login')
     expect(requestStatement.headers['content-type']).toEqual('application/x-www-form-urlencoded')
     expect(requestStatement.formEncodedBody).toEqual({
-      "password": "password1",
-      "username": "user1",
+      password: 'password1',
+      username: 'user1'
     })
     expect(JSON.parse(requestStatement.body as string)).toEqual({
-      "password": "password1",
-      "username": "user1",
+      password: 'password1',
+      username: 'user1'
     })
   })
 })
