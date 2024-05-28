@@ -1,5 +1,7 @@
 DEFAULT HOST https://jsonplaceholder.typicode.com
 
+default header Accept = xml
+
 SET userId = {{ 3 }}
 
 IF {{ userId > 0 }}
@@ -8,7 +10,7 @@ IF {{ userId > 0 }}
 
     GET /users/{{ userId }}
 
-    PRINT {{ response.body.id }}
+    PRINT {{ request }}
 
 END
 

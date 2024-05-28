@@ -56,10 +56,7 @@ export class HttpResponse {
     const receivedResponseLine = `Received response in ${Math.trunc(this.timeInMillis)} milliseconds`
     const dateLine = `Date: ${new Date(this.timestamp).toLocaleString()}`
     const statusLine = `Status: ${this.status}`
-    const responseHeaders = Object.entries(this.headers)
-      .map(([key, value]) => `${key}: ${value}`)
-      .join('\n')
-    return `${receivedResponseLine}\n${dateLine}\n${statusLine}\n\n${responseHeaders}\n\n${body}`
+    return `${receivedResponseLine}\n${dateLine}\n${statusLine}\n\n${body}`
   }
 
   isOk() {
