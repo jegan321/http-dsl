@@ -131,7 +131,6 @@ export class Evaluator {
     } else {
       replacedBody = replaceExpressionsInString(env, request.body)
     }
-    console.log(`Body: ${request.body}, Replaced body: ${replacedBody}`)
     request.body = replacedBody ? replacedBody : undefined // Replace empty string with undefined
   }
 
