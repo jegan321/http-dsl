@@ -25,11 +25,7 @@ export class Environment {
    * TODO: Change to use this.getVariables since it has the outer env logic built in
    */
   get(variableName: string): any {
-    const variable = this.variables[variableName]
-    if (variable === undefined && this.outerEnvironment !== undefined) {
-      return this.outerEnvironment.get(variableName)
-    }
-    return variable
+    return this.getVariables()[variableName]
   }
 
   set(variableName: string, value: any): void {
