@@ -1,12 +1,14 @@
 DEFAULT HOST https://jsonplaceholder.typicode.com
 
-SET userId = {{ 2 }}
+SET userId = {{ 3 }}
 
 IF {{ userId > 0 }}
 
-    GET /users/1
+    SET userId = {{ 2 }}
 
-    PRINT {{ response }}
+    GET /users/{{ userId }}
+
+    PRINT {{ response.body.id }}
 
 END
 

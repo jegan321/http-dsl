@@ -76,9 +76,7 @@ export class Environment {
   }
 
   getDefaultHost(): string | undefined {
-    const v = this.getConfigValue('defaultHost')
-    console.log('!!! getDefaultHost', v)
-    return v
+    return this.getConfigValue('defaultHost')
   }
 
   setDefaultHost(host: string): void {

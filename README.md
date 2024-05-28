@@ -158,6 +158,15 @@ GET /users/1
 WRITE output.json {{ response.body }}
 ```
 
+If statements are supported:
+```
+GET /health
+
+IF {{ response.status === 200 }}
+    PRINT server is healthy
+END
+```
+
 Comments start with `#`
 ```
 # This is a comment
