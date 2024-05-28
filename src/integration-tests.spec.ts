@@ -1,10 +1,10 @@
 import { expect, test, describe, beforeEach } from 'vitest'
-import { Lexer } from '../lexer/lexer'
-import { Parser } from '../parser/parser'
-import { Evaluator } from '../evaluator/evaluator'
-import { MockHttpClient } from '../evaluator/http-client'
-import { MockInputOutput } from '../evaluator/input-output'
-import { Environment } from '../evaluator/environment'
+import { Lexer } from './lexer/lexer'
+import { Parser } from './parser/parser'
+import { Evaluator } from './evaluator/evaluator'
+import { MockHttpClient } from './evaluator/http-client'
+import { MockInputOutput } from './evaluator/input-output'
+import { Environment } from './evaluator/environment'
 
 describe('Integration tests', () => {
   const httpClient = new MockHttpClient()
