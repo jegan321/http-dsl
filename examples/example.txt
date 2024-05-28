@@ -1,16 +1,16 @@
-DEFAULT HOST https://jsonplaceholder.typicode.com
+SET username = jojo
 
-default header Accept = xml
+POST https://hsia.henryschein.com/connect/token
+Content-Type: application/x-www-form-urlencoded
+Authorization: Basic dHJpVmFsZW5jZTpSbkExNWJaVHVnOExwRTU=
+Accept: application/json
+{
+    "grant_type": "password",
+    "username": "{{username}}",
+    "password": "trivalence12",
+    "scope": "inventory_read price_read offline_access openid"
+}
 
-SET userId = {{ 3 }}
 
-IF {{ userId > 0 }}
-
-    SET userId = {{ 2 }}
-
-    GET /users/{{ userId }}
-
-    PRINT {{ request }}
-
-END
+PRINT Access Token: {{ response.body.access_token }}
 

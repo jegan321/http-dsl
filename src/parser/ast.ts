@@ -29,6 +29,10 @@ export interface RequestStatement {
   url: string
   headers: Record<string, string>
   body?: string
+  /**
+   * Only set when Content-Type is application/x-www-form-urlencoded
+   */
+  formEncodedBody?: Record<string, string>
 }
 
 export interface PrintStatement {

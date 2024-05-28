@@ -1,6 +1,7 @@
 import { Program, RequestStatement, SetStatement, Statement, StatementType } from '../parser/ast'
 import { getErrorMessage } from '../utils/error-utils'
-import { hasContentType, hasHeader } from '../utils/header-utils'
+import { hasContentType, hasHeader, isContentType } from '../utils/header-utils'
+import { urlEncode } from '../utils/url-encoding-utils'
 import { Environment } from './environment'
 import { FetchHttpClient, HttpClient, HttpRequest, HttpResponse } from './http-client'
 import { InputOutput, TerminalInputOutput } from './input-output'
@@ -121,11 +122,23 @@ export class Evaluator {
   replaceRequestStatementExpressions(env: Environment, request: RequestStatement) {
     request.method = replaceExpressionsInString(env, request.method)
     request.url = replaceExpressionsInString(env, request.url)
-    for (const [key, value] of Object.entries(request.headers)) {
-      request.headers[key] = replaceExpressionsInString(env, value)
+    this.replaceExpressionsInObjectValues(env, request.headers)
+
+    let replacedBody: string | undefined = undefined
+    if (request.formEncodedBody) {
+      this.replaceExpressionsInObjectValues(env, request.formEncodedBody)
+      replacedBody = urlEncode(request.formEncodedBody)
+    } else {
+      replacedBody = replaceExpressionsInString(env, request.body)
     }
-    const replacedBody = replaceExpressionsInString(env, request.body)
+    console.log(`Body: ${request.body}, Replaced body: ${replacedBody}`)
     request.body = replacedBody ? replacedBody : undefined // Replace empty string with undefined
+  }
+
+  replaceExpressionsInObjectValues(env: Environment, obj: Record<string, any>): void {
+    for (const [key, value] of Object.entries(obj)) {
+      obj[key] = replaceExpressionsInString(env, value)
+    }
   }
 
   exitWithErrors(lineNumber: number, messages: any[]) {

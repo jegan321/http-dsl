@@ -128,7 +128,10 @@ export class Parser {
       this.nextToken()
       return true
     } else {
-      this.addSyntaxError(this.curToken, `Expected current token to be one of ${types.join(', ')}, got ${this.curToken.type} instead`)
+      this.addSyntaxError(
+        this.curToken,
+        `Expected current token to be one of ${types.join(', ')}, got ${this.curToken.type} instead`
+      )
       return false
     }
   }
@@ -155,6 +158,7 @@ export class Parser {
     const headers: Record<string, string> = {}
     const queryParams: Record<string, string[]> = {}
     let body: string | undefined = undefined
+    let formEncodedBody: Record<string, string> | undefined = undefined
 
     // Now there will be a newline or end stmt or eof
     while (this.curTokenIs(TokenType.NEWLINE)) {
@@ -202,21 +206,15 @@ export class Parser {
       }
       Is converted to:
       username=user1&password=password1
+
+      However, the parser stores it in the AST as an object. It is not turned into an encoded string until evaluation.
     */
     if (isContentType('application/x-www-form-urlencoded', headers) && body != null) {
-      let bodyObject = {}
       try {
-        bodyObject = JSON.parse(body)
+        formEncodedBody = JSON.parse(body)
       } catch (error) {
         this.addSyntaxError(this.curToken, `Invalid JSON in body of application/x-www-form-urlencoded request: ${body}`)
       }
-      const urlSearchParams = new URLSearchParams()
-      for (const [key, value] of Object.entries(bodyObject)) {
-        if (typeof value === 'string') {
-          urlSearchParams.set(key, value)
-        }
-      }
-      body = urlSearchParams.toString()
     }
 
     return {
@@ -226,7 +224,8 @@ export class Parser {
       method: commandLiteral,
       url: concatenateUrlWithQueryParams(url, queryParams),
       headers,
-      body
+      body,
+      formEncodedBody
     }
   }
 
@@ -394,9 +393,7 @@ export class Parser {
     this.nextToken() // Done with condition
 
     // Skip over new line/end statement
-    this.expectCurrentIsAnyOf([
-      TokenType.NEWLINE, TokenType.END_STATEMENT
-    ])
+    this.expectCurrentIsAnyOf([TokenType.NEWLINE, TokenType.END_STATEMENT])
 
     const statements = this.parseBlock()
 

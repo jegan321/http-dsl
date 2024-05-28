@@ -161,6 +161,28 @@ describe('Integration tests', () => {
       await evaluator.evaluate(program)
       expect(httpClient.sentRequests.length).toBe(1)
     })
+    test('should send POST request form body and variables', async () => {
+      httpClient.status = 200
+      httpClient.headers = { 'content-type': 'application/json' }
+      httpClient.body = { access_token: 'token' }
+      const input = `
+        SET username = user1
+        SET password = pass1
+
+        POST /login
+        Content-Type: application/x-www-form-urlencoded
+        {
+          "username": "{{ username }}",
+          "password": "{{password}}"
+        }
+      `
+      const lexer = new Lexer(input)
+      const parser = new Parser(lexer)
+      const program = parser.parseProgram()
+      await evaluator.evaluate(program)
+      expect(httpClient.sentRequests.length).toBe(1)
+      expect(httpClient.sentRequests[0].body).toBe(`username=user1&password=pass1`)
+    })
     test('should send GET request with default host and default headers', async () => {
       httpClient.status = 200
       httpClient.headers = { 'content-type': 'application/json' }
