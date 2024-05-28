@@ -8,7 +8,7 @@ export function evaluateExpression(expression: string, environment: Environment)
   const trimmedExpression = expression.trim()
   let code = `with (vars) {return ${trimmedExpression}}`
   const func = new Function('vars', 'base64', code)
-  const vars = environment.getFlattenedVariables()
+  const vars = environment.getVariables()
   try {
     return func(vars, base64)
   } catch (error) {

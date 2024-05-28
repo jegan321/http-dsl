@@ -82,6 +82,10 @@ export interface HttpClient {
 
 export class FetchHttpClient implements HttpClient {
   async sendRequest(httpRequest: HttpRequest): Promise<HttpResponse> {
+
+    console.log('httpRequest', httpRequest)
+
+    
     const startTime = performance.now()
 
     const response = await fetch(httpRequest.url, {

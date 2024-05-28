@@ -35,20 +35,22 @@ export class Evaluator {
     }
   }
 
+  // TODO: Make private methods for each switch case
   async evaluateStatements(env: Environment, statements: Statement[]): Promise<void> {
     for (const statement of statements) {
       switch (statement.type) {
         case StatementType.REQUEST:
           this.replaceRequestStatementExpressions(env, statement)
-          if (statement.url.startsWith('/') && env.defaultHost) {
-            // Automatically use defaultHost if host is not specified in the statement
-            statement.url = env.defaultHost + statement.url
+          if (statement.url.startsWith('/')) {
+            // Automatically use default host if host is not specified in the statement
+            const defaultHost = env.getDefaultHost() || 'http://localhost:8080'
+            statement.url = defaultHost + statement.url
           }
           if (!hasContentType(statement.headers)) {
             // Default Content-Type to application/json for convenience
             statement.headers['Content-Type'] = 'application/json'
           }
-          for (const [defaultHeaderName, defaultHeaderValue] of Object.entries(env.defaultHeaders)) {
+          for (const [defaultHeaderName, defaultHeaderValue] of Object.entries(env.getDefaultHeaders())) {
             if (!hasHeader(statement.headers, defaultHeaderName)) {
               statement.headers[defaultHeaderName] = defaultHeaderValue
             }
@@ -82,10 +84,13 @@ export class Evaluator {
           break
         case StatementType.DEFAULT:
           if (statement.host) {
-            env.defaultHost = replaceExpressionsInString(env, statement.host)
+            const defaultHost = replaceExpressionsInString(env, statement.host)
+            env.setDefaultHost(defaultHost)
           }
           if (statement.headerName && statement.headerValue) {
-            env.defaultHeaders[statement.headerName] = replaceExpressionsInString(env, statement.headerValue)
+            const headerName = statement.headerName
+            const headerValue = replaceExpressionsInString(env, statement.headerValue)
+            env.setDefaultHeader(headerName, headerValue)
           }
           break
         case StatementType.WRITE:
@@ -108,6 +113,7 @@ export class Evaluator {
             const innerEnvironment = new Environment(env)
             await this.evaluateStatements(innerEnvironment, statement.statements)
           }
+          break
       }
     }
   }

@@ -21,3 +21,4 @@ Make extension add icons for .http files
 Change stringify of response and request to not include headers
 Move __tests__/integreation-tests.spec.ts to the src folder
 Add --allow-error flag to request commands: GET /users --allow-error
+Gracefully handle error when you send a request to localhost when server is not running

@@ -7,7 +7,7 @@ describe('Environment', async () => {
     environment.set('foo', 'bar')
     environment.set('baz', 'qux')
     environment.reset()
-    expect(environment.getFlattenedVariables()).toEqual({})
+    expect(environment.getVariables()).toEqual({})
   })
   test('hasVariable() should false when variable was never set', () => {
     const environment = new Environment()
