@@ -1,6 +1,9 @@
 FOR name IN {{ ['john', 'charli'] }}
     PRINT {{ name }}
+    
 END
+
+PRINT After
 
 
 

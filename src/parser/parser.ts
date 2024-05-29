@@ -73,7 +73,7 @@ export class Parser {
 
   parseStatement(): Statement | null {
     if (!COMMAND_TOKENS.includes(this.curToken.type)) {
-      this.addSyntaxError(this.curToken, `Invalid token at beginning of statement: ${this.curToken.literal}`)
+      this.addSyntaxError(this.curToken, `Invalid ${this.curToken.type} token at beginning of statement: ${this.curToken.literal}`)
       return null
     }
 
@@ -421,6 +421,7 @@ export class Parser {
 
   /**
    * Parses statements recursively until an END token is found
+   * TODO: Document which token will it be on after this returns
    */
   parseBlock(): Statement[] {
     const statements: Statement[] = []

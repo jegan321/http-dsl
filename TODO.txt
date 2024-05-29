@@ -17,11 +17,12 @@ Make REPL automatically print response after each request
 Maybe implement semicolons to make REPL convenient
 Make extension add icons for .http files
 Change stringify of response and request to not include headers
-Move __tests__/integreation-tests.spec.ts to the src folder
 Add --allow-error flag to request commands: GET /users --allow-error
 Gracefully handle error when you send a request to localhost when server is not running
 Add a DEBUG command that adds more logging to every request
 Use mocha for test command
 SLEEP command
 EVAL command so you can do things like: EVAL {{ names.sort() }}
-
+Save the literal of the line of code in the Token instead of just the line number
+Save previous 2 and next 2 lines of code in the Token instead of just one line
+After a syntax error, print the previous and next 5 tokens and show where the invalid token was in the stream

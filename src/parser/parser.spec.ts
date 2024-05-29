@@ -324,7 +324,7 @@ describe('Passer errors', () => {
     const parser = new Parser(lexer)
     parser.parseProgram()
     expect(parser.errors.length).toBeGreaterThan(0)
-    expect(parser.errors[0].message).toBe('Invalid token at beginning of statement: SEND')
+    expect(parser.errors[0].message).toBe('Invalid STRING token at beginning of statement: SEND')
   })
   test('should return error when application/x-www-form-urlencoded request does not have JSON body', () => {
     const input = `
