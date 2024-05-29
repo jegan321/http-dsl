@@ -298,6 +298,24 @@ describe('Integration tests', () => {
     })
   })
 
+  describe('Loops', () => {
+    test('should print numbers in a loop', async () => {
+      const input = `
+          FOR number IN {{ [1, 2, 3] }}
+            PRINT {{ number }}
+          END
+        `
+      const lexer = new Lexer(input)
+      const parser = new Parser(lexer)
+      const program = parser.parseProgram()
+      await evaluator.evaluate(program)
+      expect(io.writes.length).toBe(3)
+      expect(io.writes[0]).toBe('1')
+      expect(io.writes[1]).toBe('2')
+      expect(io.writes[2]).toBe('3')
+    })
+  })
+
   describe('Helpers', () => {
     test('should base64 encode', async () => {
       const input = `

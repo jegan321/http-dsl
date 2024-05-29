@@ -1,5 +1,7 @@
-SET names = {{ ['john', 'charli'] }}
-
-FOR name IN {{ names }}
+FOR name IN {{ ['john', 'charli'] }}
     PRINT {{ name }}
 END
+
+
+
+

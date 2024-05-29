@@ -1,4 +1,4 @@
-import { Program, RequestStatement, SetStatement, Statement, StatementType } from '../parser/ast'
+import { ForStatement, IfStatement, Program, RequestStatement, SetStatement, Statement, StatementType } from '../parser/ast'
 import { getErrorMessage } from '../utils/error-utils'
 import { hasContentType, hasHeader, isContentType } from '../utils/header-utils'
 import { urlEncode } from '../utils/url-encoding-utils'
@@ -109,13 +109,30 @@ export class Evaluator {
           }
           break
         case StatementType.IF:
-          const conditionValue = replaceSingleExpression(env, statement.condition)
-          if (conditionValue) {
-            const innerEnvironment = new Environment(env)
-            await this.evaluateStatements(innerEnvironment, statement.statements)
-          }
+          await this.evaluateIfStatement(env, statement)
+          break
+        case StatementType.FOR:
+          await this.evaluateForStatement(env, statement)
           break
       }
+    }
+  }
+
+  async evaluateIfStatement(env: Environment, statement: IfStatement) {
+    const conditionValue = replaceSingleExpression(env, statement.condition)
+    if (conditionValue) {
+      const innerEnvironment = new Environment(env)
+      await this.evaluateStatements(innerEnvironment, statement.statements)
+    }
+  }
+
+  async evaluateForStatement(env: Environment, statement: ForStatement) {
+    // The expression inside statement.iterable should evaluate to an array
+    const iterable = replaceSingleExpression(env, statement.iterable) as Array<any>
+    for (const element of iterable) {
+      const innerEnvironment = new Environment(env)
+      innerEnvironment.set(statement.variableName, element)
+      await this.evaluateStatements(innerEnvironment, statement.statements)
     }
   }
 
