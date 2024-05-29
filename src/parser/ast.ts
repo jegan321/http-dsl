@@ -7,7 +7,8 @@ export enum StatementType {
   WRITE = 'WRITE',
   TEST = 'TEST',
   ASSERT = 'ASSERT',
-  IF = 'IF'
+  IF = 'IF',
+  FOR = 'FOR',
 }
 
 export type Statement =
@@ -20,6 +21,7 @@ export type Statement =
   | TestStatement
   | AssertStatement
   | IfStatement
+  | ForStatement
 
 export interface RequestStatement {
   type: StatementType.REQUEST
@@ -100,5 +102,14 @@ export interface IfStatement {
   tokenLiteral: string
   lineNumber: number
   condition: string
+  statements: Statement[]
+}
+
+export interface ForStatement {
+  type: StatementType.FOR
+  tokenLiteral: string
+  lineNumber: number
+  variableName: string
+  iterable: string
   statements: Statement[]
 }

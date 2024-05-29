@@ -4,6 +4,7 @@ import { isContentType } from '../utils/header-utils'
 import {
   AssertStatement,
   DefaultStatement,
+  ForStatement,
   IfStatement,
   PrintStatement,
   Program,
@@ -94,6 +95,8 @@ export class Parser {
       return this.parseAssertStatement()
     } else if (this.curToken.type === TokenType.IF) {
       return this.parseIfStatement()
+    } else if (this.curToken.type === TokenType.FOR) {
+      return this.parseForStatement()
     } else {
       this.addSyntaxError(this.curToken, `Unimplemented command: ${this.curToken.literal}`)
       return null
@@ -120,6 +123,16 @@ export class Parser {
     return this.peekTokenIs(TokenType.END_STATEMENT) || this.peekTokenIs(TokenType.END_FILE)
   }
 
+  expectCurrent(type: TokenType): boolean {
+    if (this.curTokenIs(type)) {
+      this.nextToken()
+      return true
+    } else {
+      this.addSyntaxError(this.curToken, `Expected current token to be a ${type}, got ${this.curToken.type} instead with value: ${this.curToken.literal}`)
+      return false
+    }
+  }
+
   /**
    * Assert current token is the given type and move to the next token
    */
@@ -130,7 +143,7 @@ export class Parser {
     } else {
       this.addSyntaxError(
         this.curToken,
-        `Expected current token to be one of ${types.join(', ')}, got ${this.curToken.type} instead`
+        `Expected current token to be one of ${types.join(', ')}, got ${this.curToken.type} instead with value: ${this.curToken.literal}`
       )
       return false
     }
@@ -141,7 +154,7 @@ export class Parser {
       this.nextToken()
       return true
     } else {
-      this.addSyntaxError(this.curToken, `Expected next token to be a ${type}, got ${this.peekToken.type} instead`)
+      this.addSyntaxError(this.curToken, `Expected next token to be a ${type}, got ${this.peekToken.type} instead with value: ${this.peekToken.literal}`)
       return false
     }
   }
@@ -406,6 +419,9 @@ export class Parser {
     }
   }
 
+  /**
+   * Parses statements recursively until an END token is found
+   */
   parseBlock(): Statement[] {
     const statements: Statement[] = []
     while (!this.curTokenIs(TokenType.END)) {
@@ -416,6 +432,36 @@ export class Parser {
       this.nextToken()
     }
     return statements
+  }
+
+  parseForStatement(): ForStatement {
+    const lineNumber = this.curToken.line
+
+    const tokenLiteral = this.curToken.literal
+    this.nextToken() // Done with FOR token
+
+    const variableName = this.curToken.literal
+    this.nextToken() // Done with variable name
+
+    this.expectCurrent(TokenType.IN) // Skip over the IN token
+
+    const iterable = this.curToken.literal
+    this.nextToken() // Done with iterable
+
+    // Skip over new line/end statement
+    this.expectCurrentIsAnyOf([TokenType.NEWLINE, TokenType.END_STATEMENT])
+
+    const statements = this.parseBlock()
+
+    return {
+      type: StatementType.FOR,
+      tokenLiteral,
+      lineNumber,
+      variableName,
+      iterable,
+      statements
+    }
+    
   }
 
   addSyntaxError(token: Token, message: string) {

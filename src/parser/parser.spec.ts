@@ -4,6 +4,7 @@ import { Parser, concatenateUrlWithQueryParams } from './parser'
 import {
   AssertStatement,
   DefaultStatement,
+  ForStatement,
   IfStatement,
   PrintStatement,
   Program,
@@ -18,7 +19,7 @@ function parseProgram(input: string): Program {
   const lexer = new Lexer(input)
   const parser = new Parser(lexer)
   const program = parser.parseProgram()
-  expect(parser.errors, `Parser found ${parser.errors.length} errors. First error: ${parser.errors[0]}`).toEqual([])
+  expect(parser.errors, `Parser found ${parser.errors.length} errors`).toEqual([])
   return program
 }
 
@@ -269,6 +270,27 @@ describe('Parser', () => {
     const printStatement2 = IfStatement.statements[1] as PrintStatement
     expect(printStatement2.type).toEqual('PRINT')
     expect(printStatement2.printValue).toEqual('World')
+  })
+  test('should parse for...in statement', () => {
+    const input = `
+      FOR number IN {{ [1, 2, 3] }}
+        PRINT {{ number }}
+      END
+    `
+    const program = parseProgram(input)
+    expect(program.statements.length).toEqual(1)
+
+    const IfStatement = program.statements[0] as ForStatement
+    expect(IfStatement.type).toEqual('FOR')
+    expect(IfStatement.tokenLiteral).toEqual('FOR')
+    expect(IfStatement.lineNumber).toEqual(1)
+    expect(IfStatement.variableName).toEqual('number')
+    expect(IfStatement.iterable).toEqual('{{ [1, 2, 3] }}')
+    expect(IfStatement.statements.length).toEqual(1)
+
+    const printStatement = IfStatement.statements[0] as PrintStatement
+    expect(printStatement.type).toEqual('PRINT')
+    expect(printStatement.printValue).toEqual('{{ number }}')
   })
 })
 
