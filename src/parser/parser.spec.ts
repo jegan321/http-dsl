@@ -292,6 +292,30 @@ describe('Parser', () => {
     expect(printStatement.type).toEqual('PRINT')
     expect(printStatement.printValue).toEqual('{{ number }}')
   })
+  test('should parse if statement inside for statement', () => {
+    const input = `
+      FOR number IN {{ [1, 2, 3] }}
+        PRINT {{ number }}
+        IF {{ number == 3 }}
+          PRINT done
+        END
+      END
+    `
+    const program = parseProgram(input)
+    expect(program.statements.length).toEqual(1)
+
+    const IfStatement = program.statements[0] as ForStatement
+    expect(IfStatement.type).toEqual('FOR')
+    expect(IfStatement.tokenLiteral).toEqual('FOR')
+    expect(IfStatement.lineNumber).toEqual(1)
+    expect(IfStatement.variableName).toEqual('number')
+    expect(IfStatement.iterable).toEqual('{{ [1, 2, 3] }}')
+    expect(IfStatement.statements.length).toEqual(1)
+
+    const printStatement = IfStatement.statements[0] as PrintStatement
+    expect(printStatement.type).toEqual('PRINT')
+    expect(printStatement.printValue).toEqual('{{ number }}')
+  })
 })
 
 describe('Passer errors', () => {

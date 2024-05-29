@@ -22,3 +22,6 @@ Add --allow-error flag to request commands: GET /users --allow-error
 Gracefully handle error when you send a request to localhost when server is not running
 Add a DEBUG command that adds more logging to every request
 Use mocha for test command
+SLEEP command
+EVAL command so you can do things like: EVAL {{ names.sort() }}
+
