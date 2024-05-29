@@ -10,8 +10,8 @@ export class FileHandler {
     const parser = new Parser(lexer)
     const program = parser.parseProgram()
     if (parser.errors.length) {
-      for (const { line, message } of parser.errors) {
-        console.log(`Line ${line}, syntax error. ${message}`)
+      for (const { lineNumber, message } of parser.errors) {
+        console.log(`Line ${lineNumber}, syntax error. ${message}`)
       }
       return
     }

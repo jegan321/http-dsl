@@ -1,6 +1,8 @@
 FOR name IN {{ ['john', 'charli'] }}
     PRINT {{ name }}
-    
+    IF {{ name === 'charli' }}
+        PRINT Hello beautiful
+    END
 END
 
 PRINT After

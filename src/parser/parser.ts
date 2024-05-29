@@ -318,13 +318,12 @@ export class Parser {
     let headerName: string | undefined = undefined
     let headerValue: string | undefined = undefined
 
-    const subType = this.curToken.literal
-    const subTypeUpper = subType.toUpperCase()
+    const subType = this.curToken.literal.toUpperCase()
     this.nextToken()
-    if (subTypeUpper === 'HOST') {
+    if (subType === 'HOST') {
       host = this.curToken.literal // TODO: Validate host starts with http or something
       this.nextToken()
-    } else if (subTypeUpper === 'HEADER') {
+    } else if (subType === 'HEADER') {
       headerName = this.curToken.literal
       this.nextToken()
       this.expectPeek(TokenType.STRING) // Skip over the '=' token
@@ -431,6 +430,7 @@ export class Parser {
         statements.push(statement)
       }
       this.nextToken()
+      this.skipWhiteSpaceTokens()
     }
     return statements
   }

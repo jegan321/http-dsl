@@ -55,6 +55,16 @@ export class Token {
     this.literal = literal
     this.lineNumber = lineNumber
   }
+
+  toString() {
+    let value = `Token(${this.type}`
+    if (this.type === TokenType.STRING || this.type === TokenType.MULTI_LINE_STRING) {
+      const literalTruncated = this.literal.length > 10 ? this.literal.slice(0, 20) + '...' : this.literal
+      value += `, "${literalTruncated}"`
+    }
+    value += ')'
+    return value
+  }
 }
 
 /**

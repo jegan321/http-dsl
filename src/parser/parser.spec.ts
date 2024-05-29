@@ -304,17 +304,22 @@ describe('Parser', () => {
     const program = parseProgram(input)
     expect(program.statements.length).toEqual(1)
 
-    const IfStatement = program.statements[0] as ForStatement
-    expect(IfStatement.type).toEqual('FOR')
-    expect(IfStatement.tokenLiteral).toEqual('FOR')
-    expect(IfStatement.lineNumber).toEqual(1)
-    expect(IfStatement.variableName).toEqual('number')
-    expect(IfStatement.iterable).toEqual('{{ [1, 2, 3] }}')
-    expect(IfStatement.statements.length).toEqual(1)
+    const forStatement = program.statements[0] as ForStatement
+    expect(forStatement.type).toEqual('FOR')
+    expect(forStatement.tokenLiteral).toEqual('FOR')
+    expect(forStatement.lineNumber).toEqual(1)
+    expect(forStatement.variableName).toEqual('number')
+    expect(forStatement.iterable).toEqual('{{ [1, 2, 3] }}')
+    expect(forStatement.statements.length).toEqual(2)
 
-    const printStatement = IfStatement.statements[0] as PrintStatement
+    const printStatement = forStatement.statements[0] as PrintStatement
     expect(printStatement.type).toEqual('PRINT')
     expect(printStatement.printValue).toEqual('{{ number }}')
+
+    const ifStatement = forStatement.statements[1] as IfStatement
+    expect(ifStatement.type).toEqual('IF')
+    expect(ifStatement.condition).toEqual('{{ number == 3 }}')
+    expect(ifStatement.statements.length).toEqual(1)
   })
 })
 
