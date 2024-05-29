@@ -1,16 +1,5 @@
-SET username = jojo
+SET names = {{ ['john', 'charli'] }}
 
-POST https://hsia.henryschein.com/connect/token
-Content-Type: application/x-www-form-urlencoded
-Authorization: Basic dHJpVmFsZW5jZTpSbkExNWJaVHVnOExwRTU=
-Accept: application/json
-{
-    "grant_type": "password",
-    "username": "{{username}}",
-    "password": "trivalence12",
-    "scope": "inventory_read price_read offline_access openid"
-}
-
-
-PRINT Access Token: {{ response.body.access_token }}
-
+FOR name IN {{ names }}
+    PRINT {{ name }}
+END

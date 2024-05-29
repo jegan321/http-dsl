@@ -240,6 +240,27 @@ describe('Lexer - token types', () => {
     const tokens = lexer.getAllTokens().map((token) => token.type)
     expect(tokens).toEqual(expectedTokens)
   })
+  test('should get token types for FOR..IN statement', () => {
+    const input = `
+      FOR number in {{ [1, 2, 3] }}
+        PRINT {{ number }}
+      END
+    `
+    const lexer = new Lexer(input)
+    const expectedTokens = [
+      TokenType.FOR,
+      TokenType.STRING,
+      TokenType.IN,
+      TokenType.STRING,
+      TokenType.NEWLINE,
+      TokenType.PRINT,
+      TokenType.STRING,
+      TokenType.NEWLINE,
+      TokenType.END
+    ]
+    const tokens = lexer.getAllTokens().map((token) => token.type)
+    expect(tokens).toEqual(expectedTokens)
+  })
 })
 
 describe('Lexer - token literals', () => {
