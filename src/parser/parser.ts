@@ -18,10 +18,10 @@ import {
 } from './ast'
 
 export class SyntaxError {
-  line: number
+  lineNumber: number
   message: string
-  constructor(line: number, message: string) {
-    this.line = line
+  constructor(lineNumber: number, message: string) {
+    this.lineNumber = lineNumber
     this.message = message
   }
 }
@@ -160,7 +160,7 @@ export class Parser {
   }
 
   parseRequestStatement(): RequestStatement {
-    const lineNumber = this.curToken.line
+    const lineNumber = this.curToken.lineNumber
 
     const commandLiteral = this.curToken.literal
     this.nextToken() // Done with command
@@ -255,7 +255,7 @@ export class Parser {
   }
 
   parsePrintStatement(): PrintStatement {
-    const lineNumber = this.curToken.line
+    const lineNumber = this.curToken.lineNumber
 
     const tokenLiteral = this.curToken.literal
     this.nextToken() // Done with PRINT token
@@ -271,7 +271,7 @@ export class Parser {
   }
 
   parseSetStatement(): SetStatement {
-    const lineNumber = this.curToken.line
+    const lineNumber = this.curToken.lineNumber
 
     const tokenLiteral = this.curToken.literal
     this.nextToken()
@@ -309,7 +309,7 @@ export class Parser {
   }
 
   parseDefaultStatement(): DefaultStatement {
-    const lineNumber = this.curToken.line
+    const lineNumber = this.curToken.lineNumber
 
     const tokenLiteral = this.curToken.literal
     this.nextToken()
@@ -344,7 +344,7 @@ export class Parser {
   }
 
   parseWriteStatement(): WriteStatement {
-    const lineNumber = this.curToken.line
+    const lineNumber = this.curToken.lineNumber
 
     const tokenLiteral = this.curToken.literal
     this.nextToken()
@@ -364,7 +364,7 @@ export class Parser {
   }
 
   parseTestStatement(): TestStatement {
-    const lineNumber = this.curToken.line
+    const lineNumber = this.curToken.lineNumber
 
     const tokenLiteral = this.curToken.literal
     this.nextToken() // Done with TEST token
@@ -377,7 +377,7 @@ export class Parser {
   }
 
   parseAssertStatement(): AssertStatement {
-    const lineNumber = this.curToken.line
+    const lineNumber = this.curToken.lineNumber
 
     const tokenLiteral = this.curToken.literal
     this.nextToken() // Done with ASSERT token
@@ -397,7 +397,7 @@ export class Parser {
   }
 
   parseIfStatement(): IfStatement {
-    const lineNumber = this.curToken.line
+    const lineNumber = this.curToken.lineNumber
 
     const tokenLiteral = this.curToken.literal
     this.nextToken() // Done with IF token
@@ -436,7 +436,7 @@ export class Parser {
   }
 
   parseForStatement(): ForStatement {
-    const lineNumber = this.curToken.line
+    const lineNumber = this.curToken.lineNumber
 
     const tokenLiteral = this.curToken.literal
     this.nextToken() // Done with FOR token
@@ -466,7 +466,7 @@ export class Parser {
   }
 
   addSyntaxError(token: Token, message: string) {
-    const syntaxError = new SyntaxError(token.line, message)
+    const syntaxError = new SyntaxError(token.lineNumber, message)
     this.errors.push(syntaxError)
   }
 }
