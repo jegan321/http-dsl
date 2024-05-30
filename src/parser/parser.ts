@@ -1,6 +1,7 @@
 import { Lexer } from '../lexer/lexer'
 import { COMMAND_TOKENS, REQUEST_TOKENS, Token, TokenType } from '../lexer/tokens'
 import { isContentType } from '../utils/header-utils'
+import { Logger } from '../utils/logger'
 import {
   AssertStatement,
   DefaultStatement,
@@ -28,18 +29,20 @@ export class SyntaxError {
 
 export class Parser {
   private lexer: Lexer
+  private log: Logger
   private curToken: Token
   private peekToken: Token
   errors: SyntaxError[]
 
-  constructor(lexer: Lexer) {
+  constructor(lexer: Lexer, logger: Logger = new Logger()) {
     this.lexer = lexer
+    this.log = logger
     this.errors = []
 
-    // Start with EOF tokens to keep type-checker happy but really
+    // Start with BEGIN_FILE tokens to keep type-checker happy but really
     // they are set in nextToken() calls below
-    this.curToken = new Token(TokenType.END_FILE, '', 0)
-    this.peekToken = new Token(TokenType.END_FILE, '', 0)
+    this.curToken = new Token(TokenType.BEGIN_FILE, '', 0)
+    this.peekToken = new Token(TokenType.BEGIN_FILE, '', 0)
 
     // Call nextToken twice to set curToken and peekToken
     this.nextToken()
@@ -49,6 +52,7 @@ export class Parser {
   nextToken() {
     this.curToken = this.peekToken
     this.peekToken = this.lexer.nextToken()
+    this.log.debug(`curToken=${this.curToken.type}, peekToken=${this.peekToken.type}`)
   }
 
   parseProgram(): Program {
@@ -76,6 +80,8 @@ export class Parser {
       this.addSyntaxError(this.curToken, `Invalid ${this.curToken.type} token at beginning of statement: ${this.curToken.literal}`)
       return null
     }
+
+    // this.log.debug(`parseStatement() ${this.curToken.type}`)
 
     if (REQUEST_TOKENS.includes(this.curToken.type)) {
       return this.parseRequestStatement()

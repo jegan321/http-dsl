@@ -1,6 +1,15 @@
-import { ForStatement, IfStatement, Program, RequestStatement, SetStatement, Statement, StatementType } from '../parser/ast'
+import {
+  ForStatement,
+  IfStatement,
+  Program,
+  RequestStatement,
+  SetStatement,
+  Statement,
+  StatementType
+} from '../parser/ast'
 import { getErrorMessage } from '../utils/error-utils'
 import { hasContentType, hasHeader, isContentType } from '../utils/header-utils'
+import { Logger } from '../utils/logger'
 import { urlEncode } from '../utils/url-encoding-utils'
 import { Environment } from './environment'
 import { FetchHttpClient, HttpClient, HttpRequest, HttpResponse } from './http-client'
@@ -11,18 +20,20 @@ export class Evaluator {
   private globalEnvironment: Environment
   private httpClient: HttpClient
   private io: InputOutput
+  private log: Logger
 
-  constructor(environment: Environment, httpClient: HttpClient, io: InputOutput) {
+  constructor(environment: Environment, httpClient: HttpClient, io: InputOutput, logger: Logger = new Logger()) {
     this.globalEnvironment = environment
     this.httpClient = httpClient
     this.io = io
+    this.log = logger
   }
 
-  static build(): Evaluator {
+  static build(logger: Logger = new Logger()): Evaluator {
     const io = new TerminalInputOutput()
     const environment = new Environment()
     const httpClient = new FetchHttpClient()
-    return new Evaluator(environment, httpClient, io)
+    return new Evaluator(environment, httpClient, io, logger)
   }
 
   async evaluate(program: Program) {
@@ -58,8 +69,20 @@ export class Evaluator {
           }
           const httpRequest = new HttpRequest(statement.method, statement.url, statement.headers, statement.body)
           env.set('request', httpRequest)
+
+          let now = new Date()
+          const time = `${now.getHours()}:${now.getMinutes()}:${now.getSeconds()}:${now.getMilliseconds()}`
+
+          this.log.debug(`${time} Sending request`)
+          this.log.debug(`${httpRequest.method} ${httpRequest.url}`)
+          for (const [headerName, headerValue] of Object.entries(httpRequest.headers)) {
+            this.log.debug(`Header: ${headerName}: ${headerValue}`)
+          }
+
           const httpResponse = await this.httpClient.sendRequest(httpRequest)
           env.set('response', httpResponse)
+
+          this.log.debug(`Received response ${httpResponse.status}`)
 
           if (!httpResponse.isOk()) {
             this.exitWithErrors(statement.lineNumber, [

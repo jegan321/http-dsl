@@ -2,12 +2,14 @@ import fs from 'fs'
 import { Evaluator } from '../evaluator/evaluator'
 import { Lexer } from '../lexer/lexer'
 import { Parser } from '../parser/parser'
+import { LogLevel, Logger } from '../utils/logger'
 
 export class FileHandler {
   async execute(fileLocation: string): Promise<void> {
     const fileContent = fs.readFileSync(fileLocation, 'utf8')
     const lexer = new Lexer(fileContent)
-    const parser = new Parser(lexer)
+    const parserLogger = new Logger(LogLevel.DEBUG, 'parser')
+    const parser = new Parser(lexer, parserLogger)
     const program = parser.parseProgram()
     if (parser.errors.length) {
       for (const { lineNumber, message } of parser.errors) {
@@ -15,7 +17,8 @@ export class FileHandler {
       }
       return
     }
-    const evaluator = Evaluator.build()
+    const evaluatorLogger = new Logger(LogLevel.DEBUG, 'evaluator')
+    const evaluator = Evaluator.build(evaluatorLogger)
     await evaluator.evaluate(program)
   }
 }
