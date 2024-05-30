@@ -6,9 +6,10 @@ import { LogLevel, Logger } from '../utils/logger'
 
 export class FileHandler {
   async execute(fileLocation: string): Promise<void> {
+    const logLevel = LogLevel.OFF
     const fileContent = fs.readFileSync(fileLocation, 'utf8')
     const lexer = new Lexer(fileContent)
-    const parserLogger = new Logger(LogLevel.DEBUG, 'parser')
+    const parserLogger = new Logger(logLevel, 'parser')
     const parser = new Parser(lexer, parserLogger)
     const program = parser.parseProgram()
     if (parser.errors.length) {
@@ -17,7 +18,7 @@ export class FileHandler {
       }
       return
     }
-    const evaluatorLogger = new Logger(LogLevel.DEBUG, 'evaluator')
+    const evaluatorLogger = new Logger(logLevel, 'evaluator')
     const evaluator = Evaluator.build(evaluatorLogger)
     await evaluator.evaluate(program)
   }

@@ -1,9 +1,5 @@
-POST https://jsonplaceholder.typicode.com/users
-Accept: */*
-X-API-Key = z0ax9124ap1jdk39fj2
-{
-    "name": "John"
-}
+SET names = {{ ['john', 'charli', 'luka'] }}
 
-GET https://jsonplaceholder.typicode.com/users/1
-
+FOR name in {{ names }}
+    PRINT {{ name }}
+END

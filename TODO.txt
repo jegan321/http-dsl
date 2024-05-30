@@ -5,8 +5,6 @@ Bug two comments and then prompt results in parser error Line 2, syntax error. I
 
 Backlog:
 Add documentation for query params
-For loops
-If statements
 CLI feature to run a whole directory instead of just one file
 Helper for reading files
 Advanced features for VSCode extension
@@ -27,3 +25,4 @@ Save the literal of the line of code in the Token instead of just the line numbe
 Save previous 2 and next 2 lines of code in the Token instead of just one line
 After a syntax error, print the previous and next 5 tokens and show where the invalid token was in the stream
 Don't require a blank line after a request statement
+Implement cli flag for log level
