@@ -9,9 +9,9 @@ export class Logger {
     private loggerName: string = 'logger'
   ) {}
 
-  debug(message: string): void {
+  debug(message?: string): void {
     if (this.logLevel >= LogLevel.DEBUG) {
-      console.log(`[${this.loggerName}] ${message}`)
+      console.log(`[${this.loggerName}] ${message || ''}`)
     }
   }
 }

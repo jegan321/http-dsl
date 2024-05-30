@@ -52,45 +52,7 @@ export class Evaluator {
     for (const statement of statements) {
       switch (statement.type) {
         case StatementType.REQUEST:
-          this.replaceRequestStatementExpressions(env, statement)
-          if (statement.url.startsWith('/')) {
-            // Automatically use default host if host is not specified in the statement
-            const defaultHost = env.getDefaultHost() || 'http://localhost:8080'
-            statement.url = defaultHost + statement.url
-          }
-          if (!hasContentType(statement.headers)) {
-            // Default Content-Type to application/json for convenience
-            statement.headers['Content-Type'] = 'application/json'
-          }
-          for (const [defaultHeaderName, defaultHeaderValue] of Object.entries(env.getDefaultHeaders())) {
-            if (!hasHeader(statement.headers, defaultHeaderName)) {
-              statement.headers[defaultHeaderName] = defaultHeaderValue
-            }
-          }
-          const httpRequest = new HttpRequest(statement.method, statement.url, statement.headers, statement.body)
-          env.set('request', httpRequest)
-
-          let now = new Date()
-          const time = `${now.getHours()}:${now.getMinutes()}:${now.getSeconds()}:${now.getMilliseconds()}`
-
-          this.log.debug(`${time} Sending request`)
-          this.log.debug(`${httpRequest.method} ${httpRequest.url}`)
-          for (const [headerName, headerValue] of Object.entries(httpRequest.headers)) {
-            this.log.debug(`Header: ${headerName}: ${headerValue}`)
-          }
-
-          const httpResponse = await this.httpClient.sendRequest(httpRequest)
-          env.set('response', httpResponse)
-
-          this.log.debug(`Received response ${httpResponse.status}`)
-
-          if (!httpResponse.isOk()) {
-            this.exitWithErrors(statement.lineNumber, [
-              `Request failed with status ${httpResponse.status}. ${httpRequest.url}`,
-              httpResponse.body
-            ])
-          }
-
+          await this.evaluateRequestStatement(env, statement)
           break
         case StatementType.PRINT:
           const printValue = replaceExpressionsInString(env, statement.printValue)
@@ -141,6 +103,57 @@ export class Evaluator {
     }
   }
 
+  async evaluateRequestStatement(env: Environment, statement: RequestStatement) {
+    this.log.debug()
+    this.replaceRequestStatementExpressions(env, statement)
+    if (statement.url.startsWith('/')) {
+      // Automatically use default host if host is not specified in the statement
+      const defaultHost = env.getDefaultHost() || 'http://localhost:8080'
+      statement.url = defaultHost + statement.url
+    }
+    if (!hasContentType(statement.headers)) {
+      // Default Content-Type to application/json for convenience
+      statement.headers['Content-Type'] = 'application/json'
+    }
+    for (const [defaultHeaderName, defaultHeaderValue] of Object.entries(env.getDefaultHeaders())) {
+      if (!hasHeader(statement.headers, defaultHeaderName)) {
+        statement.headers[defaultHeaderName] = defaultHeaderValue
+      }
+    }
+    const httpRequest = new HttpRequest(statement.method, statement.url, statement.headers, statement.body)
+    env.set('request', httpRequest)
+
+    let now = new Date()
+    const time = `${now.getHours()}:${now.getMinutes()}:${now.getSeconds()}:${now.getMilliseconds()}`
+
+    this.log.debug(`${time} ${httpRequest.method} ${httpRequest.url}`)
+    for (const [headerName, headerValue] of Object.entries(httpRequest.headers)) {
+      this.log.debug(`${time} Header: ${headerName}: ${headerValue}`)
+    }
+    if (httpRequest.body) {
+      this.log.debug(`${time} Body:\n${httpRequest.body}`)
+    }
+
+    const httpResponse = await this.httpClient.sendRequest(httpRequest)
+    env.set('response', httpResponse)
+
+    this.log.debug(`${time} Response status: ${httpResponse.status}`)
+    for (const [headerName, headerValue] of Object.entries(httpResponse.headers)) {
+      this.log.debug(`${time} Response header: ${headerName}: ${headerValue}`)
+    }
+
+    if (httpResponse.body) {
+      this.log.debug(`${time} Response body:\n${httpResponse.getBodyAsString()}`)
+    }
+
+    if (!httpResponse.isOk()) {
+      this.exitWithErrors(statement.lineNumber, [
+        `Request failed with status ${httpResponse.status}. ${httpRequest.url}`,
+        httpResponse.body
+      ])
+    }
+  }
+  
   async evaluateIfStatement(env: Environment, statement: IfStatement) {
     const conditionValue = replaceSingleExpression(env, statement.condition)
     if (conditionValue) {

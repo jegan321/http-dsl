@@ -1,9 +1,9 @@
+POST https://jsonplaceholder.typicode.com/users
+Accept: */*
+X-API-Key = z0ax9124ap1jdk39fj2
+{
+    "name": "John"
+}
 
-GET /scm/api/v1/states
-
-GET /scm/api/v1/states
-
-GET /scm/api/v1/states
-
-GET /scm/api/v1/states
+GET https://jsonplaceholder.typicode.com/users/1
 

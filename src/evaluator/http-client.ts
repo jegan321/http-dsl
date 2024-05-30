@@ -62,6 +62,10 @@ export class HttpResponse {
   isOk() {
     return this.status >= 200 && this.status < 300
   }
+
+  getBodyAsString(): string {
+    return typeof this.body === 'object' ? JSON.stringify(this.body, null, 2) : this.body
+  }
 }
 
 function parseJsonBody(body: string): string | Record<string, any> {
