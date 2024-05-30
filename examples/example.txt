@@ -2,4 +2,9 @@ SET names = {{ ['john', 'charli', 'luka'] }}
 
 FOR name in {{ names }}
     PRINT {{ name }}
+    IF {{ name === 'charli'}}
+        PRINT Hello, beautiful!
+    END
 END
+
+
