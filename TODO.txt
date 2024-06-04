@@ -18,7 +18,7 @@ Maybe implement semicolons to make REPL convenient
 Add --allow-error flag to request commands: GET /users --allow-error
 
 New commands:
+WHILE command so I can do fibonacci
 EXIT command that calls process.exit() with a message
 SLEEP command
 EVAL command so you can do things like: EVAL {{ names.sort() }}
-WHILE command so I can do fibonacci
