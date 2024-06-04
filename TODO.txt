@@ -4,7 +4,7 @@ Bug two comments and then prompt results in parser error Line 2, syntax error. I
 
 
 Backlog:
-Change comment char to '//' to prevent issue printing '#' char?
+Change comment char to '//' to prevent issue printing '#' char
 Don't require a blank line after a request statement
 CLI feature to run a whole directory instead of just one file
 Helper for reading files. Ability to parse JSON and CSV files
