@@ -4,28 +4,21 @@ Bug two comments and then prompt results in parser error Line 2, syntax error. I
 
 
 Backlog:
-Add documentation for query params
+Change comment char to '//' to prevent issue printing '#' char?
+Don't require a blank line after a request statement
 CLI feature to run a whole directory instead of just one file
-Helper for reading files
-Advanced features for VSCode extension
-EXIT command that calls process.exit() with a message
-JS transpiler
-cURL transpiler
+Helper for reading files. Ability to parse JSON and CSV files
 Make REPL automatically print response after each request
-Maybe implement semicolons to make REPL convenient
-Make extension add icons for .http files
-Change stringify of response and request to not include headers
-Add --allow-error flag to request commands: GET /users --allow-error
+Implement cli flag for log level. Then make "npm run debug" that does "npm start --log-level=debug"
 Gracefully handle error when you send a request to localhost when server is not running
-Add a DEBUG command that adds more logging to every request
-Use mocha for test command
-SLEEP command
-EVAL command so you can do things like: EVAL {{ names.sort() }}
 Save the literal of the line of code in the Token instead of just the line number
 Save previous 2 and next 2 lines of code in the Token instead of just one line
 After a syntax error, print the previous and next 5 tokens and show where the invalid token was in the stream
-Don't require a blank line after a request statement
-Implement cli flag for log level
-Ability to read a CSV file and turn it into a 2d array automatically
-Change comment char to '//' to prevent issue printing '#' char?
+Maybe implement semicolons to make REPL convenient
+Add --allow-error flag to request commands: GET /users --allow-error
 
+New commands:
+EXIT command that calls process.exit() with a message
+SLEEP command
+EVAL command so you can do things like: EVAL {{ names.sort() }}
+WHILE command so I can do fibonacci
