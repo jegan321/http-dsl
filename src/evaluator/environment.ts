@@ -21,9 +21,6 @@ export class Environment {
     this.outerEnvironment = outerEnvironment
   }
 
-  /**
-   * TODO: Change to use this.getVariables since it has the outer env logic built in
-   */
   get(variableName: string): any {
     return this.getVariables()[variableName]
   }
