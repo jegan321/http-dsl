@@ -16,6 +16,9 @@ Save previous 2 and next 2 lines of code in the Token instead of just one line
 After a syntax error, print the previous and next 5 tokens and show where the invalid token was in the stream
 Maybe implement semicolons to make REPL convenient
 Add --allow-error flag to request commands: GET /users --allow-error
+Some way to prompt for secrets and have them masked while typing
+Support for .env files
+Put CSV example in README
 
 New commands:
 WHILE command so I can do fibonacci
