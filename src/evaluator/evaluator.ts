@@ -15,6 +15,7 @@ import { Environment } from './environment'
 import { FetchHttpClient, HttpClient, HttpRequest, HttpResponse } from './http-client'
 import { InputOutput, TerminalInputOutput } from './input-output'
 import { isSingleExpressionString, replaceExpressionsInString, replaceSingleExpression } from './replace-expressions'
+import cloneDeep from 'lodash/cloneDeep'
 
 export class Evaluator {
   private globalEnvironment: Environment
@@ -49,7 +50,8 @@ export class Evaluator {
 
   // TODO: Make private methods for each switch case
   async evaluateStatements(env: Environment, statements: Statement[]): Promise<void> {
-    for (const statement of statements) {
+    // Deep clone the statements because they are mutated during evaluation
+    for (const statement of cloneDeep(statements)) {
       switch (statement.type) {
         case StatementType.REQUEST:
           await this.evaluateRequestStatement(env, statement)
