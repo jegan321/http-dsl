@@ -185,6 +185,7 @@ export class Parser {
 
     const headers: Record<string, string> = {}
     const queryParams: Record<string, string[]> = {}
+    const modifiers: Record<string, string> = {}
     let body: string | undefined = undefined
     let formEncodedBody: Record<string, string> | undefined = undefined
 
@@ -208,6 +209,14 @@ export class Parser {
           queryParams[queryParamName].push(queryParamValue)
 
           // this.nextToken() // Don't call nextToken() because parseRestOfLineAsSingleString() already skips to the newline token
+        } else if (this.curToken.literal.startsWith('--')) {
+          // This is a modifier
+          const modifierName = this.curToken.literal.replace(':', '')
+          this.nextToken() // Done with modifier name
+
+          const modifierValue = this.parseRestOfLineAsSingleString() // Done with modifier value
+
+          modifiers[modifierName] = modifierValue
         } else {
           // This is a header
           const headerName = this.curToken.literal.replace(':', '')
@@ -252,6 +261,7 @@ export class Parser {
       method: commandLiteral,
       url: concatenateUrlWithQueryParams(url, queryParams),
       headers,
+      modifiers,
       body,
       formEncodedBody
     }

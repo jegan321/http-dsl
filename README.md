@@ -151,6 +151,14 @@ PRINT {{ request }}
 PRINT {{ response }}
 ```
 
+By default, any non-200 response will cause the progrma to exit. Use the `--expect-status` modifier to allow other status codes.
+```
+DELETE /items/123
+--expect-status: any
+
+PRINT {{ response.status}}
+```
+
 You can use the `PROMPT` command to set variables from user input. The below example will print `Enter value for "name":` to the terminal. 
 
 ```

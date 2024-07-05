@@ -49,6 +49,24 @@ describe('Parser', () => {
     expect(Object.entries(request.headers).length).toEqual(1)
     expect(request.headers['content-type']).toEqual('application/json')
   })
+  test('should parse GET request with modifier', () => {
+    const input = `
+    GET https://api.example.com
+    content-type: application/json
+    --expect-status: any
+    `
+    const program = parseProgram(input)
+    expect(program.statements.length).toEqual(1)
+    const request = program.statements[0] as RequestStatement
+    expect(request.type).toEqual('REQUEST')
+    expect(request.tokenLiteral).toEqual('GET')
+    expect(request.method).toEqual('GET')
+    expect(request.url).toEqual('https://api.example.com')
+    expect(Object.entries(request.headers).length).toEqual(1)
+    expect(request.headers['content-type']).toEqual('application/json')
+    expect(Object.entries(request.modifiers).length).toEqual(1)
+    expect(request.modifiers['--expect-status']).toEqual('any')
+  })
   test('should parse GET request with query param', () => {
     const input = `
     GET https://api.example.com/search

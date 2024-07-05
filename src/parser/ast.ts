@@ -30,6 +30,7 @@ export interface RequestStatement {
   method: string
   url: string
   headers: Record<string, string>
+  modifiers: Record<string, string>
   body?: string
   /**
    * Only set when Content-Type is application/x-www-form-urlencoded

@@ -147,7 +147,9 @@ export class Evaluator {
       this.log.debug(`${time} Response body:\n${httpResponse.getBodyAsString()}`)
     }
 
-    if (!httpResponse.isOk()) {
+    const expectStatus = statement.modifiers['--expect-status']?.toLowerCase()
+
+    if (!httpResponse.isOk() && expectStatus !== 'any') {
       this.exitWithErrors(statement.lineNumber, [
         `Request failed with status ${httpResponse.status}. ${httpRequest.url}`,
         httpResponse.body

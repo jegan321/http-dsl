@@ -27,7 +27,8 @@ describe('evaluate', async () => {
         lineNumber: 1,
         method: 'GET',
         url: 'https://api.example.com',
-        headers: {}
+        headers: {},
+        modifiers: {}
       }
     ])
     await evaluator.evaluate(program)
@@ -45,7 +46,8 @@ describe('evaluate', async () => {
         lineNumber: 1,
         method: 'GET',
         url: 'https://api.example.com/items/{{id}}',
-        headers: {}
+        headers: {},
+        modifiers: {}
       }
     ])
     await evaluator.evaluate(program)
@@ -64,7 +66,8 @@ describe('evaluate', async () => {
         lineNumber: 1,
         method: 'POST',
         url: '{{auth_url}}',
-        headers: {}
+        headers: {},
+        modifiers: {}
       }
     ])
     await evaluator.evaluate(program)
@@ -118,7 +121,8 @@ describe('evaluate', async () => {
         lineNumber: 1,
         method: 'GET',
         url: 'https://api.example.com/items/{{id}}',
-        headers: {}
+        headers: {},
+        modifiers: {}
       }
     ])
     await evaluator.evaluate(program)
@@ -142,7 +146,8 @@ describe('evaluate', async () => {
         lineNumber: 1,
         method: 'GET',
         url: '/items/123',
-        headers: {}
+        headers: {},
+        modifiers: {}
       }
     ])
     await evaluator.evaluate(program)
@@ -177,7 +182,8 @@ describe('evaluate', async () => {
         lineNumber: 1,
         method: 'GET',
         url: '/items/123',
-        headers: {}
+        headers: {},
+        modifiers: {}
       }
     ])
     await evaluator.evaluate(program)
