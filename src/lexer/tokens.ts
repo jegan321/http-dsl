@@ -24,7 +24,7 @@ export enum TokenType {
   IF = 'IF',
   END = 'END',
   FOR = 'FOR',
-  IN = 'IN',
+  IN = 'IN'
 }
 
 export const COMMAND_TOKENS = [
@@ -41,7 +41,7 @@ export const COMMAND_TOKENS = [
   TokenType.TEST,
   TokenType.ASSERT,
   TokenType.IF,
-  TokenType.FOR,
+  TokenType.FOR
 ]
 
 export const REQUEST_TOKENS = [TokenType.GET, TokenType.POST, TokenType.PUT, TokenType.DELETE, TokenType.PATCH]
@@ -88,7 +88,7 @@ export function getKeywordForLiteral(literal: string): TokenType | null {
     IF: TokenType.IF,
     END: TokenType.END,
     FOR: TokenType.FOR,
-    IN: TokenType.IN,
+    IN: TokenType.IN
   }
   return keywordMap[literal.toUpperCase()]
 }

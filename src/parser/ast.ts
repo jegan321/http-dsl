@@ -8,7 +8,7 @@ export enum StatementType {
   TEST = 'TEST',
   ASSERT = 'ASSERT',
   IF = 'IF',
-  FOR = 'FOR',
+  FOR = 'FOR'
 }
 
 export type Statement =

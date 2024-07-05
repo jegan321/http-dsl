@@ -104,7 +104,6 @@ export class Evaluator {
   }
 
   async evaluateRequestStatement(env: Environment, statement: RequestStatement) {
-    this.log.debug()
     this.replaceRequestStatementExpressions(env, statement)
     if (statement.url.startsWith('/')) {
       // Automatically use default host if host is not specified in the statement
@@ -153,7 +152,7 @@ export class Evaluator {
       ])
     }
   }
-  
+
   async evaluateIfStatement(env: Environment, statement: IfStatement) {
     const conditionValue = replaceSingleExpression(env, statement.condition)
     if (conditionValue) {

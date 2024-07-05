@@ -77,7 +77,10 @@ export class Parser {
 
   parseStatement(): Statement | null {
     if (!COMMAND_TOKENS.includes(this.curToken.type)) {
-      this.addSyntaxError(this.curToken, `Invalid ${this.curToken.type} token at beginning of statement: ${this.curToken.literal}`)
+      this.addSyntaxError(
+        this.curToken,
+        `Invalid ${this.curToken.type} token at beginning of statement: ${this.curToken.literal}`
+      )
       return null
     }
 
@@ -134,7 +137,10 @@ export class Parser {
       this.nextToken()
       return true
     } else {
-      this.addSyntaxError(this.curToken, `Expected current token to be a ${type}, got ${this.curToken.type} instead with value: ${this.curToken.literal}`)
+      this.addSyntaxError(
+        this.curToken,
+        `Expected current token to be a ${type}, got ${this.curToken.type} instead with value: ${this.curToken.literal}`
+      )
       return false
     }
   }
@@ -160,7 +166,10 @@ export class Parser {
       this.nextToken()
       return true
     } else {
-      this.addSyntaxError(this.curToken, `Expected next token to be a ${type}, got ${this.peekToken.type} instead with value: ${this.peekToken.literal}`)
+      this.addSyntaxError(
+        this.curToken,
+        `Expected next token to be a ${type}, got ${this.peekToken.type} instead with value: ${this.peekToken.literal}`
+      )
       return false
     }
   }
@@ -468,7 +477,6 @@ export class Parser {
       iterable,
       statements
     }
-    
   }
 
   addSyntaxError(token: Token, message: string) {
