@@ -330,5 +330,18 @@ describe('Integration tests', () => {
       expect(io.writes.length).toBe(1)
       expect(io.writes[0]).toBe('dXNlcjE6cGFzc3dvcmQx')
     })
+    test('should base64 dencode', async () => {
+      const input = `
+          SET encoded = dXNlcjE6cGFzc3dvcmQx
+
+          PRINT {{ base64Decode(encoded) }}
+        `
+      const lexer = new Lexer(input)
+      const parser = new Parser(lexer)
+      const program = parser.parseProgram()
+      await evaluator.evaluate(program)
+      expect(io.writes.length).toBe(1)
+      expect(io.writes[0]).toBe('user1:password1')
+    })
   })
 })

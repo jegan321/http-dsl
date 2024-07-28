@@ -1,5 +1,5 @@
 import { Environment } from './environment'
-import { base64 } from './helpers'
+import { base64, base64Decode } from './helpers'
 
 /**
  * Returns the value of a JavaScript expression. Could return a string, number, object, etc.
@@ -7,10 +7,10 @@ import { base64 } from './helpers'
 export function evaluateExpression(expression: string, environment: Environment): any {
   const trimmedExpression = expression.trim()
   let code = `with (vars) {return ${trimmedExpression}}`
-  const func = new Function('vars', 'base64', code)
+  const func = new Function('vars', 'base64', 'base64Decode', code)
   const vars = environment.getVariables()
   try {
-    return func(vars, base64)
+    return func(vars, base64, base64Decode)
   } catch (error) {
     let errorMessage = ''
     if (error instanceof ReferenceError) {
