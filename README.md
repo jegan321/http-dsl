@@ -212,9 +212,3 @@ PRINT Past due invoices: {{
         .join(', ')
 }}
 ```
-
-## Other Names
-- RequestDSL
-- RequestQL
-- HTTPScript
-- FetchDSL
