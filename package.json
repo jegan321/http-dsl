@@ -1,7 +1,6 @@
 {
   "name": "http-dsl",
   "version": "0.1.0",
-  "private": true,
   "main": "index.js",
   "bin": {
     "http": "dist/index.js"
