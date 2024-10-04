@@ -109,7 +109,7 @@ Content-Type: application/x-www-form-urlencoded
 You can put query parameters on a separate line to make long URLs more readable. Just start each line with &:
 ```
 GET https://jsonplaceholder.typicode.com/users/search
-&query=John Doe // The space is encoded automatically
+&query=John Doe # The space is encoded automatically
 &includeDeleted=true
 &useCache=false
 ```
@@ -189,7 +189,7 @@ Retrieve an access token and then query for past due invoices:
 ```
 DEFAULT HOST {{ process.env.HOST_NAME }}
 
-// User must enter the password every time
+# User must enter the password every time
 PROMPT password
 
 POST /token
