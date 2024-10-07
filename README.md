@@ -204,6 +204,7 @@ SET token = {{ response.body.access_token }}
 
 GET /invoices?status=open
 Accept: application/json
+Authorization: Bearer {{ token }}
 
 PRINT Past due invoices: {{
     response.body
