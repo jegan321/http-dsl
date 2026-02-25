@@ -68,7 +68,7 @@ export class Environment {
       config[key] = value
     } else {
       // Otherwise, try setting it in the outer environment
-      this.outerEnvironment.set(key, value)
+      this.outerEnvironment.setConfigValue(key, value)
     }
   }
 
