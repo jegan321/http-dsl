@@ -24,4 +24,14 @@ describe('Environment', async () => {
     environment.set('foo', null)
     expect(environment.hasVariable('foo')).toEqual(true)
   })
+
+  test('setDefaultHost() should propagate to outer environment config without setting a variable', () => {
+    const outer = new Environment()
+    const inner = new Environment(outer)
+
+    inner.setDefaultHost('http://example.test')
+
+    expect(outer.getDefaultHost()).toEqual('http://example.test')
+    expect(outer.get('defaultHost')).toBeUndefined()
+  })
 })
