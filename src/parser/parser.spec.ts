@@ -80,6 +80,18 @@ describe('Parser', () => {
     expect(request.method).toEqual('GET')
     expect(request.url).toEqual('https://api.example.com/search?q=My+search+terms')
   })
+  test('should parse query param values containing equals signs', () => {
+    const input = `
+    GET https://api.example.com/search
+    &token=abc=def
+    &flag=
+    &flag
+    `
+    const program = parseProgram(input)
+    expect(program.statements.length).toEqual(1)
+    const request = program.statements[0] as RequestStatement
+    expect(request.url).toEqual('https://api.example.com/search?token=abc%3Ddef&flag=&flag=')
+  })
   test('should parse GET request with query param and header', () => {
     const input = `
     GET https://api.example.com/search
