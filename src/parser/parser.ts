@@ -200,9 +200,9 @@ export class Parser {
           // This is a query param
           const queryParamLine = this.parseRestOfLineAsSingleString()
           const queryNameAndValue = queryParamLine.substring(1) // Skip the &
-          const elements = queryNameAndValue.split('=')
-          const queryParamName = elements[0]
-          const queryParamValue = elements.length > 1 ? elements[1] : ''
+          const equalsIndex = queryNameAndValue.indexOf('=')
+          const queryParamName = equalsIndex === -1 ? queryNameAndValue : queryNameAndValue.substring(0, equalsIndex)
+          const queryParamValue = equalsIndex === -1 ? '' : queryNameAndValue.substring(equalsIndex + 1)
           if (queryParams[queryParamName] == null) {
             queryParams[queryParamName] = []
           }
